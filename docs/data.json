@@ -1,6 +1,6 @@
 {
-  "update_time": "2026-05-15 07:49:46",
-  "data_source": "Yahoo Finance / 乐咕+新浪",
+  "update_time": "2026-05-16 07:51:19",
+  "data_source": "腾讯财经 / 乐咕+新浪",
   "etfs": [
     {
       "type": "rsi_ma",
@@ -13,7 +13,7 @@
       "weight": "40%",
       "current_price": 1.167,
       "price_change_pct": -0.77,
-      "ma250": 1.1834,
+      "ma250": 1.1837,
       "ma250_is_reference": false,
       "ma250_data_days": 400,
       "rsi21": 41.68,
@@ -27,7 +27,7 @@
       "ma250_trend": "上升",
       "days_below_ma250": 7,
       "days_above_ma250": 0,
-      "price_vs_ma250_pct": -1.38,
+      "price_vs_ma250_pct": -1.41,
       "market_date": "2026-05-15"
     },
     {
@@ -41,9 +41,9 @@
       "weight": "40%",
       "current_price": 1.166,
       "price_change_pct": -0.26,
-      "ma250": 1.1019,
+      "ma250": 1.102,
       "ma250_is_reference": true,
-      "ma250_data_days": 205,
+      "ma250_data_days": 206,
       "rsi21": 44.66,
       "zone": "强势区",
       "invest_amount": "1.5份",
@@ -57,8 +57,8 @@
       "risk_label": "正常",
       "ma250_trend": "上升",
       "days_below_ma250": 0,
-      "days_above_ma250": 86,
-      "price_vs_ma250_pct": 5.82,
+      "days_above_ma250": 87,
+      "price_vs_ma250_pct": 5.81,
       "market_date": "2026-05-15"
     },
     {
@@ -72,10 +72,10 @@
       "weight": "20%",
       "current_price": 29580.3,
       "price_change_pct": 0.73,
-      "pe_ttm": 93.34,
-      "pe_percentile": 91.9,
-      "pe_years": 6.5,
-      "pe_data_days": 1650,
+      "pe_ttm": 93.15,
+      "pe_percentile": 91.5,
+      "pe_years": 6.6,
+      "pe_data_days": 1651,
       "pe_zone": "极度高估",
       "drawdown": 0.0,
       "drawdown_zone": "正常波动",
@@ -91,7 +91,7 @@
       "rebuy_advice": null,
       "risk_signal": "yellow",
       "risk_label": "极度高估",
-      "market_date": "2026-05-14"
+      "market_date": "2026-05-15"
     }
   ]
 }
