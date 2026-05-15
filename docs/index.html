@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>价值投资控制台 · RSI21+MA250</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --card-hover: #1c2128;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --text-bright: #f0f6fc;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --green-dim: #238636;
+    --red: #f85149;
+    --red-dim: #da3633;
+    --yellow: #d29922;
+    --yellow-dim: #9e6a03;
+    --blue: #58a6ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  /* 顶部状态栏 */
+  .header {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .update-time {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .data-source {
+    font-size: 10px;
+    color: var(--text-dim);
+    opacity: 0.7;
+  }
+
+  /* 标的区块 */
+  .etf-section {
+    margin-bottom: 20px;
+  }
+  .etf-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: var(--card);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+  .etf-title .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .etf-title .fund-code {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-left: auto;
+  }
+
+  /* 卡片通用 */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .card-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  /* 价格行 */
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .price-main {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+  .price-change {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .price-up { color: var(--red); }
+  .price-down { color: var(--green); }
+  .price-flat { color: var(--text-dim); }
+
+  /* 指标网格 */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .metric-box {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .metric-label {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .metric-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+
+  /* 信号灯 */
+  .signal-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .signal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .signal-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .signal-dot.yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+  .signal-dot.red { background: var(--red); box-shadow: 0 0 8px var(--red); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+  .signal-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .signal-detail {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-left: auto;
+  }
+
+  /* 操作建议 */
+  .advice-section {
+    margin-top: 8px;
+  }
+  .advice-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .advice-item:last-child { border-bottom: none; }
+  .advice-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .advice-text {
+    font-size: 13px;
+    color: var(--text);
+  }
+  .advice-text strong {
+    color: var(--text-bright);
+    font-size: 15px;
+  }
+  .advice-detail {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .advice-highlight {
+    color: var(--yellow);
+    font-weight: 600;
+  }
+  .advice-danger {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* RSI条形指示 */
+  .rsi-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--green) 0%, var(--green) 35%, var(--yellow) 55%, var(--red) 72%, var(--red) 100%);
+    position: relative;
+    margin-top: 6px;
+  }
+  .rsi-marker {
+    position: absolute;
+    top: -4px;
+    width: 2px;
+    height: 12px;
+    background: var(--text-bright);
+    border-radius: 1px;
+    transform: translateX(-1px);
+  }
+
+  /* 分隔线 */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  /* 策略规则区 */
+  .rules-section {
+    margin-top: 16px;
+  }
+  .rules-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+    padding-left: 8px;
+    border-left: 3px solid var(--accent);
+  }
+  .rules-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+  }
+  .rules-card h3 {
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .rules-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .rules-table th {
+    background: rgba(255,255,255,0.05);
+    padding: 6px 8px;
+    text-align: center;
+    color: var(--text-dim);
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+  .rules-table td {
+    padding: 5px 8px;
+    text-align: center;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .rules-table tr:hover td {
+    background: rgba(255,255,255,0.03);
+  }
+  .rules-table .highlight-row td {
+    background: rgba(88,166,255,0.1);
+    font-weight: 600;
+  }
+  .rules-list {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .rules-list li {
+    margin-bottom: 2px;
+  }
+  .rules-list .tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .tag-sell { background: rgba(248,81,73,0.2); color: var(--red); }
+  .tag-buy { background: rgba(63,185,80,0.2); color: var(--green); }
+  .tag-warn { background: rgba(210,153,34,0.2); color: var(--yellow); }
+  .tag-info { background: rgba(88,166,255,0.2); color: var(--blue); }
+
+  .iron-rules {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(210,153,34,0.08);
+    border: 1px solid rgba(210,153,34,0.2);
+    border-radius: 6px;
+  }
+  .iron-rules h3 {
+    font-size: 13px;
+    color: var(--yellow);
+    margin-bottom: 6px;
+  }
+  .iron-rules ul {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* 加载态 */
+  .loading {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-dim);
+  }
+  .loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MA参考值标注 */
+  .ma-ref-badge {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: rgba(210,153,34,0.2);
+    color: var(--yellow);
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .ma-data-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* 错误态 */
+  .error-msg {
+    background: rgba(248,81,73,0.1);
+    border: 1px solid rgba(248,81,73,0.3);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    color: var(--red);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部 -->
+<div class="header">
+  <h1>价值投资控制台</h1>
+  <div class="subtitle">RSI21 + MA250 双指标策略</div>
+  <div class="update-time" id="updateTime">加载中...</div>
+  <div class="data-source" id="dataSource"></div>
+</div>
+
+<!-- 标的1 -->
+<div class="etf-section" id="etf0-section">
+  <div class="etf-title">
+    <span class="name" id="etf0-name">--</span>
+    <span class="fund-code" id="etf0-fund">--</span>
+  </div>
+
+  <!-- 价格卡片 -->
+  <div class="card">
+    <div class="card-label">实时行情</div>
+    <div class="price-row">
+      <span class="price-main" id="etf0-price">--</span>
+      <span class="price-change price-flat" id="etf0-change">--</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-label">MA250</div>
+        <div class="metric-value" id="etf0-ma250">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">RSI21</div>
+        <div class="metric-value" id="etf0-rsi">--</div>
+      </div>
+    </div>
+    <div class="rsi-bar"><div class="rsi-marker" id="etf0-rsi-marker" style="left:50%"></div></div>
+  </div>
+
+  <!-- 信号灯 -->
+  <div class="card">
+    <div class="signal-bar">
+      <div class="signal-dot green" id="etf0-signal-dot"></div>
+      <span class="signal-label" id="etf0-signal-label">--</span>
+      <span class="signal-detail" id="etf0-zone">--</span>
+    </div>
+  </div>
+
+  <!-- 操作建议 -->
+  <div class="card">
+    <div class="card-label">本月操作建议</div>
+    <div class="advice-section" id="etf0-advice">
+      <div class="loading"><div class="loading-spinner"></div><br>加载中...</div>
+    </div>
+  </div>
+
+  <!-- 指标详情 -->
+  <div class="card">
+    <div class="card-label">指标详情</div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-label">MA250趋势</div>
+        <div class="metric-value" id="etf0-ma-trend">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">偏离MA250</div>
+        <div class="metric-value" id="etf0-vs-ma">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">跌破天数</div>
+        <div class="metric-value" id="etf0-days-below">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">站上天数</div>
+        <div class="metric-value" id="etf0-days-above">--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 标的2 -->
+<div class="etf-section" id="etf1-section">
+  <div class="etf-title">
+    <span class="name" id="etf1-name">--</span>
+    <span class="fund-code" id="etf1-fund">--</span>
+  </div>
+
+  <div class="card">
+    <div class="card-label">实时行情</div>
+    <div class="price-row">
+      <span class="price-main" id="etf1-price">--</span>
+      <span class="price-change price-flat" id="etf1-change">--</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-label">MA250</div>
+        <div class="metric-value" id="etf1-ma250">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">RSI21</div>
+        <div class="metric-value" id="etf1-rsi">--</div>
+      </div>
+    </div>
+    <div class="rsi-bar"><div class="rsi-marker" id="etf1-rsi-marker" style="left:50%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="signal-bar">
+      <div class="signal-dot green" id="etf1-signal-dot"></div>
+      <span class="signal-label" id="etf1-signal-label">--</span>
+      <span class="signal-detail" id="etf1-zone">--</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">本月操作建议</div>
+    <div class="advice-section" id="etf1-advice">
+      <div class="loading"><div class="loading-spinner"></div><br>加载中...</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">指标详情</div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-label">MA250趋势</div>
+        <div class="metric-value" id="etf1-ma-trend">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">偏离MA250</div>
+        <div class="metric-value" id="etf1-vs-ma">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">跌破天数</div>
+        <div class="metric-value" id="etf1-days-below">--</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">站上天数</div>
+        <div class="metric-value" id="etf1-days-above">--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 策略规则 -->
+<div class="rules-section">
+  <div class="rules-title">策略规则</div>
+
+  <div class="rules-card">
+    <h3>月度定投建议</h3>
+    <table class="rules-table">
+      <thead>
+        <tr><th>RSI区间</th><th>状态</th><th>强势区</th><th>弱势区</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>≥72</td><td>极度过热</td><td>暂停</td><td>暂停</td></tr>
+        <tr><td>65-71</td><td>偏热</td><td>0.3份</td><td>0.3份</td></tr>
+        <tr><td>55-64</td><td>中性偏热</td><td>0.6份</td><td>0.6份</td></tr>
+        <tr><td>48-54</td><td>中性合理</td><td>1份</td><td>1份</td></tr>
+        <tr><td>40-47</td><td>偏冷低估</td><td>1.5份</td><td>1.2份</td></tr>
+        <tr><td>&lt;40</td><td>极度低估</td><td>2份</td><td>1.5份</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rules-card">
+    <h3>减仓规则 <span class="tag tag-sell">仅强势区</span></h3>
+    <ul class="rules-list">
+      <li>RSI 65-71 → 卖出 <strong>15%</strong></li>
+      <li>RSI ≥72 → 卖出 <strong>30%</strong></li>
+      <li>触发条件：强势区 + RSI≥65 + 不在冷却期</li>
+      <li>底仓铁律：持仓不低于历史最高持仓的 <strong>50%</strong></li>
+    </ul>
+  </div>
+
+  <div class="rules-card">
+    <h3>回补规则 <span class="tag tag-buy">仅强势区</span></h3>
+    <ul class="rules-list">
+      <li><span class="tag tag-buy">标准</span> RSI 59-63 → 接回已减仓 2/3（触发30天冷却）</li>
+      <li><span class="tag tag-buy">标准</span> RSI &lt;50 → 接回全部剩余（触发30天冷却）</li>
+      <li><span class="tag tag-info">豁免</span> 减仓后90天内RSI从未≤59且价格≥MA250 → 接回1/3</li>
+      <li>冷却期30天内不执行任何回补操作</li>
+    </ul>
+  </div>
+
+  <div class="rules-card">
+    <h3>弱势区铁律</h3>
+    <ul class="rules-list">
+      <li><span class="tag tag-warn">不卖</span> 弱势区永远不减仓</li>
+      <li><span class="tag tag-warn">不补</span> 弱势区不执行回补</li>
+      <li><span class="tag tag-buy">只投</span> 弱势区按定投表正常投入</li>
+    </ul>
+  </div>
+
+  <div class="rules-card">
+    <h3>操作日流程（每月21日）</h3>
+    <ul class="rules-list">
+      <li>执行顺序：减仓 → 回补 → 定投</li>
+      <li>减仓后当月不再回补（避免反复操作）</li>
+      <li>冷却期内跳过回补步骤</li>
+    </ul>
+  </div>
+
+  <div class="iron-rules">
+    <h3>铁则</h3>
+    <ul>
+      <li>只用闲钱投资，绝不上杠杆</li>
+      <li>每月只操作1次，杜绝频繁交易</li>
+      <li>长期持有，低位多买 &gt; 高位少买</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// ============ 数据加载与渲染 ============
+function updateCard(etf, index) {
+  const id = `etf${index}`;
+
+  // 标题
+  document.getElementById(`${id}-name`).textContent = etf.index_name;
+  document.getElementById(`${id}-fund`).textContent = `${etf.fund_code} ${etf.fund_name}`;
+
+  // 检查错误
+  if (etf.error) {
+    document.getElementById(`${id}-price`).textContent = '数据异常';
+    document.getElementById(`${id}-advice`).innerHTML = `<div class="error-msg">${etf.error}</div>`;
+    return;
+  }
+
+  // 价格
+  document.getElementById(`${id}-price`).textContent = etf.current_price.toFixed(4);
+  const changeEl = document.getElementById(`${id}-change`);
+  const pct = etf.price_change_pct;
+  changeEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+  changeEl.className = 'price-change ' + (pct > 0 ? 'price-up' : (pct < 0 ? 'price-down' : 'price-flat'));
+
+  // MA250 & RSI
+  const ma250El = document.getElementById(`${id}-ma250`);
+  ma250El.textContent = etf.ma250.toFixed(4);
+  if (etf.ma250_is_reference) {
+    ma250El.innerHTML = etf.ma250.toFixed(4) + '<span class="ma-ref-badge">参考</span>';
+    // 在metric-box后面加个提示
+    const maBox = ma250El.closest('.metric-box');
+    // 避免重复添加
+    if (maBox && !maBox.querySelector('.ma-data-note')) {
+      const note = document.createElement('div');
+      note.className = 'ma-data-note';
+      note.textContent = `仅${etf.ma250_data_days}天数据，需250天`;
+      maBox.appendChild(note);
+    }
+  }
+  document.getElementById(`${id}-rsi`).textContent = etf.rsi21.toFixed(1);
+
+  // RSI 条形标记
+  const rsiPct = Math.min(Math.max(etf.rsi21, 0), 100);
+  document.getElementById(`${id}-rsi-marker`).style.left = rsiPct + '%';
+
+  // 信号灯
+  const dot = document.getElementById(`${id}-signal-dot`);
+  dot.className = 'signal-dot ' + etf.risk_signal;
+  document.getElementById(`${id}-signal-label`).textContent = etf.risk_label;
+  const zoneEl = document.getElementById(`${id}-zone`);
+  zoneEl.textContent = etf.zone;
+  zoneEl.style.color = etf.zone === '强势区' ? 'var(--green)' : (etf.zone === '弱势区' ? 'var(--yellow)' : 'var(--text-dim)');
+
+  // 操作建议
+  let adviceHTML = '';
+
+  // 定投建议
+  adviceHTML += `<div class="advice-item">
+    <span class="advice-icon">💰</span>
+    <div>
+      <div class="advice-text">定投：<strong>${etf.invest_amount}</strong></div>
+      <div class="advice-detail">${etf.invest_detail}</div>
+    </div>
+  </div>`;
+
+  // 减仓建议
+  if (etf.reduce_advice) {
+    adviceHTML += `<div class="advice-item">
+      <span class="advice-icon">📉</span>
+      <div>
+        <div class="advice-text"><span class="advice-danger">${etf.reduce_advice.action} ${etf.reduce_advice.pct}</span></div>
+        <div class="advice-detail">${etf.reduce_advice.detail}</div>
+      </div>
+    </div>`;
+  }
+
+  // 回补建议
+  if (etf.rebuy_advice) {
+    adviceHTML += `<div class="advice-item">
+      <span class="advice-icon">📈</span>
+      <div>
+        <div class="advice-text"><span class="advice-highlight">${etf.rebuy_advice.action}</span></div>
+        <div class="advice-detail">${etf.rebuy_advice.detail}</div>
+      </div>
+    </div>`;
+  }
+
+  // 弱势区提示
+  if (etf.zone === '弱势区') {
+    adviceHTML += `<div class="advice-item">
+      <span class="advice-icon">🛡️</span>
+      <div>
+        <div class="advice-text" style="color:var(--yellow)">弱势区：不减仓、不回补，按表定投</div>
+      </div>
+    </div>`;
+  }
+
+  // MA250参考值提示
+  if (etf.ma250_is_reference) {
+    adviceHTML += `<div class="advice-item">
+      <span class="advice-icon">⚠️</span>
+      <div>
+        <div class="advice-text" style="color:var(--yellow)">MA250为参考值（数据仅${etf.ma250_data_days}天）</div>
+        <div class="advice-detail">分区判断可能不精确，预计${250 - etf.ma250_data_days}天后数据完整</div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById(`${id}-advice`).innerHTML = adviceHTML;
+
+  // 指标详情
+  const trendEl = document.getElementById(`${id}-ma-trend`);
+  trendEl.textContent = etf.ma250_trend;
+  trendEl.style.color = etf.ma250_trend === '上升' ? 'var(--green)' : (etf.ma250_trend === '下降' ? 'var(--red)' : 'var(--text-dim)');
+
+  const vsMa = etf.price_vs_ma250_pct;
+  const vsMaEl = document.getElementById(`${id}-vs-ma`);
+  vsMaEl.textContent = (vsMa >= 0 ? '+' : '') + vsMa.toFixed(2) + '%';
+  vsMaEl.style.color = vsMa >= 0 ? 'var(--red)' : 'var(--green)';
+
+  document.getElementById(`${id}-days-below`).textContent = etf.days_below_ma250 || '0';
+  document.getElementById(`${id}-days-above`).textContent = etf.days_above_ma250 || '0';
+}
+
+// 加载数据
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('updateTime').textContent = '更新: ' + data.update_time;
+    document.getElementById('dataSource').textContent = '数据源: ' + data.data_source;
+    if (data.etfs && data.etfs.length >= 2) {
+      updateCard(data.etfs[0], 0);
+      updateCard(data.etfs[1], 1);
+    }
+  })
+  .catch(err => {
+    document.getElementById('updateTime').textContent = '加载失败';
+    document.querySelectorAll('.advice-section').forEach(el => {
+      el.innerHTML = `<div class="error-msg">数据加载失败: ${err.message}</div>`;
+    });
+  });
+</script>
+
+</body>
+</html>

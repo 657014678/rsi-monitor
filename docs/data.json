@@ -1,0 +1,61 @@
+{
+  "update_time": "2026-05-15 13:14:09",
+  "data_source": "腾讯财经",
+  "etfs": [
+    {
+      "etf_code": "512890",
+      "etf_name": "红利低波ETF",
+      "index_code": "931446",
+      "index_name": "东证红利低波",
+      "fund_code": "012708",
+      "fund_name": "东方红红利低波A",
+      "current_price": 1.176,
+      "price_change_pct": -0.08,
+      "ma250": 1.1835,
+      "ma250_is_reference": false,
+      "ma250_data_days": 400,
+      "rsi21": 45.49,
+      "zone": "弱势区",
+      "invest_amount": "1.2份",
+      "invest_detail": "偏冷低估·弱势区",
+      "reduce_advice": null,
+      "rebuy_advice": null,
+      "risk_signal": "yellow",
+      "risk_label": "跌破MA250",
+      "ma250_trend": "上升",
+      "days_below_ma250": 6,
+      "days_above_ma250": 0,
+      "price_vs_ma250_pct": -0.63,
+      "market_date": "2026-05-14"
+    },
+    {
+      "etf_code": "159263",
+      "etf_name": "价值100ETF",
+      "index_code": "980081",
+      "index_name": "国证价值100",
+      "fund_code": "025497",
+      "fund_name": "易方达价值100A",
+      "current_price": 1.169,
+      "price_change_pct": -0.34,
+      "ma250": 1.1017,
+      "ma250_is_reference": true,
+      "ma250_data_days": 205,
+      "rsi21": 45.69,
+      "zone": "强势区",
+      "invest_amount": "1.5份",
+      "invest_detail": "偏冷低估·强势区",
+      "reduce_advice": null,
+      "rebuy_advice": {
+        "action": "考虑回补",
+        "detail": "RSI<50·强势区·接回全部剩余（触发30天冷却）"
+      },
+      "risk_signal": "green",
+      "risk_label": "正常",
+      "ma250_trend": "上升",
+      "days_below_ma250": 0,
+      "days_above_ma250": 86,
+      "price_vs_ma250_pct": 6.11,
+      "market_date": "2026-05-14"
+    }
+  ]
+}
