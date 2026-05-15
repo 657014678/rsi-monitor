@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>策略科普 · 心理按摩 · 价值投资控制台</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --text-bright: #f0f6fc;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 16px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    margin-bottom: 16px;
+    padding: 4px 0;
+  }
+  .back-link:hover { text-decoration: underline; }
+  h1 {
+    font-size: 22px;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .section {
+    margin-bottom: 24px;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+  }
+  .section-title.green { border-left-color: var(--green); }
+  .section-title.yellow { border-left-color: var(--yellow); }
+  .section-title.red { border-left-color: var(--red); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .card h3 {
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card p, .card li {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.9;
+  }
+  .card ul, .card ol {
+    padding-left: 18px;
+  }
+  .card li { margin-bottom: 4px; }
+  .highlight {
+    color: var(--yellow);
+    font-weight: 600;
+  }
+  .highlight-green {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .highlight-red {
+    color: var(--red);
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 8px 0;
+  }
+  th {
+    background: rgba(255,255,255,0.05);
+    padding: 6px 8px;
+    text-align: center;
+    color: var(--text-dim);
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: 5px 8px;
+    text-align: center;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .quote-box {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 8px;
+    padding: 14px;
+    margin: 12px 0;
+  }
+  .quote-box .quote {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-bright);
+    line-height: 1.7;
+  }
+  .quote-box .author {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-top: 6px;
+  }
+  .massage-card {
+    background: rgba(63,185,80,0.05);
+    border: 1px solid rgba(63,185,80,0.15);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .massage-card h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .massage-card p, .massage-card li {
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .danger-card {
+    background: rgba(248,81,73,0.05);
+    border: 1px solid rgba(248,81,73,0.15);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .danger-card h3 {
+    color: var(--red);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .danger-card p, .danger-card li {
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .emoji-big {
+    font-size: 32px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+  .tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .tag-green { background: rgba(63,185,80,0.2); color: var(--green); }
+  .tag-yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
+  .tag-red { background: rgba(248,81,73,0.2); color: var(--red); }
+  .tag-blue { background: rgba(88,166,255,0.2); color: var(--blue); }
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">← 返回控制台</a>
+
+<h1>📖 策略科普 · 心理按摩</h1>
+<div class="subtitle">坚持长期主义，做时间的朋友</div>
+
+<!-- ========== 第一部分：策略科普 ========== -->
+
+<div class="section">
+  <div class="section-title green">一、为什么选红利低波+价值100？</div>
+
+  <div class="card">
+    <h3>🧬 红利低波（512890 · 东证红利低波指数）</h3>
+    <ul>
+      <li>选股逻辑：从全市场选<span class="highlight-green">股息率高+波动率低</span>的100只股票</li>
+      <li>每年调仓两次，天然"高抛低吸"——涨多了股息率下降自动卖出，跌多了股息率上升自动买入</li>
+      <li>指数自2005年以来年化收益约 <span class="highlight-green">12-15%</span>，最大回撤远小于沪深300</li>
+      <li>"收息+赚价差"双轮驱动，熊市靠分红扛住，牛市靠估值修复吃肉</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>💎 价值100（159263 · 国证价值100指数）</h3>
+    <ul>
+      <li>选股逻辑：从全市场选<span class="highlight-green">估值低+基本面好</span>的100只股票</li>
+      <li>价值因子长期有效：低PE/PB组合在A股历史表现显著优于高估值组合</li>
+      <li>与红利低波互补——红利低波偏大盘稳健，价值100覆盖更多中盘价值股</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🤝 为什么两个一起配？</h3>
+    <ul>
+      <li><span class="tag tag-green">分散</span> 单一策略有风格轮动期，双策略平滑波动</li>
+      <li><span class="tag tag-blue">共振</span> 两者在市场极度低估时同时发出加仓信号，集中火力</li>
+      <li><span class="tag tag-yellow">对冲</span> 大盘价值vs中盘价值，风格不完全同步</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-title">二、RSI21 是什么？为什么用21？</div>
+
+  <div class="card">
+    <h3>📐 RSI 原理（Relative Strength Index）</h3>
+    <p>RSI 衡量一段时间内<span class="highlight">涨的力量 vs 跌的力量</span>，取值0-100：</p>
+    <table>
+      <tr><th>RSI</th><th>含义</th><th>市场情绪</th></tr>
+      <tr><td>&gt;70</td><td>涨的力度远超跌</td><td>过度乐观/超买</td></tr>
+      <tr><td>50-70</td><td>涨的力度略强</td><td>偏强</td></tr>
+      <tr><td>30-50</td><td>跌的力度略强</td><td>偏弱</td></tr>
+      <tr><td>&lt;30</td><td>跌的力度远超涨</td><td>过度悲观/超卖</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🤔 为什么是RSI21而不是RSI14？</h3>
+    <ul>
+      <li>RSI14是传统默认值，偏短线交易，信号频繁</li>
+      <li>RSI21约等于1个月交易日的周期，<span class="highlight">与月度定投节奏匹配</span></li>
+      <li>更长周期 = 更少噪音 = 更少假信号 = 更少冲动操作</li>
+      <li>配合MA250长周期均线，形成"月级择时+年级趋势"的双重保护</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-title">三、MA250 是什么？为什么用它分区？</div>
+
+  <div class="card">
+    <h3>📏 MA250 = 250日均线 ≈ 一年均线</h3>
+    <ul>
+      <li>250个交易日≈一年，MA250反映过去一年的平均成本</li>
+      <li>价格在MA250上方 = <span class="highlight-green">强势区</span> → 大多数持仓者盈利，市场偏乐观</li>
+      <li>价格在MA250下方 = <span class="highlight">弱势区</span> → 大多数持仓者亏损，市场偏悲观</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🎯 分区的核心意义</h3>
+    <ul>
+      <li><span class="tag tag-green">强势区</span> 可以做减仓+回补（市场给了你获利了结的机会）</li>
+      <li><span class="tag tag-yellow">弱势区</span> <span class="highlight-red">只买不卖</span>（亏着卖是最愚蠢的事，浮亏不是真亏）</li>
+      <li>分区不是为了预测涨跌，而是<span class="highlight">决定你能做什么操作</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-title">四、策略设计的底层逻辑</div>
+
+  <div class="card">
+    <h3>🧠 为什么"低位多买"比"高位少买"重要？</h3>
+    <p>数学原理：同样涨10%，从1元涨到1.1元你赚10%，从0.8元涨到0.88元你也赚10%——但你在0.8元时多买了25%的份额，所以实际收益是<span class="highlight-green">12.5%</span>。</p>
+    <p style="margin-top:8px;">低位多买的复利效应，远大于高位少买省下的那点钱。</p>
+  </div>
+
+  <div class="card">
+    <h3>🛡️ 为什么弱势区"永远不减仓"？</h3>
+    <ul>
+      <li>弱势区减仓 = <span class="highlight-red">浮亏变现为真亏</span></li>
+      <li>红利低波和价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
+      <li>历史数据：512890自2018年成立，每次跌破MA250后最终都涨回来了</li>
+      <li>你卖出的那个价格，很可能是别人眼中"打折的好机会"</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 为什么30天冷却期？</h3>
+    <ul>
+      <li>防止"减了又买、买了又减"的反复操作</li>
+      <li>每次操作都有摩擦成本（赎回费、申购费）</li>
+      <li>冷却期强迫你等待，<span class="highlight">用时间换空间</span></li>
+      <li>30天≈1个月，与定投节奏对齐，不会增加操作复杂度</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📅 为什么每月只操作1次（21日）？</h3>
+    <ul>
+      <li>定投的本质是"纪律"，不是"择时"</li>
+      <li>每月1次操作，消除日内情绪波动的影响</li>
+      <li>21日选在月中，避开月初月末的资金面波动</li>
+      <li><span class="highlight">操作越少，犯错的概率越低</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 第二部分：心理按摩 ========== -->
+
+<div class="section">
+  <div class="section-title yellow">五、心理按摩室</div>
+
+  <div class="emoji-big">🧘</div>
+
+  <div class="massage-card">
+    <h3>😰 "我亏了好多钱，要不要跑？"</h3>
+    <p>你看到的"亏损"是浮亏，不是真亏。只要你不在弱势区卖出，这个数字没有任何意义。</p>
+    <p style="margin-top:6px;">红利低波ETF的成分股每年分红4-5%，即使价格不涨，你的份额也在积累越来越多的分红权。<span class="highlight-green">时间的玫瑰会绽放。</span></p>
+  </div>
+
+  <div class="massage-card">
+    <h3>😱 "大盘暴跌，我慌了"</h3>
+    <p>暴跌恰恰是策略发挥威力的时候：</p>
+    <ul>
+      <li>RSI跌破40 → 你自动加仓到1.5-2份</li>
+      <li>跌破MA250 → 弱势区铁律保护你，<span class="highlight-green">不会让你卖出</span></li>
+      <li>别人恐惧时你贪婪——不是口号，是写在策略里的纪律</li>
+    </ul>
+    <p style="margin-top:6px;">问自己：公司的基本面变了吗？分红取消了吗？都没有的话，价格下跌只是在打折。</p>
+  </div>
+
+  <div class="massage-card">
+    <h3>😤 "涨了这么多，我要不要先卖了锁利？"</h3>
+    <p>如果你在强势区、RSI≥65、不在冷却期——策略已经告诉你减仓了，按策略执行。</p>
+    <p style="margin-top:6px;">如果你不满足减仓条件——说明市场还没到过热，耐心持有。<span class="highlight">提前下车是最常见的踏空原因。</span></p>
+  </div>
+
+  <div class="massage-card">
+    <h3>😩 "为什么我的策略跑不赢别人？"</h3>
+    <p>你看到的"别人"是幸存者偏差。赚了的人会晒，亏了的人沉默。</p>
+    <p style="margin-top:6px;">你的策略目标不是"跑赢所有人"，而是<span class="highlight-green">用最小的心理压力获得合理的长期回报</span>。年化5-8%，持续20年，结果是惊人的。</p>
+  </div>
+
+  <div class="massage-card">
+    <h3>🥱 "定投太无聊了，我想做点刺激的"</h3>
+    <p>无聊 = 纪律 = 赚钱。刺激 = 情绪 = 亏钱。</p>
+    <p style="margin-top:6px;">如果你真的手痒，拿总资金的5%去做短线，亏光了也无所谓。剩下的95%严格按策略走。<span class="highlight">让你的"赌性"和"纪律"井水不犯河水。</span></p>
+  </div>
+
+  <div class="massage-card">
+    <h3>😴 "我坚持不下去了"</h3>
+    <p>每个人都会经历这个时刻。但你想想：</p>
+    <ul>
+      <li>你在弱势区坚持定投，每一次买入都在收集更便宜的筹码</li>
+      <li>市场终会回归均值，这是被几百年金融史反复验证的铁律</li>
+      <li>放弃的那一刻，往往就是黎明前最暗的时刻</li>
+    </ul>
+    <div class="quote-box" style="margin-top:10px;">
+      <div class="quote">"股市是把钱从没耐心的人转移到有耐心的人手里的工具。"</div>
+      <div class="author">—— 巴菲特</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 第三部分：极端行情应对 ========== -->
+
+<div class="section">
+  <div class="section-title red">六、极端行情应对手册</div>
+
+  <div class="danger-card">
+    <h3>📉 单日暴跌 &gt;5%</h3>
+    <ul>
+      <li><span class="tag tag-red">不做</span> 当天不要任何操作，关闭行情软件</li>
+      <li><span class="tag tag-green">等待</span> 等到21日操作日，看RSI和MA250再决策</li>
+      <li>暴跌后的第二天往往有反弹，冲动操作容易两面挨耳光</li>
+    </ul>
+  </div>
+
+  <div class="danger-card">
+    <h3>📉 连续下跌一周以上</h3>
+    <ul>
+      <li>检查是否进入弱势区 → 如果是，<span class="highlight-green">按定投表加倍投入</span></li>
+      <li>检查RSI是否跌破40 → 如果是，下次操作日加码到1.5-2份</li>
+      <li>回忆：512890在2022年4月、2022年10月、2024年1月都跌破MA250，每次都在3-6个月内涨回</li>
+    </ul>
+  </div>
+
+  <div class="danger-card">
+    <h3>🔥 连续暴涨，FOMO严重</h3>
+    <ul>
+      <li>检查RSI → 如果≥65，下次操作日按策略减仓15%-30%</li>
+      <li>如果RSI在50-64区间，<span class="highlight">什么都不做</span>，继续持有</li>
+      <li>不要在非操作日追涨——你的策略里没有"追涨"这个选项</li>
+    </ul>
+  </div>
+
+  <div class="danger-card">
+    <h3>🌊 全市场恐慌（千股跌停级别）</h3>
+    <ul>
+      <li>这是<span class="highlight-green">十年一遇的加仓机会</span></li>
+      <li>RSI很可能跌到40以下，下次操作日直接2份</li>
+      <li>红利低波的成分股是最抗跌的一批公司，恐慌中它们跌得最少、弹得最快</li>
+      <li>历史不会重复，但会押韵——每次大恐慌后都是丰厚回报</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 第四部分：名人名言 ========== -->
+
+<div class="section">
+  <div class="section-title">七、投资大师的话</div>
+
+  <div class="quote-box">
+    <div class="quote">"别人恐惧时我贪婪，别人贪婪时我恐惧。"</div>
+    <div class="author">—— 沃伦·巴菲特</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote">"投资最重要的品质不是智力，而是耐心。"</div>
+    <div class="author">—— 菲利普·费雪</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote">"在投资中，时间就是你的朋友。不要着急，不要恐慌。"</div>
+    <div class="author">—— 约翰·博格</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote">"市场短期是投票机，长期是称重机。"</div>
+    <div class="author">—— 本杰明·格雷厄姆</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote">"你不需要做很多正确的事情，你只需要避免做愚蠢的事情。"</div>
+    <div class="author">—— 查理·芒格</div>
+  </div>
+
+  <div class="quote-box">
+    <div class="quote">"定投的本质是：用纪律打败人性，用时间换取空间。"</div>
+    <div class="author">—— 致你自己</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-title green">八、给自己的承诺</div>
+  <div class="card">
+    <p>每次打开这个页面，在心里默念：</p>
+    <ul>
+      <li>✅ 我只用闲钱投资，生活不受影响</li>
+      <li>✅ 我每月只操作1次，不受市场情绪左右</li>
+      <li>✅ 弱势区绝不止损卖出，浮亏不是真亏</li>
+      <li>✅ 我相信复利的力量，做时间的朋友</li>
+      <li>✅ 坚持纪律，让策略替我做决定</li>
+    </ul>
+  </div>
+</div>
+
+<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:24px;">
+  🌱 慢慢变富，才是最快的路
+</p>
+
+<p style="text-align:center; margin-top:12px;">
+  <a class="back-link" href="index.html" style="font-size:14px;">← 返回控制台</a>
+</p>
+
+</body>
+</html>

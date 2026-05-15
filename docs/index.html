@@ -355,6 +355,53 @@
     margin-top: 2px;
   }
 
+  /* 实时时钟 */
+  .live-clock {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .live-clock .clock-sep {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+  .live-clock .clock-date {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 8px;
+  }
+
+  /* 科普按钮 */
+  .guide-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(63,185,80,0.12);
+    color: var(--green);
+    text-decoration: none;
+    border: 1px solid rgba(63,185,80,0.25);
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .guide-btn:hover {
+    background: rgba(63,185,80,0.25);
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
   /* 雪球按钮 */
   .xueqiu-btn {
     display: inline-flex;
@@ -397,6 +444,12 @@
 <div class="header">
   <h1>价值投资控制台</h1>
   <div class="subtitle">RSI21 + MA250 双指标策略</div>
+  <div class="live-clock" id="liveClock">--:--:--</div>
+  <div class="header-row">
+    <a class="guide-btn" href="guide.html">
+      📖 策略科普 · 心理按摩
+    </a>
+  </div>
   <div class="update-time" id="updateTime">加载中...</div>
   <div class="data-source" id="dataSource"></div>
 </div>
@@ -746,7 +799,21 @@ function updateCard(etf, index) {
   document.getElementById(`${id}-days-above`).textContent = etf.days_above_ma250 || '0';
 }
 
-// 加载数据
+// ============ 实时时钟 ============
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  const weekdays = ['日','一','二','三','四','五','六'];
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} 周${weekdays[now.getDay()]}`;
+  document.getElementById('liveClock').innerHTML =
+    `${h}<span class="clock-sep">:</span>${m}<span class="clock-sep">:</span>${s}<span class="clock-date">${dateStr}</span>`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ============ 加载数据 ============
 fetch('data.json')
   .then(r => r.json())
   .then(data => {
