@@ -1015,23 +1015,57 @@ function updateCard(etf, index) {
 }
 
 // ============ 加载数据 ============
-fetch('data.json')
-  .then(r => r.json())
-  .then(data => {
-    document.getElementById('updateTime').textContent = '更新: ' + data.update_time;
-    document.getElementById('dataSource').textContent = '数据源: ' + data.data_source;
-    if (data.etfs && data.etfs.length >= 3) {
-      updateCard(data.etfs[0], 0);
-      updateCard(data.etfs[1], 1);
-      updateCard(data.etfs[2], 2);
-    }
-  })
-  .catch(err => {
-    document.getElementById('updateTime').textContent = '加载失败';
-    document.querySelectorAll('.advice-section').forEach(el => {
-      el.innerHTML = `<div class="error-msg">数据加载失败: ${err.message}</div>`;
+let etfDataCache = null;
+
+function loadData() {
+  const cacheBuster = '?t=' + new Date().getTime();
+  fetch('data.json' + cacheBuster)
+    .then(r => r.json())
+    .then(data => {
+      etfDataCache = data;
+      document.getElementById('updateTime').textContent = '更新: ' + data.update_time;
+      document.getElementById('dataSource').textContent = '数据源: ' + data.data_source;
+      if (data.etfs && data.etfs.length >= 3) {
+        updateCard(data.etfs[0], 0);
+        updateCard(data.etfs[1], 1);
+        updateCard(data.etfs[2], 2);
+      }
+    })
+    .catch(err => {
+      console.error('数据加载失败:', err);
+      if (!etfDataCache) {
+        document.getElementById('updateTime').textContent = '加载失败';
+        document.querySelectorAll('.advice-section').forEach(el => {
+          el.innerHTML = `<div class="error-msg">数据加载失败: ${err.message}</div>`;
+        });
+      }
     });
-  });
+}
+
+// 页面加载时立即获取
+loadData();
+
+// 每30分钟自动刷新数据
+setInterval(loadData, 30 * 60 * 1000);
+
+// 添加下次刷新倒计时显示
+function updateCountdown() {
+  const now = new Date();
+  const seconds = now.getSeconds();
+  const minutes = now.getMinutes();
+  const totalSeconds = minutes * 60 + seconds;
+  const refreshInterval = 30 * 60; // 30分钟
+  const secondsUntilRefresh = refreshInterval - (totalSeconds % refreshInterval);
+  const minsLeft = Math.floor(secondsUntilRefresh / 60);
+  const secsLeft = secondsUntilRefresh % 60;
+  
+  const countdownEl = document.getElementById('updateTime');
+  if (countdownEl && etfDataCache) {
+    const baseText = '更新: ' + etfDataCache.update_time;
+    countdownEl.textContent = baseText + ` (${minsLeft}分${secsLeft}秒后刷新)`;
+  }
+}
+setInterval(updateCountdown, 1000);
 </script>
 
 </body>
