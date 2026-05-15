@@ -1,14 +1,16 @@
 {
-  "update_time": "2026-05-15 13:14:09",
-  "data_source": "腾讯财经",
+  "update_time": "2026-05-15 13:59:44",
+  "data_source": "腾讯财经 / 乐咕+新浪",
   "etfs": [
     {
+      "type": "rsi_ma",
       "etf_code": "512890",
       "etf_name": "红利低波ETF",
       "index_code": "931446",
       "index_name": "东证红利低波",
       "fund_code": "012708",
       "fund_name": "东方红红利低波A",
+      "weight": "40%",
       "current_price": 1.176,
       "price_change_pct": -0.08,
       "ma250": 1.1835,
@@ -29,12 +31,14 @@
       "market_date": "2026-05-14"
     },
     {
+      "type": "rsi_ma",
       "etf_code": "159263",
       "etf_name": "价值100ETF",
       "index_code": "980081",
       "index_name": "国证价值100",
       "fund_code": "025497",
       "fund_name": "易方达价值100A",
+      "weight": "40%",
       "current_price": 1.169,
       "price_change_pct": -0.34,
       "ma250": 1.1017,
@@ -55,6 +59,38 @@
       "days_below_ma250": 0,
       "days_above_ma250": 86,
       "price_vs_ma250_pct": 6.11,
+      "market_date": "2026-05-14"
+    },
+    {
+      "type": "pe_drawdown",
+      "etf_code": "159941",
+      "etf_name": "纳指100ETF联接A",
+      "index_code": "NDX",
+      "index_name": "纳斯达克100",
+      "fund_code": "159941",
+      "fund_name": "广发纳指100ETF联接A",
+      "weight": "20%",
+      "current_price": 29580.3,
+      "price_change_pct": 0.73,
+      "pe_ttm": 93.34,
+      "pe_percentile": 91.9,
+      "pe_years": 6.5,
+      "pe_data_days": 1650,
+      "pe_zone": "极度高估",
+      "drawdown": 0.0,
+      "drawdown_zone": "正常波动",
+      "high_price": 29580.3,
+      "zone": "极度高估·正常波动",
+      "invest_amount": "暂停",
+      "invest_detail": "极度高估·暂停定投",
+      "reduce_advice": {
+        "action": "考虑减仓",
+        "pct": "30%",
+        "detail": "PE≥85%·正常波动·卖出30%（需确认不在冷却期）"
+      },
+      "rebuy_advice": null,
+      "risk_signal": "yellow",
+      "risk_label": "极度高估",
       "market_date": "2026-05-14"
     }
   ]

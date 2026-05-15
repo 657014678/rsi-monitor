@@ -1,7 +1,7 @@
 """
 GitHub Actions Runner - 价值投资控制台
-双标的 RSI21+MA250 策略：012708(东证红利低波) + 025497(国证价值100)
-定时获取ETF数据并更新docs目录下的JSON文件
+三标的策略：012708(RSI21+MA250) + 025497(RSI21+MA250) + 159941(PE分位+回撤)
+定时获取ETF/指数数据并更新docs目录下的JSON文件
 """
 import json
 import os
@@ -12,25 +12,40 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# ============ 双标的配置 ============
+# ============ 三标的配置 ============
 ETFS = [
     {
-        "etf_code": "512890",        # 数据源ETF代码
-        "etf_name": "红利低波ETF",    # 数据源ETF名称
-        "index_code": "931446",       # 跟踪指数代码（仅展示用）
-        "index_name": "东证红利低波",  # 跟踪指数名称
-        "fund_code": "012708",        # 基金代码
+        "type": "rsi_ma",            # 策略类型：RSI+MA250
+        "etf_code": "512890",
+        "etf_name": "红利低波ETF",
+        "index_code": "931446",
+        "index_name": "东证红利低波",
+        "fund_code": "012708",
         "fund_name": "东方红红利低波A",
-        "yahoo_suffix": ".SS",        # 上海交易所
+        "weight": "40%",
+        "yahoo_suffix": ".SS",
     },
     {
-        "etf_code": "159263",        # 数据源ETF代码
-        "etf_name": "价值100ETF",     # 数据源ETF名称
-        "index_code": "980081",       # 跟踪指数代码（仅展示用）
-        "index_name": "国证价值100",   # 跟踪指数名称
-        "fund_code": "025497",        # 基金代码
+        "type": "rsi_ma",
+        "etf_code": "159263",
+        "etf_name": "价值100ETF",
+        "index_code": "980081",
+        "index_name": "国证价值100",
+        "fund_code": "025497",
         "fund_name": "易方达价值100A",
-        "yahoo_suffix": ".SZ",        # 深圳交易所
+        "weight": "40%",
+        "yahoo_suffix": ".SZ",
+    },
+    {
+        "type": "pe_drawdown",       # 策略类型：PE分位+回撤
+        "etf_code": "159941",
+        "etf_name": "纳指100ETF联接A",
+        "index_code": "NDX",
+        "index_name": "纳斯达克100",
+        "fund_code": "159941",
+        "fund_name": "广发纳指100ETF联接A",
+        "weight": "20%",
+        "yahoo_suffix": None,        # 纳指不用Yahoo
     },
 ]
 
@@ -81,15 +96,19 @@ def fetch_etf_data(config, days=400):
 
     etf_code = config['etf_code']
     etf_name = config['etf_name']
-    yahoo_code = f"{etf_code}{config['yahoo_suffix']}"
+    yahoo_code = f"{etf_code}{config['yahoo_suffix']}" if config.get('yahoo_suffix') else None
     # 腾讯财经代码格式: sh512890 / sz159263
-    tencent_prefix = 'sh' if config['yahoo_suffix'] == '.SS' else 'sz'
-    tencent_code = f"{tencent_prefix}{etf_code}"
+    tencent_code = None
+    if config.get('yahoo_suffix'):
+        tencent_prefix = 'sh' if config['yahoo_suffix'] == '.SS' else 'sz'
+        tencent_code = f"{tencent_prefix}{etf_code}"
 
     print(f"  数据源目标: {etf_name}({etf_code}) → Yahoo: {yahoo_code}, 腾讯: {tencent_code}")
 
     # 1. yfinance
     def fetch_yf():
+        if not yahoo_code:
+            return None
         ticker = yf.Ticker(yahoo_code)
         df = ticker.history(period="2y", interval="1d")
         if df is not None and len(df) > 0:
@@ -102,10 +121,10 @@ def fetch_etf_data(config, days=400):
     def fetch_tencent():
         import urllib.request
         import json as _json
+        if not tencent_code:
+            return None
 
-        # 腾讯qfq API每次最多返回约800条，需分批获取
         all_data = []
-        # 分批从更早开始获取，确保有足够历史数据计算MA250
         batch_starts = ['2018-01-01', '2021-01-01', '2024-01-01']
         for start in batch_starts:
             url = f'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={tencent_code},day,{start},2099-12-31,800,qfq'
@@ -139,7 +158,6 @@ def fetch_etf_data(config, days=400):
 
         if not all_data:
             return None
-        # 去重（按日期）
         df = pd.DataFrame(all_data)
         df = df.drop_duplicates(subset='date', keep='last')
         df = df.sort_values('date').reset_index(drop=True)
@@ -213,6 +231,35 @@ def fetch_etf_data(config, days=400):
 
     return result, source_used
 
+# ============ 纳指100专属：PE分位+回撤数据 ============
+def fetch_nasdaq_pe_data():
+    """获取纳指100历史PE(TTM)数据 - 乐咕乐股"""
+    print("  获取纳指100 PE数据（乐咕乐股）...")
+    try:
+        df = ak.stock_market_pe_lg(symbol='纳指100')
+        df = df.rename(columns={'日期': 'date', '市盈率': 'pe_ttm', '总市值': 'market_cap'})
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.sort_values('date').reset_index(drop=True)
+        print(f"  纳指100 PE数据：{len(df)} 条，{df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+        return df
+    except Exception as e:
+        print(f"  乐咕PE数据失败: {str(e)[:100]}")
+        raise
+
+def fetch_nasdaq_index_data():
+    """获取纳指100指数价格 - 新浪财经"""
+    print("  获取纳指100指数价格（新浪）...")
+    try:
+        df = ak.index_us_stock_sina(symbol='.NDX')
+        df = rename_columns(df)
+        df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+        df = df.sort_values('date').reset_index(drop=True)
+        print(f"  纳指100价格数据：{len(df)} 条，{df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+        return df
+    except Exception as e:
+        print(f"  新浪纳指价格失败: {str(e)[:100]}")
+        raise
+
 # ============ 技术指标 ============
 def calculate_ma(prices, period, min_periods=None):
     """计算移动平均线，数据不足时用min_periods计算参考值"""
@@ -229,7 +276,22 @@ def calculate_rsi(prices, period=21):
     rs = avg_gain / avg_loss
     return 100 - (100 / (1 + rs))
 
-# ============ 策略逻辑 ============
+def calculate_pe_percentile(pe_series, current_pe):
+    """计算PE在历史序列中的百分位"""
+    valid_pe = pe_series.dropna()
+    if len(valid_pe) == 0:
+        return 50.0
+    return round((valid_pe < current_pe).sum() / len(valid_pe) * 100, 1)
+
+def calculate_drawdown(prices):
+    """计算当前价格相对阶段最高点的回撤幅度"""
+    high = prices.max()
+    current = prices.iloc[-1]
+    if high == 0:
+        return 0.0
+    return round((current - high) / high * 100, 2)
+
+# ============ RSI+MA250 策略逻辑（012708/025497共用）============
 def get_zone(price, ma250):
     """判断市场分区：强势区/弱势区"""
     return "强势区" if price >= ma250 else "弱势区"
@@ -256,8 +318,7 @@ def get_invest_advice(rsi, zone):
             return {"amount": "1.5份", "detail": "极度低估·弱势区"}
 
 def get_reduce_advice(rsi, zone):
-    """减仓建议（仅强势区+RSI≥65）
-    注意：实际操作需用户自行判断是否在冷却期，系统仅显示建议"""
+    """减仓建议（仅强势区+RSI≥65）"""
     if zone != "强势区":
         return None
     if rsi >= 72:
@@ -267,8 +328,7 @@ def get_reduce_advice(rsi, zone):
     return None
 
 def get_rebuy_advice(rsi, zone):
-    """回补建议（仅强势区）
-    注意：实际操作需用户自行判断冷却期和豁免条件，系统仅显示建议"""
+    """回补建议（仅强势区）"""
     if zone != "强势区":
         return None
     if 59 <= rsi <= 63:
@@ -287,27 +347,109 @@ def get_risk_signal(price, ma250, days_below, ma_trend):
     else:
         return "green", "正常"
 
-# ============ 单标的处理 ============
-def process_etf(config):
-    """处理单个标的：获取数据→计算指标→生成建议"""
+# ============ PE+回撤 策略逻辑（纳指100专属）============
+def get_pe_zone(pe_percentile):
+    """估值分区"""
+    if pe_percentile >= 85:
+        return "极度高估"
+    elif pe_percentile >= 70:
+        return "高估"
+    elif pe_percentile >= 50:
+        return "合理"
+    elif pe_percentile >= 30:
+        return "低估"
+    else:
+        return "极度低估"
+
+def get_drawdown_zone(drawdown):
+    """回撤分区"""
+    if drawdown > 15:
+        return "深度回调"
+    elif drawdown >= 8:
+        return "中级回调"
+    else:
+        return "正常波动"
+
+def get_nasdaq_invest_advice(pe_percentile, drawdown):
+    """纳指定投建议"""
+    deep_drawdown = drawdown > 15
+
+    if pe_percentile >= 85:
+        return {"amount": "暂停", "detail": "极度高估·暂停定投"}
+    elif pe_percentile >= 70:
+        base = "0.5份"
+        detail = "高估·" + ("0.5份不加仓" if deep_drawdown else "0.5份")
+        return {"amount": base, "detail": detail}
+    elif pe_percentile >= 50:
+        if deep_drawdown:
+            return {"amount": "1.5份", "detail": "合理+深度回调·1+0.5份"}
+        return {"amount": "1份", "detail": "合理估值·1份基准"}
+    elif pe_percentile >= 30:
+        if deep_drawdown:
+            return {"amount": "2.3份", "detail": "低估+深度回调·1.8+0.5份"}
+        return {"amount": "1.8份", "detail": "低估·1.8份"}
+    else:
+        return {"amount": "2.5份", "detail": "极度低估·2.5份封顶"}
+
+def get_nasdaq_reduce_advice(pe_percentile, drawdown):
+    """纳指减仓建议"""
+    # 减仓禁区
+    if pe_percentile < 70:
+        return None
+    if drawdown > 15:
+        return None  # 深度回调，即使高估也只暂停不减仓
+    # 触发条件：PE≥70 + 回撤<8% + 需确认不在冷却期
+    if pe_percentile >= 85:
+        return {"action": "考虑减仓", "pct": "30%", "detail": "PE≥85%·正常波动·卖出30%（需确认不在冷却期）"}
+    elif pe_percentile >= 70:
+        return {"action": "考虑减仓", "pct": "15%", "detail": "PE 70-84%·正常波动·卖出15%（需确认不在冷却期）"}
+    return None
+
+def get_nasdaq_rebuy_advice(pe_percentile, drawdown):
+    """纳指回补建议"""
+    # 回补禁区
+    if pe_percentile >= 70:
+        return None
+    if drawdown > 15:
+        return None
+    # 标准回补
+    if 40 <= pe_percentile <= 50:
+        return {"action": "考虑回补", "detail": "PE 40-50%·接回已减仓2/3（触发60天冷却）"}
+    elif pe_percentile < 40:
+        return {"action": "考虑回补", "detail": "PE<40%·接回全部剩余减仓（触发60天冷却）"}
+    return None
+
+def get_nasdaq_risk_signal(pe_percentile, drawdown):
+    """纳指风险信号"""
+    if drawdown > 15:
+        return "red", "深度回调"
+    elif pe_percentile >= 85:
+        return "yellow", "极度高估"
+    elif pe_percentile >= 70:
+        return "yellow", "估值偏高"
+    else:
+        return "green", "正常"
+
+# ============ 处理RSI+MA250标的 ============
+def process_etf_rsi_ma(config):
+    """处理RSI+MA250标的：获取数据→计算指标→生成建议"""
     etf_name = config['etf_name']
     etf_code = config['etf_code']
     print(f"\n{'='*50}")
-    print(f"处理标的: {etf_name}({etf_code})")
+    print(f"处理标的: {etf_name}({etf_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
     # 获取数据
     df, source_used = fetch_etf_data(config)
 
     # 计算指标
-    # MA250：数据不足时用 min_periods=120 计算参考值
     data_count = len(df)
-    ma_min_periods = min(120, data_count)  # 至少120天才开始计算MA参考值
+    ma_min_periods = min(120, data_count)
     ma250 = calculate_ma(df['close'], MA_PERIOD, min_periods=ma_min_periods)
     rsi21 = calculate_rsi(df['close'], RSI_PERIOD)
-    ma_data_available = data_count >= MA_PERIOD  # MA250是否已满数据
+    ma_data_available = data_count >= MA_PERIOD
 
-    # MA250趋势（20日斜率）
+    # MA250趋势
     if len(ma250.dropna()) >= 20:
         ma_recent = ma250.dropna().tail(20)
         daily_slope = (ma_recent.iloc[-1] - ma_recent.iloc[0]) / 20
@@ -325,7 +467,7 @@ def process_etf(config):
     prev_price = float(df.iloc[-2]['close'])
     price_change_pct = round((latest_price - prev_price) / prev_price * 100, 2)
 
-    # 跌破MA250天数
+    # 跌破/站上MA250天数
     days_below = 0
     for i in range(len(df) - 1, -1, -1):
         if pd.isna(ma250.iloc[i]):
@@ -335,7 +477,6 @@ def process_etf(config):
         else:
             break
 
-    # 站上MA250天数
     days_above = 0
     for i in range(len(df) - 1, -1, -1):
         if pd.isna(ma250.iloc[i]):
@@ -361,17 +502,19 @@ def process_etf(config):
 
     # 构建结果
     result = {
+        "type": "rsi_ma",
         "etf_code": etf_code,
         "etf_name": config['etf_name'],
         "index_code": config['index_code'],
         "index_name": config['index_name'],
         "fund_code": config['fund_code'],
         "fund_name": config['fund_name'],
+        "weight": config['weight'],
         "current_price": round(latest_price, 4),
         "price_change_pct": price_change_pct,
         "ma250": round(latest_ma250, 4),
-        "ma250_is_reference": not ma_data_available,  # MA250是否为参考值（数据不足）
-        "ma250_data_days": int(data_count),  # 可用数据天数
+        "ma250_is_reference": not ma_data_available,
+        "ma250_data_days": int(data_count),
         "rsi21": round(latest_rsi, 2),
         "zone": zone,
         "invest_amount": invest['amount'],
@@ -413,6 +556,154 @@ def process_etf(config):
 
     return result, history, source_used
 
+# ============ 处理纳指100标的（PE分位+回撤）============
+def process_nasdaq(config):
+    """处理纳指100标的：获取PE+指数数据→计算分位回撤→生成建议"""
+    print(f"\n{'='*50}")
+    print(f"处理标的: {config['index_name']}({config['etf_code']}) [PE分位+回撤]")
+    print(f"{'='*50}")
+
+    # 获取PE数据
+    pe_df = fetch_nasdaq_pe_data()
+    # 获取指数价格数据
+    idx_df = fetch_nasdaq_index_data()
+
+    # 当前PE和PE分位
+    current_pe = float(pe_df['pe_ttm'].iloc[-1])
+    pe_data_days = len(pe_df)
+    pe_years = round(pe_data_days / 252, 1)
+    pe_percentile = calculate_pe_percentile(pe_df['pe_ttm'], current_pe)
+    pe_zone = get_pe_zone(pe_percentile)
+
+    # 计算回撤（用全部历史数据的阶段高点）
+    drawdown = calculate_drawdown(idx_df['close'].astype(float))
+    drawdown_zone = get_drawdown_zone(drawdown)
+
+    # 阶段高点信息
+    high_price = float(idx_df['close'].astype(float).max())
+    current_idx_price = float(idx_df['close'].astype(float).iloc[-1])
+
+    # 涨跌（相对前一天）
+    prev_idx_price = float(idx_df['close'].astype(float).iloc[-2])
+    price_change_pct = round((current_idx_price - prev_idx_price) / prev_idx_price * 100, 2)
+
+    # 策略建议
+    invest = get_nasdaq_invest_advice(pe_percentile, drawdown)
+    reduce_advice = get_nasdaq_reduce_advice(pe_percentile, drawdown)
+    rebuy_advice = get_nasdaq_rebuy_advice(pe_percentile, drawdown)
+    risk_signal, risk_label = get_nasdaq_risk_signal(pe_percentile, drawdown)
+
+    # 估值分区作为zone
+    zone = pe_zone + "·" + drawdown_zone
+
+    print(f"  PE(TTM): {current_pe:.2f} | 近{pe_years}年分位: {pe_percentile:.1f}% | 估值: {pe_zone}")
+    print(f"  回撤: {drawdown:.2f}% | 回撤分区: {drawdown_zone}")
+    print(f"  定投: {invest['amount']} | 减仓: {reduce_advice} | 回补: {rebuy_advice}")
+
+    # 构建结果
+    result = {
+        "type": "pe_drawdown",
+        "etf_code": config['etf_code'],
+        "etf_name": config['etf_name'],
+        "index_code": config['index_code'],
+        "index_name": config['index_name'],
+        "fund_code": config['fund_code'],
+        "fund_name": config['fund_name'],
+        "weight": config['weight'],
+        "current_price": round(current_idx_price, 2),
+        "price_change_pct": price_change_pct,
+        "pe_ttm": round(current_pe, 2),
+        "pe_percentile": pe_percentile,
+        "pe_years": pe_years,
+        "pe_data_days": pe_data_days,
+        "pe_zone": pe_zone,
+        "drawdown": drawdown,
+        "drawdown_zone": drawdown_zone,
+        "high_price": round(high_price, 2),
+        "zone": zone,
+        "invest_amount": invest['amount'],
+        "invest_detail": invest['detail'],
+        "reduce_advice": reduce_advice,
+        "rebuy_advice": rebuy_advice,
+        "risk_signal": risk_signal,
+        "risk_label": risk_label,
+        "market_date": pe_df['date'].iloc[-1].strftime('%Y-%m-%d'),
+    }
+
+    # PE历史数据（用于前端图表）
+    pe_history = []
+    for i in range(len(pe_df)):
+        pe_history.append({
+            "time": pe_df['date'].iloc[i].strftime('%Y-%m-%d'),
+            "pe_ttm": round(float(pe_df['pe_ttm'].iloc[i]), 2),
+        })
+
+    # 指数价格历史（最近400条）
+    idx_tail = idx_df.tail(400).reset_index(drop=True)
+    idx_history = []
+    for i in range(len(idx_tail)):
+        idx_history.append({
+            "time": idx_tail['date'].iloc[i].strftime('%Y-%m-%d'),
+            "close": round(float(idx_tail['close'].iloc[i]), 2),
+        })
+
+    history = {
+        "etf_code": config['etf_code'],
+        "index_name": config['index_name'],
+        "pe_history": pe_history,
+        "price_history": idx_history,
+    }
+
+    return result, history, "乐咕+新浪"
+
+# ============ 统一错误占位 ============
+def make_error_result(config):
+    """标的失败时的错误占位"""
+    is_pe = config['type'] == 'pe_drawdown'
+    result = {
+        "type": config['type'],
+        "etf_code": config['etf_code'],
+        "etf_name": config['etf_name'],
+        "index_code": config['index_code'],
+        "index_name": config['index_name'],
+        "fund_code": config['fund_code'],
+        "fund_name": config['fund_name'],
+        "weight": config['weight'],
+        "error": True,
+        "current_price": 0,
+        "price_change_pct": 0,
+        "zone": "数据异常",
+        "invest_amount": "数据异常",
+        "invest_detail": "获取失败",
+        "reduce_advice": None,
+        "rebuy_advice": None,
+        "risk_signal": "red",
+        "risk_label": "数据获取失败",
+        "market_date": "",
+    }
+    if not is_pe:
+        result.update({
+            "ma250": 0, "ma250_is_reference": True, "ma250_data_days": 0,
+            "rsi21": 50, "ma250_trend": "未知",
+            "days_below_ma250": 0, "days_above_ma250": 0, "price_vs_ma250_pct": 0,
+        })
+    else:
+        result.update({
+            "pe_ttm": 0, "pe_percentile": 50, "pe_years": 0, "pe_data_days": 0,
+            "pe_zone": "数据异常", "drawdown": 0, "drawdown_zone": "数据异常", "high_price": 0,
+        })
+
+    history = {
+        "etf_code": config['etf_code'],
+        "index_name": config['index_name'],
+    }
+    if not is_pe:
+        history.update({"klines": [], "ma_values": [], "rsi_values": []})
+    else:
+        history.update({"pe_history": [], "price_history": []})
+
+    return result, history
+
 # ============ 主程序 ============
 def main():
     print(f"[{datetime.now()}] ============ 价值投资控制台 ============")
@@ -425,47 +716,20 @@ def main():
 
     for config in ETFS:
         try:
-            result, history, source_used = process_etf(config)
+            if config['type'] == 'rsi_ma':
+                result, history, source_used = process_etf_rsi_ma(config)
+            elif config['type'] == 'pe_drawdown':
+                result, history, source_used = process_nasdaq(config)
+            else:
+                raise Exception(f"未知策略类型: {config['type']}")
             results.append(result)
             histories.append(history)
             sources.append(source_used)
         except Exception as e:
             print(f"[{datetime.now()}] ✗ {config['etf_name']} 处理失败: {e}")
-            # 标的失败时添加错误占位
-            results.append({
-                "etf_code": config['etf_code'],
-                "etf_name": config['etf_name'],
-                "index_code": config['index_code'],
-                "index_name": config['index_name'],
-                "fund_code": config['fund_code'],
-                "fund_name": config['fund_name'],
-                "error": str(e),
-                "current_price": 0,
-                "price_change_pct": 0,
-                "ma250": 0,
-                "ma250_is_reference": True,
-                "ma250_data_days": 0,
-                "rsi21": 50,
-                "zone": "数据异常",
-                "invest_amount": "数据异常",
-                "invest_detail": "获取失败",
-                "reduce_advice": None,
-                "rebuy_advice": None,
-                "risk_signal": "red",
-                "risk_label": "数据获取失败",
-                "ma250_trend": "未知",
-                "days_below_ma250": 0,
-                "days_above_ma250": 0,
-                "price_vs_ma250_pct": 0,
-                "market_date": "",
-            })
-            histories.append({
-                "etf_code": config['etf_code'],
-                "index_name": config['index_name'],
-                "klines": [],
-                "ma_values": [],
-                "rsi_values": [],
-            })
+            result, history = make_error_result(config)
+            results.append(result)
+            histories.append(history)
             sources.append("失败")
 
     # 输出合并JSON
@@ -489,7 +753,10 @@ def main():
 
     print(f"\n[{datetime.now()}] ============ 数据更新完成! ============")
     for r in results:
-        print(f"  {r.get('index_name', '?')}: 价格{r.get('current_price', 0):.4f} RSI{r.get('rsi21', 0):.1f} {r.get('zone', '?')} → 定投{r.get('invest_amount', '?')}")
+        if r.get('type') == 'pe_drawdown':
+            print(f"  {r.get('index_name', '?')}: PE{r.get('pe_ttm', 0):.1f} 分位{r.get('pe_percentile', 0):.1f}% {r.get('pe_zone', '?')} → 定投{r.get('invest_amount', '?')}")
+        else:
+            print(f"  {r.get('index_name', '?')}: 价格{r.get('current_price', 0):.4f} RSI{r.get('rsi21', 0):.1f} {r.get('zone', '?')} → 定投{r.get('invest_amount', '?')}")
 
 if __name__ == "__main__":
     main()

@@ -17,6 +17,7 @@
     --red: #f85149;
     --yellow: #d29922;
     --blue: #58a6ff;
+    --purple: #bc8cff;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -63,6 +64,7 @@
   .section-title.green { border-left-color: var(--green); }
   .section-title.yellow { border-left-color: var(--yellow); }
   .section-title.red { border-left-color: var(--red); }
+  .section-title.purple { border-left-color: var(--purple); }
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -222,11 +224,24 @@
   </div>
 
   <div class="card">
-    <h3>🤝 为什么两个一起配？</h3>
+    <h3>🤝 三标的为什么这样配？（40/40/20）</h3>
     <ul>
-      <li><span class="tag tag-green">分散</span> 单一策略有风格轮动期，双策略平滑波动</li>
-      <li><span class="tag tag-blue">共振</span> 两者在市场极度低估时同时发出加仓信号，集中火力</li>
-      <li><span class="tag tag-yellow">对冲</span> 大盘价值vs中盘价值，风格不完全同步</li>
+      <li><span class="tag tag-green">A股价值底座</span> 红利低波40%+价值10040%，分享中国价值股长期回报</li>
+      <li><span class="tag tag-blue">海外成长引擎</span> 纳指100占20%，配置全球最强科技公司</li>
+      <li><span class="tag tag-yellow">对冲</span> A股价值vs海外科技，低相关性分散风险</li>
+      <li><span class="tag tag-purple">互补</span> RSI+MA250适合A股价值慢牛，PE+回撤适合美股高波动</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--purple);">🌎 纳斯达克100（159941 · 广发纳指100联接A）</h3>
+    <ul>
+      <li>纳指100 = 美国最大100家非金融科技公司（苹果、微软、英伟达、Meta等）</li>
+      <li>长期年化收益约 <span class="highlight-green">15-18%</span>，但波动远大于A股</li>
+      <li><span class="highlight-red">为什么不用RSI+MA250？</span> 美股科技股波动极大，RSI频繁触顶/触底，MA250在长牛市中几乎永远在上方——信号失灵</li>
+      <li><span class="highlight">PE分位+回撤</span> 更适合：PE反映估值是否合理，回撤反映是否在"打折"</li>
+      <li>纳指100的PE(TTM)近7年范围约25~110，当前处于历史高位区间</li>
+      <li>只占20%仓位，即使短期大跌对整体组合影响有限</li>
     </ul>
   </div>
 </div>
@@ -279,6 +294,54 @@
       <li><span class="tag tag-green">强势区</span> 可以做减仓+回补（市场给了你获利了结的机会）</li>
       <li><span class="tag tag-yellow">弱势区</span> <span class="highlight-red">只买不卖</span>（亏着卖是最愚蠢的事，浮亏不是真亏）</li>
       <li>分区不是为了预测涨跌，而是<span class="highlight">决定你能做什么操作</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-title purple">三.五、纳指100专属：PE分位+回撤是什么？</div>
+
+  <div class="card">
+    <h3 style="color:var(--purple);">📊 PE(TTM) 近7年分位</h3>
+    <ul>
+      <li>PE(TTM) = 市盈率(滚动12个月) = 当前价格 / 过去12个月每股收益</li>
+      <li>"近7年分位" = 当前PE在近7年所有交易日中的排名百分位</li>
+      <li>分位90%意味着：当前PE比近7年90%的时间都高 → 估值偏贵</li>
+      <li>分位20%意味着：当前PE比近7年80%的时间都低 → 估值便宜</li>
+    </ul>
+    <table>
+      <tr><th>PE分位</th><th>估值状态</th><th>含义</th></tr>
+      <tr><td>&lt;30%</td><td>极度低估</td><td>历史性便宜，加大定投</td></tr>
+      <tr><td>30-49%</td><td>低估</td><td>低于中位数，适度加仓</td></tr>
+      <tr><td>50-69%</td><td>合理</td><td>正常估值，标准定投</td></tr>
+      <tr><td>70-84%</td><td>高估</td><td>偏贵，减仓区</td></tr>
+      <tr><td>≥85%</td><td>极度高估</td><td>历史高位，暂停+大幅减仓</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--purple);">📉 高点回撤幅度</h3>
+    <ul>
+      <li>回撤 = (当前价格 - 阶段最高价) / 阶段最高价 × 100%</li>
+      <li>衡量当前价格离最高点跌了多少，反映"打折力度"</li>
+    </ul>
+    <table>
+      <tr><th>回撤幅度</th><th>分区</th><th>含义</th></tr>
+      <tr><td>&lt;8%</td><td>正常波动</td><td>常规涨跌，可以正常操作</td></tr>
+      <tr><td>8-15%</td><td>中级回调</td><td>跌了一波，注意观察</td></tr>
+      <tr><td>&gt;15%</td><td>深度回调</td><td>大幅打折，<span class="highlight-red">永不减仓</span>，加码定投</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--purple);">❓ 为什么纳指不用RSI+MA250？</h3>
+    <ul>
+      <li>纳指100长期牛市，MA250几乎永远在价格下方 → 弱势区信号极少出现</li>
+      <li>RSI在美股高波动中频繁超买超卖 → 信号噪声太大</li>
+      <li>PE分位直接看"贵不贵"，回撤直接看"跌了多少"，比技术指标更直观</li>
+      <li>巴菲特也看PE做决策："别人恐惧时我贪婪" = PE极低时多买</li>
     </ul>
   </div>
 </div>
@@ -382,6 +445,17 @@
       <div class="author">—— 巴菲特</div>
     </div>
   </div>
+
+  <div class="massage-card">
+    <h3>😰 "纳指PE这么高，要不要跑？"</h3>
+    <p>纳指100的PE长期偏高是常态——科技公司的高增长预期推高了PE。关键看<span class="highlight">分位</span>而不是绝对值。</p>
+    <ul>
+      <li>PE分位≥85% → 策略已建议暂停定投+减仓30%</li>
+      <li>PE分位70-84% → 策略已建议减仓15%</li>
+      <li>只要回撤>15%（深度回调），<span class="highlight-green">永不减仓</span>，这是铁律</li>
+    </ul>
+    <p style="margin-top:6px;">纳指100只占20%仓位，即使短期大幅回调，对整体组合影响有限。但它的长期涨幅是三只里最高的——错过上涨比忍受下跌更可惜。</p>
+  </div>
 </div>
 
 <div class="divider"></div>
@@ -425,6 +499,26 @@
       <li>RSI很可能跌到40以下，下次操作日直接2份</li>
       <li>红利低波的成分股是最抗跌的一批公司，恐慌中它们跌得最少、弹得最快</li>
       <li>历史不会重复，但会押韵——每次大恐慌后都是丰厚回报</li>
+    </ul>
+  </div>
+
+  <div class="danger-card">
+    <h3>🇺🇸 纳指100暴跌 &gt;15%</h3>
+    <ul>
+      <li>这是纳指100的<span class="highlight-green">加仓良机</span>——深度回调+低PE分位 = 双重加码信号</li>
+      <li><span class="highlight-red">绝不减仓！</span> 深度回调时即使PE高估也只暂停定投，永远不卖</li>
+      <li>纳指100历史回撤20-30%后通常在6-12个月内收复失地</li>
+      <li>20%仓位限制 + 永不止损 = 你扛得住</li>
+    </ul>
+  </div>
+
+  <div class="danger-card">
+    <h3>🇺🇸 纳指PE持续极高位（≥85%分位）</h3>
+    <ul>
+      <li>按策略暂停定投 + 考虑减仓30%</li>
+      <li>但要确认：回撤&lt;8%（正常波动）+ 不在冷却期</li>
+      <li>如果PE高但还在涨，<span class="highlight">不要追涨</span>——你的策略里没有追涨选项</li>
+      <li>减仓后保留底仓≥40%，不要试图"全卖在最高点"</li>
     </ul>
   </div>
 </div>
