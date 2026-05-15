@@ -355,6 +355,30 @@
     margin-top: 2px;
   }
 
+  /* 雪球按钮 */
+  .xueqiu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(88,166,255,0.15);
+    color: var(--blue);
+    text-decoration: none;
+    border: 1px solid rgba(88,166,255,0.25);
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .xueqiu-btn:hover {
+    background: rgba(88,166,255,0.3);
+  }
+  .xueqiu-btn svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--blue);
+  }
+
   /* 错误态 */
   .error-msg {
     background: rgba(248,81,73,0.1);
@@ -386,7 +410,13 @@
 
   <!-- 价格卡片 -->
   <div class="card">
-    <div class="card-label">实时行情</div>
+    <div class="card-label" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>实时行情 · <span id="etf0-etf-info" style="color:var(--text)">--</span></span>
+      <a class="xueqiu-btn" id="etf0-xueqiu" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm3.5 5.5l-2 2h1.2a.5.5 0 010 1H8.5v1.7h2.2a.5.5 0 010 1H8.5V13a.5.5 0 01-1 0v-1.8H5.3a.5.5 0 010-1H7.5V8.5H5.3a.5.5 0 010-1h1.2l-2-2a.5.5 0 01.7-.7l2.3 2.3 2.3-2.3a.5.5 0 01.7.7z"/></svg>
+        雪球
+      </a>
+    </div>
     <div class="price-row">
       <span class="price-main" id="etf0-price">--</span>
       <span class="price-change price-flat" id="etf0-change">--</span>
@@ -455,7 +485,13 @@
   </div>
 
   <div class="card">
-    <div class="card-label">实时行情</div>
+    <div class="card-label" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>实时行情 · <span id="etf1-etf-info" style="color:var(--text)">--</span></span>
+      <a class="xueqiu-btn" id="etf1-xueqiu" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm3.5 5.5l-2 2h1.2a.5.5 0 010 1H8.5v1.7h2.2a.5.5 0 010 1H8.5V13a.5.5 0 01-1 0v-1.8H5.3a.5.5 0 010-1H7.5V8.5H5.3a.5.5 0 010-1h1.2l-2-2a.5.5 0 01.7-.7l2.3 2.3 2.3-2.3a.5.5 0 01.7.7z"/></svg>
+        雪球
+      </a>
+    </div>
     <div class="price-row">
       <span class="price-main" id="etf1-price">--</span>
       <span class="price-change price-flat" id="etf1-change">--</span>
@@ -597,6 +633,11 @@ function updateCard(etf, index) {
     document.getElementById(`${id}-advice`).innerHTML = `<div class="error-msg">${etf.error}</div>`;
     return;
   }
+
+  // ETF代码+名称 + 雪球链接
+  document.getElementById(`${id}-etf-info`).textContent = `${etf.etf_code} ${etf.etf_name}`;
+  const xueqiuPrefix = etf.etf_code.startsWith('5') ? 'SH' : 'SZ';
+  document.getElementById(`${id}-xueqiu`).href = `https://xueqiu.com/S/${xueqiuPrefix}${etf.etf_code}`;
 
   // 价格
   document.getElementById(`${id}-price`).textContent = etf.current_price.toFixed(4);
