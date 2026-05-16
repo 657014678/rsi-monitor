@@ -284,6 +284,38 @@ body {
   font-size: 11px;
 }
 
+/* Wind金融终端跳转链接 */
+.wind-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #60a5fa;
+  text-decoration: none;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(96,165,250,0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.wind-link:hover {
+  background: rgba(59,130,246,0.18);
+  border-color: rgba(96,165,250,0.25);
+  box-shadow: 0 0 10px rgba(59,130,246,0.15);
+  transform: translateY(-1px);
+}
+.wind-link:active {
+  transform: translateY(0);
+}
+.wind-link .w-icon {
+  font-size: 11px;
+}
+
 /* ========================================
    Weight Graphic Bar
    ======================================== */
@@ -982,7 +1014,7 @@ html { scroll-behavior: smooth; }
   <div class="card" id="priceCard0">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
       <div class="card-label" id="info0" style="margin-bottom:0;">指数行情 · --</div>
-      <a class="xueqiu-link" href="https://xueqiu.com/S/CSI931446" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+      <a class="wind-link" onclick="openWindApp()" href="javascript:void(0)"><span class="w-icon">🌪</span> Wind终端</a>
     </div>
     <div class="price-row">
       <span class="price-main" id="p0">--</span>
@@ -1017,7 +1049,7 @@ html { scroll-behavior: smooth; }
   <div class="card" id="priceCard1">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
       <div class="card-label" id="info1" style="margin-bottom:0;">指数行情 · --</div>
-      <a class="xueqiu-link" href="https://xueqiu.com/S/CSI980081" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+      <a class="wind-link" onclick="openWindApp()" href="javascript:void(0)"><span class="w-icon">🌪</span> Wind终端</a>
     </div>
     <div class="price-row">
       <span class="price-main" id="p1">--</span>
@@ -1052,7 +1084,7 @@ html { scroll-behavior: smooth; }
   <div class="card" id="priceCard2">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
       <div class="card-label" id="info2" style="margin-bottom:0;">指数行情 · --</div>
-      <a class="xueqiu-link" href="https://xueqiu.com/S/.NDX" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+      <a class="wind-link" onclick="openWindApp()" href="javascript:void(0)"><span class="w-icon">🌪</span> Wind终端</a>
     </div>
     <div class="price-row">
       <span class="price-main" id="p2">--</span>
@@ -1087,8 +1119,38 @@ html { scroll-behavior: smooth; }
 <div class="footer-credit">价值投资控制台 · 三标的定投决策系统 · 数据每30分钟更新</div>
 
 <script>
+/* ========== Wind金融终端深链跳转 ========== */
+function openWindApp() {
+  /* Bundle ID: com.wind.info.iphone
+     App Store: https://apps.apple.com/cn/app/id834146449
+     URL scheme 未公开，基于 bundle ID 模式推断为 windinfo:// */
+  var appStoreUrl = 'https://apps.apple.com/cn/app/id834146449';
+  var schemes = ['windinfo://', 'wind://', 'wft://'];
+  var start = Date.now();
+
+  function tryOne(i) {
+    if (i >= schemes.length) {
+      window.location.href = appStoreUrl;
+      return;
+    }
+    /* 用 iframe 尝试唤起，避免当前页面跳转 */
+    var ifr = document.createElement('iframe');
+    ifr.style.position = 'fixed';
+    ifr.style.top = '-9999px';
+    ifr.style.left = '-9999px';
+    ifr.style.width = '1px';
+    ifr.style.height = '1px';
+    ifr.src = schemes[i];
+    document.body.appendChild(ifr);
+    /* 800ms 内没唤起则试下一个 scheme */
+    setTimeout(function() {
+      if (Date.now() - start < 3000) tryOne(i + 1);
+    }, 800);
+  }
+  tryOne(0);
+}
+
 /* 全局数据缓存 */
-var CACHE = null;
 
 /* ========== 时钟 + 操作日提醒 ========== */
 function updateClock() {

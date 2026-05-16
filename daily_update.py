@@ -3,8 +3,8 @@ daily_update.py - 本地每日数据更新脚本
 收盘后运行，用AKShare获取指数数据，计算指标，输出JSON，git push到GitHub
 
 数据源：
-  - 931446 东证红利低波：中证指数官网 stock_zh_index_hist_csindex
-  - 980081 国证价值100：国证指数官网 index_hist_cni
+  - 921446 东证红利低波全收益（显示用931446价格指数）：中证指数官网 stock_zh_index_hist_csindex
+  - 480081 国证价值100全收益（显示用980081价格指数）：国证指数官网 index_hist_cni
   - NDX 纳斯达克100：AKShare stock_market_pe_lg + index_us_stock_sina
 
 用法：
@@ -30,25 +30,27 @@ ETFS = [
         "type": "rsi_ma",
         "etf_code": "512890",
         "etf_name": "红利低波ETF",
-        "index_code": "931446",
+        "index_code": "931446",    # 显示用（价格指数）
+        "data_code": "921446",     # 数据源（全收益指数）
         "index_name": "东证红利低波",
         "fund_code": "012708",
         "fund_name": "东方红红利低波A",
         "weight": "40%",
-        "tencent_prefix": "sh",   # 腾讯API前缀
-        "is_index_price": False,  # ETF价格而非指数价格
+        "tencent_prefix": "sh",
+        "is_index_price": True,
     },
     {
         "type": "rsi_ma",
         "etf_code": "159263",
         "etf_name": "价值100ETF",
-        "index_code": "980081",
+        "index_code": "980081",    # 显示用（价格指数）
+        "data_code": "480081",     # 数据源（全收益指数）
         "index_name": "国证价值100",
         "fund_code": "025497",
         "fund_name": "易方达价值100A",
         "weight": "40%",
         "tencent_prefix": "sz",
-        "is_index_price": False,
+        "is_index_price": True,
     },
     {
         "type": "pe_drawdown",
@@ -160,14 +162,15 @@ def fetch_index_kline(config):
     # 方案A: 中证/国证官网 - 直接指数数据（最高优先级）
     # ================================================================
 
-    # ---- A1: 中证指数官网 931446 东证红利低波 ----
+    # ---- A1: 中证指数官网 东证红利低波全收益(921446) ----
     if index_code == '931446':
-        print(f"  [A1] 尝试中证指数官网: {index_name}({index_code})")
+        data_code = config.get('data_code', index_code)
+        print(f"  [A1] 尝试中证指数官网: {index_name}(全收益{data_code})")
         try:
             _build_no_proxy_opener()
             today_str = datetime.now().strftime('%Y%m%d')
             df = ak.stock_zh_index_hist_csindex(
-                symbol='931446', start_date='20180526', end_date=today_str
+                symbol=data_code, start_date='20180526', end_date=today_str
             )
             if df is not None and len(df) > 30:
                 col_map = {
@@ -185,21 +188,22 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ A1 中证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
-                return df, True, "中证指数官网"
+                print(f"  ✓ A1 中证官网 {index_name}(全收益): {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "中证指数官网(全收益)"
             else:
-                print(f"  ✗ A1 中证官网 {index_name}: 数据为空或不足")
+                print(f"  ✗ A1 中证官网 {index_name}(全收益): 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ A1 中证官网 {index_name} 失败: {str(e)[:80]}")
+            print(f"  ✗ A1 中证官网 {index_name}(全收益) 失败: {str(e)[:80]}")
 
-    # ---- A2: 国证指数官网 980081 国证价值100 ----
+    # ---- A2: 国证指数官网 国证价值100全收益(480081) ----
     if index_code == '980081':
-        print(f"  [A2] 尝试国证指数官网: {index_name}({index_code})")
+        data_code = config.get('data_code', index_code)
+        print(f"  [A2] 尝试国证指数官网: {index_name}(全收益{data_code})")
         try:
             _build_no_proxy_opener()
             today_str = datetime.now().strftime('%Y%m%d')
             df = ak.index_hist_cni(
-                symbol='980081', start_date='20180101', end_date=today_str
+                symbol=data_code, start_date='20180101', end_date=today_str
             )
             if df is not None and len(df) > 30:
                 col_map = {
@@ -217,12 +221,12 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ A2 国证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
-                return df, True, "国证指数官网"
+                print(f"  ✓ A2 国证官网 {index_name}(全收益): {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "国证指数官网(全收益)"
             else:
-                print(f"  ✗ A2 国证官网 {index_name}: 数据为空或不足")
+                print(f"  ✗ A2 国证官网 {index_name}(全收益): 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ A2 国证官网 {index_name} 失败: {str(e)[:80]}")
+            print(f"  ✗ A2 国证官网 {index_name}(全收益) 失败: {str(e)[:80]}")
 
     # ================================================================
     # 方案B: AKShare东方财富（备用）
