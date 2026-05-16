@@ -255,7 +255,7 @@ function updateCard(etf, idx) {
   }
 
   /* 行情信息 */
-  document.getElementById('info' + id).textContent = '指数行情 · ' + (etf.index_code || '') + ' ' + (etf.index_name || '');
+  document.getElementById('info' + id).textContent = '指数行情 · ' + (etf.index_code || '') + ' ' + (etf.index_name || '') + (etf.data_source ? ' [' + etf.data_source + ']' : '');
 
   /* 价格 - 指数行情2位小数，ETF行情4位 */
   var dec = isIndexPrice ? 2 : 4;

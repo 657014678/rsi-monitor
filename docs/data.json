@@ -1,6 +1,6 @@
 {
-  "update_time": "2026-05-16 11:50:04",
-  "data_source": "AKShare 本地",
+  "update_time": "2026-05-16 13:12:06",
+  "data_source": "多数据源",
   "etfs": [
     {
       "type": "rsi_ma",
@@ -29,6 +29,7 @@
       "days_above_ma250": 0,
       "price_vs_ma250_pct": -1.41,
       "is_index_price": false,
+      "data_source": "腾讯ETF价格回退",
       "market_date": "2026-05-15",
       "history_advice": [
         {
@@ -176,6 +177,7 @@
       "days_above_ma250": 87,
       "price_vs_ma250_pct": 5.81,
       "is_index_price": false,
+      "data_source": "腾讯ETF价格回退",
       "market_date": "2026-05-15",
       "history_advice": [
         {
@@ -248,6 +250,8 @@
       "rebuy_advice": null,
       "risk_signal": "yellow",
       "risk_label": "极度高估",
+      "data_source": "乐咕PE+新浪指数",
+      "is_index_price": true,
       "market_date": "2026-05-15",
       "history_advice": [
         {
