@@ -337,22 +337,23 @@ function updateCard(etf, idx) {
 
   /* 价格 */
   var dec = isPE ? 2 : 4;
-  document.getElementById('p' + id).textContent = etf.current_price.toFixed(dec);
+  var priceEl = document.getElementById('p' + id);
+  priceEl.textContent = (etf.current_price != null) ? etf.current_price.toFixed(dec) : '--';
   var cel = document.getElementById('c' + id);
   var pct = etf.price_change_pct;
-  cel.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
-  cel.className = 'price-change ' + (pct > 0 ? 'price-up' : (pct < 0 ? 'price-down' : 'price-flat'));
+  cel.textContent = (pct != null) ? ((pct >= 0 ? '+' : '') + pct.toFixed(2) + '%') : '--';
+  cel.className = 'price-change ' + ((pct == null) ? 'price-flat' : (pct > 0 ? 'price-up' : (pct < 0 ? 'price-down' : 'price-flat')));
 
   /* PE / RSI */
   if (isPE) {
-    document.getElementById('pe2').textContent = etf.pe_ttm.toFixed(1);
+    document.getElementById('pe2').textContent = (etf.pe_ttm != null) ? etf.pe_ttm.toFixed(1) : '--';
     var pctEl = document.getElementById('pp2');
-    pctEl.textContent = etf.pe_percentile.toFixed(1) + '%';
+    pctEl.textContent = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
     var p = etf.pe_percentile;
-    pctEl.style.color = p >= 85 ? '#f85149' : (p >= 70 ? '#d29922' : (p >= 50 ? '#f0f6fc' : '#3fb950'));
+    pctEl.style.color = (p == null) ? '#8b949e' : (p >= 85 ? '#f85149' : (p >= 70 ? '#d29922' : (p >= 50 ? '#f0f6fc' : '#3fb950')));
   } else {
-    document.getElementById('ma' + id).textContent = etf.ma250.toFixed(4);
-    document.getElementById('rsi' + id).textContent = etf.rsi21.toFixed(1);
+    document.getElementById('ma' + id).textContent = (etf.ma250 != null) ? etf.ma250.toFixed(4) : '--';
+    document.getElementById('rsi' + id).textContent = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
   }
 
   /* 信号灯 */
@@ -362,13 +363,16 @@ function updateCard(etf, idx) {
 
   /* 操作建议 */
   var html = '';
-  html += '<div class="advice-item"><span class="advice-icon">💰</span><div><div class="advice-text">定投：<strong>' + etf.invest_amount + '</strong></div><div class="advice-detail">' + etf.invest_detail + '</div></div></div>';
+  var investAmount = (etf.invest_amount != null) ? etf.invest_amount : '--';
+  var investDetail = (etf.invest_detail != null) ? etf.invest_detail : '--';
+  html += '<div class="advice-item"><span class="advice-icon">💰</span><div><div class="advice-text">定投：<strong>' + investAmount + '</strong></div><div class="advice-detail">' + investDetail + '</div></div></div>';
 
-  if (etf.reduce_advice) {
-    html += '<div class="advice-item"><span class="advice-icon">📉</span><div><div class="advice-text"><span style="color:#f85149;font-weight:600;">' + etf.reduce_advice.action + ' ' + etf.reduce_advice.pct + '</span></div><div class="advice-detail">' + etf.reduce_advice.detail + '</div></div></div>';
+  if (etf.reduce_advice && etf.reduce_advice.action) {
+    html += '<div class="advice-item"><span class="advice-icon">📉</span><div><div class="advice-text"><span style="color:#f85149;font-weight:600;">' + etf.reduce_advice.action + ' ' + (etf.reduce_advice.pct || '') + '</span></div><div class="advice-detail">' + (etf.reduce_advice.detail || '') + '</div></div></div>';
   }
-  if (etf.rebuy_advice) {
-    html += '<div class="advice-item"><span class="advice-icon">📈</span><div><div class="advice-text"><span style="color:#d29922;font-weight:600;">' + etf.rebuy_advice.action + '</span></div><div class="advice-detail">' + etf.rebuy_advice.detail + '</div></div></div>';
+
+  if (etf.rebuy_advice && etf.rebuy_advice.action) {
+    html += '<div class="advice-item"><span class="advice-icon">📈</span><div><div class="advice-text"><span style="color:#d29922;font-weight:600;">' + etf.rebuy_advice.action + '</span></div><div class="advice-detail">' + (etf.rebuy_advice.detail || '') + '</div></div></div>';
   }
 
   document.getElementById('adv' + id).innerHTML = html;
