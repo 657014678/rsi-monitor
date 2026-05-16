@@ -15,7 +15,7 @@
 ### 统一设定
 - 定投操作日：**每月21日**（遇节假日顺延）
 - 资金权重固定：40% / 40% / 20%
-- 年底再平衡回标准权重
+- 每半年（6月+12月21日）再平衡回标准权重
 - 铁则：3年以上闲钱、无杠杆、每月1次、不盯盘
 
 ---
@@ -79,6 +79,7 @@
 | 980081 国证价值100 | **国证指数官网** ak.index_hist_cni |
 | 纳指PE数据 | 乐咕乐股 ak.stock_market_pe_lg（近7年历史PE TTM） |
 | 纳指指数价格 | 新浪财经 ak.index_us_stock_sina (.NDX) |
+| 回测引擎 | Python 三标的同步回测（含每年底/半年再平衡） |
 | 部署 | GitHub Pages |
 | 数据更新 | **本地定时任务** → git push（替代原有 GitHub Actions） |
 
@@ -130,54 +131,6 @@ python daily_update.py       # 更新数据 + git push
 python daily_update.py --no-push  # 只更新本地 JSON，不推送
 ```
 
----
-
-## 🐳 NAS Docker 部署
-
-如果家里有 NAS（群晖/威联通等），可以把数据更新跑在 Docker 容器里，24 小时在线，不依赖 Windows 关机。
-
-### 构建镜像
-
-```bash
-# 在项目目录下执行
-docker compose build
-# 或手动构建
-docker build -t rsi-monitor .
-```
-
-### 首次运行测试
-
-```bash
-# 生成 JSON 到本地 docs/
-docker run --rm -v "$(pwd)/docs:/app/docs" rsi-monitor:latest
-# 查看输出
-ls -la docs/
-```
-
-### NAS 上定时执行（每日 15:30）
-
-**群晖 Synology（Container Manager + 任务计划器）**：
-1. 用 File Station 把项目文件夹传到 NAS
-2. 打开 **Container Manager** → 注册表 → 搜索 `rsi-monitor`（或手动构建）
-3. 构建镜像后，用 **任务计划器** 创建定时任务：
-   - **任务类型**：用户定义的脚本
-   - **用户账号**：root
-   - **运行命令**：
-     ```bash
-     docker run --rm -v /path/to/rsi-monitor/docs:/app/docs rsi-monitor:latest
-     ```
-   - **时间**：每日 15:30
-
-**威联通 QNAP（Container Station）**：
-1. 上传项目到 NAS → Container Station → 创建容器
-2. 或通过 SSH 执行：
-   ```bash
-   docker run --rm -v /share/Container/rsi-monitor/docs:/app/docs rsi-monitor:latest
-   ```
-3. 用 **任务资源管理器** 定时运行
-
-> 💡 JSON 文件会输出到挂载的 `docs/` 目录，手动复制回 `C:\Users\玮\WorkBuddy\2026-05-12-task-3\docs\` 后 git push 即可更新 GitHub Pages。
-
 ### 文件结构
 
 ```
@@ -195,9 +148,7 @@ ls -la docs/
 ├── github_action_runner.py # 旧版 GitHub Actions 脚本（备用）
 ├── setup_task.ps1          # Windows 定时任务安装脚本
 ├── requirements.txt        # Python 依赖
-├── Dockerfile              # 🐳 NAS Docker 构建
-├── docker-compose.yml      # Docker Compose 配置
-├── docker-build.sh         # 构建辅助脚本
+├── backtest_dingtou.py     # 📊 三标的定投回测（含再平衡）
 └── README.md
 ```
 
