@@ -26,6 +26,7 @@ ETFS = [
         "fund_name": "东方红红利低波A",
         "weight": "40%",
         "yahoo_suffix": ".SS",
+        "em_secid": "2.931446",      # 东方财富指数secid
     },
     {
         "type": "rsi_ma",
@@ -37,6 +38,7 @@ ETFS = [
         "fund_name": "易方达价值100A",
         "weight": "40%",
         "yahoo_suffix": ".SZ",
+        "em_secid": "0.980081",      # 东方财富指数secid
     },
     {
         "type": "pe_drawdown",       # 策略类型：PE分位+回撤
@@ -48,6 +50,7 @@ ETFS = [
         "fund_name": "广发纳指100ETF联接A",
         "weight": "20%",
         "yahoo_suffix": None,        # 纳指不用Yahoo
+        "em_secid": None,            # 纳指用新浪，不用东方财富
     },
 ]
 
@@ -232,6 +235,98 @@ def fetch_etf_data(config, days=400):
     print(f"  最终数据：{len(result)} 条，{result['date'].min().strftime('%Y-%m-%d')} → {result['date'].max().strftime('%Y-%m-%d')}")
 
     return result, source_used
+
+# ============ 东方财富指数数据获取 ============
+def fetch_index_price_em(config):
+    """通过东方财富API获取指数实时行情和K线历史数据（urllib绕代理）"""
+    import urllib.request
+    import json as _json
+
+    secid = config.get('em_secid')
+    if not secid:
+        return None
+
+    index_code = config['index_code']
+    index_name = config['index_name']
+    print(f"  获取指数行情: {index_name}({index_code}) secid={secid}")
+
+    proxy_handler = urllib.request.ProxyHandler({})
+    opener = urllib.request.build_opener(proxy_handler)
+    headers = {'User-Agent': 'Mozilla/5.0', 'Referer': 'https://quote.eastmoney.com/'}
+
+    # 1. 获取实时行情（价格、涨跌幅）
+    realtime_price = None
+    realtime_change_pct = None
+    realtime_prev_close = None
+
+    url_rt = f'https://push2.eastmoney.com/api/qt/stock/get?secid={secid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields=f43,f44,f45,f46,f47,f57,f58,f60,f170'
+    try:
+        req = urllib.request.Request(url_rt, headers=headers)
+        resp = opener.open(req, timeout=15)
+        data = _json.loads(resp.read().decode('utf-8'))
+        d = data.get('data', {})
+        if d and d.get('f43'):
+            # 东方财富价格不带小数点，需要除以100（指数一般2位小数）
+            raw_price = d['f43']
+            # f43是最新价(需/100), f170是涨跌幅(*100), f60是昨收
+            realtime_price = raw_price / 100.0 if raw_price > 10000 else raw_price / 10.0
+            if d.get('f170'):
+                realtime_change_pct = d['f170'] / 100.0
+            if d.get('f60'):
+                realtime_prev_close = d['f60'] / 100.0
+            print(f"  实时行情: 价格={realtime_price:.2f}, 涨跌幅={realtime_change_pct:.2f}%")
+    except Exception as e:
+        print(f"  实时行情获取失败: {str(e)[:60]}")
+
+    # 2. 获取K线历史数据
+    kline_df = None
+    url_kline = f'https://push2his.eastmoney.com/api/qt/stock/kline/get?secid={secid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&beg=20200101&end=20991231&lmt=1500'
+    try:
+        req2 = urllib.request.Request(url_kline, headers=headers)
+        resp2 = opener.open(req2, timeout=15)
+        data2 = _json.loads(resp2.read().decode('utf-8'))
+        klines = data2.get('data', {}).get('klines', [])
+        if klines:
+            rows = []
+            for k in klines:
+                parts = k.split(',')
+                if len(parts) >= 6:
+                    rows.append({
+                        'date': parts[0],
+                        'open': float(parts[1]),
+                        'close': float(parts[2]),
+                        'high': float(parts[3]),
+                        'low': float(parts[4]),
+                        'volume': float(parts[5]) if len(parts) > 5 else 0,
+                    })
+            kline_df = pd.DataFrame(rows)
+            kline_df['date'] = pd.to_datetime(kline_df['date']).dt.tz_localize(None)
+            print(f"  指数K线: {len(kline_df)} 条, {kline_df['date'].min().strftime('%Y-%m-%d')} → {kline_df['date'].max().strftime('%Y-%m-%d')}")
+    except Exception as e:
+        print(f"  指数K线获取失败: {str(e)[:60]}")
+
+    # 3. AKShare备用（stock_zh_index_daily_em）
+    if kline_df is None:
+        try:
+            os.environ['no_proxy'] = '*'
+            os.environ['NO_PROXY'] = '*'
+            prefix = 'sh' if secid.startswith('1.') or secid.startswith('2.') else 'sz'
+            sym = prefix + index_code
+            df_ak = ak.stock_zh_index_daily_em(symbol=sym)
+            if df_ak is not None and len(df_ak) > 10:
+                df_ak = rename_columns(df_ak)
+                df_ak['date'] = pd.to_datetime(df_ak['date']).dt.tz_localize(None)
+                kline_df = df_ak
+                print(f"  AKShare指数K线: {len(kline_df)} 条")
+        except Exception as e:
+            print(f"  AKShare备用失败: {str(e)[:60]}")
+
+    return {
+        'realtime_price': realtime_price,
+        'realtime_change_pct': realtime_change_pct,
+        'realtime_prev_close': realtime_prev_close,
+        'kline_df': kline_df,
+    }
 
 # ============ 纳指100专属：PE分位+回撤数据 ============
 def fetch_index_data(config, days=400):
@@ -473,8 +568,11 @@ def process_etf_rsi_ma(config):
     print(f"处理标的: {etf_name}({etf_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
-    # 获取数据（ETF价格紧贴指数，用于指标计算）
+    # 获取ETF数据（用于RSI/MA250计算）
     df, source_used = fetch_etf_data(config)
+
+    # 获取指数数据（用于显示指数行情）
+    index_data = fetch_index_price_em(config)
 
     # 计算指标
     data_count = len(df)
@@ -491,15 +589,35 @@ def process_etf_rsi_ma(config):
     else:
         ma_trend = 0
 
-    # 最新数据
+    # 最新ETF数据（用于指标计算）
     current = df.iloc[-1]
     latest_price = float(current['close'])
     latest_ma250 = float(ma250.iloc[-1]) if not pd.isna(ma250.iloc[-1]) else latest_price
     latest_rsi = float(rsi21.iloc[-1]) if not pd.isna(rsi21.iloc[-1]) else 50.0
 
-    # 涨跌
+    # 涨跌（ETF数据）
     prev_price = float(df.iloc[-2]['close'])
-    price_change_pct = round((latest_price - prev_price) / prev_price * 100, 2)
+    etf_change_pct = round((latest_price - prev_price) / prev_price * 100, 2)
+
+    # 指数价格和涨跌幅
+    index_price = None
+    index_change_pct = None
+    if index_data and index_data.get('realtime_price'):
+        index_price = index_data['realtime_price']
+        index_change_pct = index_data.get('realtime_change_pct')
+    # 如果没有实时行情但有K线数据，用K线最后一天
+    if index_price is None and index_data and index_data.get('kline_df') is not None:
+        idx_df = index_data['kline_df']
+        if len(idx_df) > 0:
+            index_price = float(idx_df.iloc[-1]['close'])
+            if len(idx_df) > 1:
+                prev_idx = float(idx_df.iloc[-2]['close'])
+                index_change_pct = round((index_price - prev_idx) / prev_idx * 100, 2)
+
+    # 如果指数数据获取失败，用ETF价格
+    use_index_price = index_price is not None
+    display_price = index_price if use_index_price else latest_price
+    display_change_pct = index_change_pct if index_change_pct is not None else etf_change_pct
 
     # 跌破/站上MA250天数
     days_below = 0
@@ -529,7 +647,9 @@ def process_etf_rsi_ma(config):
     rebuy_advice = get_rebuy_advice(latest_rsi, zone)
     risk_signal, risk_label = get_risk_signal(latest_price, latest_ma250, days_below, ma_trend)
 
-    print(f"  价格: {latest_price:.4f} ({'+' if price_change_pct >= 0 else ''}{price_change_pct}%)")
+    print(f"  ETF价格: {latest_price:.4f} ({'+' if etf_change_pct >= 0 else ''}{etf_change_pct}%)")
+    if use_index_price:
+        print(f"  指数价格: {display_price:.2f} ({'+' if display_change_pct >= 0 else ''}{display_change_pct}%)")
     print(f"  MA250: {latest_ma250:.4f}{'(参考)' if not ma_data_available else ''} | RSI21: {latest_rsi:.2f}")
     print(f"  分区: {zone} | 信号: {risk_signal}({risk_label})")
     print(f"  定投: {invest['amount']} | 减仓: {reduce_advice} | 回补: {rebuy_advice}")
@@ -545,8 +665,10 @@ def process_etf_rsi_ma(config):
         "fund_code": config['fund_code'],
         "fund_name": config['fund_name'],
         "weight": config['weight'],
-        "current_price": round(latest_price, 2),
-        "price_change_pct": price_change_pct,
+        "current_price": round(display_price, 2),
+        "price_change_pct": display_change_pct,
+        "is_index_price": use_index_price,
+        "etf_price": round(latest_price, 4),
         "ma250": round(latest_ma250, 2),
         "ma250_is_reference": not ma_data_available,
         "ma250_data_days": int(data_count),
@@ -805,6 +927,7 @@ def _calc_rsi_ma_history(df, ma250, rsi21, n_months=12):
             "ma250": round(ma_val, 2),
             "zone": zone,
             "invest": invest['amount'],
+            "invest_detail": invest['detail'],
         }
         if reduce_adv:
             entry["reduce"] = reduce_adv['action'] + ' ' + reduce_adv['pct']
@@ -847,6 +970,7 @@ def _calc_pe_drawdown_history(pe_df, idx_df, n_months=12):
         reduce_adv = get_nasdaq_reduce_advice(pe_pct, dd)
         rebuy_adv = get_nasdaq_rebuy_advice(pe_pct, dd)
         pe_zone = get_pe_zone(pe_pct)
+        drawdown_zone = get_drawdown_zone(dd)
 
         entry = {
             "date": d.strftime('%Y-%m-%d'),
@@ -855,7 +979,9 @@ def _calc_pe_drawdown_history(pe_df, idx_df, n_months=12):
             "pe_percentile": pe_pct,
             "pe_zone": pe_zone,
             "drawdown": dd,
+            "drawdown_zone": drawdown_zone,
             "invest": invest['amount'],
+            "invest_detail": invest['detail'],
         }
         if reduce_adv:
             entry["reduce"] = reduce_adv['action'] + ' ' + reduce_adv['pct']
