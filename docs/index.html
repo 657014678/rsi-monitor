@@ -40,9 +40,6 @@
   --max-width: 480px;
 }
 
-/* ========================================
-   Base
-   ======================================== */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
@@ -110,11 +107,51 @@ body {
 }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 .header-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px; }
+
+/* 操作日提醒 */
+.next-ops-day {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.next-ops-day.today {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(52,211,153,0.2);
+}
+.next-ops-day.soon {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+  border: 1px solid rgba(251,191,36,0.2);
+}
+.next-ops-day.later {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-dim);
+  border: 1px solid var(--card-border);
+}
+
 .update-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   color: var(--text-dim);
   margin-top: 8px;
   font-variant-numeric: tabular-nums;
+}
+.update-time::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 /* ========================================
@@ -139,6 +176,33 @@ body {
   border-color: rgba(52,211,153,0.35);
   box-shadow: 0 0 16px var(--green-glow);
   transform: translateY(-1px);
+}
+
+/* 雪球行情链接 */
+.xueqiu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(96,165,250,0.1);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.xueqiu-link:hover {
+  background: rgba(96,165,250,0.2);
+  border-color: rgba(96,165,250,0.25);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: translateY(-1px);
+}
+.xueqiu-link .x-icon {
+  font-size: 11px;
 }
 
 /* ========================================
@@ -188,7 +252,7 @@ body {
 .val-card {
   flex: 1;
   min-width: 0;
-  padding: 10px 8px;
+  padding: 10px 8px 8px;
   border-radius: var(--radius);
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -212,28 +276,41 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
+}
+/* 建议定投份数 - 估值横条内 */
+.val-card .vc-invest {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0;
+}
+.val-card .vc-invest .unit {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: 400;
 }
 .val-card .vc-zone {
-  font-size: 13px;
-  font-weight: 700;
-  margin-top: 4px;
-  letter-spacing: 0.3px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 0.2px;
 }
 .val-card .vc-sub {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-dim);
-  margin-top: 3px;
+  margin-top: 2px;
 }
 .vc-green { color: var(--green); }
 .vc-yellow { color: var(--yellow); }
 .vc-red { color: var(--red); }
 .vc-purple { color: var(--purple); }
 .val-gauge {
-  height: 4px;
+  height: 3px;
   border-radius: 2px;
   background: rgba(255,255,255,0.06);
-  margin-top: 6px;
+  margin-top: 5px;
   overflow: hidden;
 }
 .val-gauge-fill {
@@ -363,6 +440,12 @@ body {
   letter-spacing: -0.5px;
   font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
   line-height: 1.2;
+}
+.price-main .currency {
+  font-size: 16px;
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-right: 2px;
 }
 .price-change {
   font-size: 14px;
@@ -533,80 +616,139 @@ body {
 }
 
 /* ========================================
-   Advice Items
+   Advice Blocks — 三区块操作建议
    ======================================== */
-.advice-item {
+.advice-blocks {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+}
+.advice-block {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
 }
-.advice-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-.advice-icon {
-  font-size: 15px;
+.advice-block .ab-icon {
+  font-size: 14px;
   flex-shrink: 0;
-  margin-top: 2px;
-  width: 20px;
+  width: 22px;
   text-align: center;
 }
-.advice-line {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.6;
+.advice-block .ab-content {
+  flex: 1;
+  min-width: 0;
 }
-.advice-line strong {
-  color: var(--text-bright);
-  font-size: 15px;
-}
-.advice-line .advice-rule {
+.advice-block .ab-title {
+  font-size: 9px;
   color: var(--text-dim);
-  font-size: 11px;
-  display: block;
+  letter-spacing: 0.5px;
+  margin-bottom: 1px;
+}
+.advice-block .ab-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+}
+.advice-block .ab-detail {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.5;
   margin-top: 1px;
 }
 
+/* 定投区块 — 绿色强调 */
+.advice-block.invest {
+  background: rgba(52,211,153,0.06);
+  border-color: rgba(52,211,153,0.12);
+}
+.advice-block.invest .ab-value { color: var(--green); }
+
+/* 减仓区块 */
+.advice-block.reduce {
+  border-color: rgba(248,113,113,0.1);
+}
+.advice-block.reduce .ab-value { color: var(--red); }
+
+/* 回补区块 */
+.advice-block.rebuy {
+  border-color: rgba(251,191,36,0.1);
+}
+.advice-block.rebuy .ab-value { color: var(--yellow); }
+
+/* 暂无操作 — 灰色 */
+.advice-block.none .ab-value {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 13px;
+}
+.advice-block.none .ab-detail {
+  color: rgba(255,255,255,0.2);
+  font-size: 9px;
+}
+
 /* ========================================
-   History
+   History (紧凑表格)
    ======================================== */
 .hist-title {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-dim);
   margin-top: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   padding-top: 10px;
   border-top: 1px solid var(--card-border);
   letter-spacing: 0.5px;
   font-weight: 500;
 }
-.hist-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  font-size: 11px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  flex-wrap: wrap;
+.hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
 }
-.hist-row:last-child { border-bottom: none; }
-.hist-date {
+.hist-table th {
+  padding: 5px 6px;
+  text-align: left;
   color: var(--text-dim);
-  min-width: 76px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 9px;
+  letter-spacing: 0.3px;
+}
+.hist-table td {
+  padding: 5px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text);
+  line-height: 1.5;
+  vertical-align: middle;
+}
+.hist-table tr:last-child td { border-bottom: none; }
+.hist-table .h-date {
+  color: var(--text-dim);
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.hist-rule {
-  color: var(--text);
-  flex: 1;
-  min-width: 0;
-  line-height: 1.5;
+.hist-table .h-action {
+  font-size: 9px;
+  white-space: nowrap;
+  display: flex;
+  gap: 3px;
 }
-.hist-invest { color: var(--text-bright); font-weight: 600; }
-.hist-action { font-size: 10px; margin-left: auto; display: flex; gap: 4px; }
-.ha-reduce { color: var(--red); padding: 1px 5px; border-radius: 3px; background: var(--red-dim); }
-.ha-rebuy { color: var(--yellow); padding: 1px 5px; border-radius: 3px; background: var(--yellow-dim); }
+.hist-table .h-reduce {
+  color: var(--red);
+  background: var(--red-dim);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+.hist-table .h-rebuy {
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
 
 /* ========================================
    Divider
@@ -673,12 +815,7 @@ body {
   line-height: 1.8;
 }
 
-/* ========================================
-   Smooth Scrollbar (desktop)
-   ======================================== */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 @media (hover: none) {
   .card:hover, .val-card:hover, .metric-box:hover {
     transform: none;
@@ -694,6 +831,7 @@ html {
   <h1>价值投资控制台</h1>
   <div class="subtitle">RSI21+MA250 / PE+回撤 · 三标的策略</div>
   <div class="live-clock" id="liveClock">--:--:--</div>
+  <div class="next-ops-day" id="nextOpsDay"></div>
   <div class="header-row">
     <a class="guide-btn" href="guide.html">📖 策略详情</a>
   </div>
@@ -719,9 +857,12 @@ html {
     <span class="fund-code" id="f0">--</span>
   </div>
   <div class="card" id="priceCard0">
-    <div class="card-label" id="info0">指数行情 · --</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div class="card-label" id="info0" style="margin-bottom:0;">指数行情 · --</div>
+      <a class="xueqiu-link" href="https://xueqiu.com/S/SH512890" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+    </div>
     <div class="price-row">
-      <span class="price-main" id="p0">--</span>
+      <span class="price-main" id="p0"><span class="currency">¥</span>--</span>
       <span class="price-change price-flat" id="c0">--</span>
     </div>
     <div class="metrics-grid">
@@ -751,9 +892,12 @@ html {
     <span class="fund-code" id="f1">--</span>
   </div>
   <div class="card" id="priceCard1">
-    <div class="card-label" id="info1">指数行情 · --</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div class="card-label" id="info1" style="margin-bottom:0;">指数行情 · --</div>
+      <a class="xueqiu-link" href="https://xueqiu.com/S/SZ159263" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+    </div>
     <div class="price-row">
-      <span class="price-main" id="p1">--</span>
+      <span class="price-main" id="p1"><span class="currency">¥</span>--</span>
       <span class="price-change price-flat" id="c1">--</span>
     </div>
     <div class="metrics-grid">
@@ -783,9 +927,12 @@ html {
     <span class="fund-code" id="f2">--</span>
   </div>
   <div class="card" id="priceCard2">
-    <div class="card-label" id="info2">指数行情 · --</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div class="card-label" id="info2" style="margin-bottom:0;">指数行情 · --</div>
+      <a class="xueqiu-link" href="https://xueqiu.com/S/SZ159941" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
+    </div>
     <div class="price-row">
-      <span class="price-main" id="p2">--</span>
+      <span class="price-main" id="p2"><span class="currency">$</span>--</span>
       <span class="price-change price-flat" id="c2">--</span>
     </div>
     <div class="metrics-grid">
@@ -815,7 +962,7 @@ html {
 /* 全局数据缓存 */
 var CACHE = null;
 
-/* 时钟 */
+/* ========== 时钟 + 操作日提醒 ========== */
 function updateClock() {
   var d = new Date();
   var h = ('0' + d.getHours()).slice(-2);
@@ -825,11 +972,29 @@ function updateClock() {
   var ds = d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) + ' 周' + w[d.getDay()];
   var html = h + '<span class="sep">:</span>' + m + '<span class="sep">:</span>' + s + '<span class="date-part">' + ds + '</span>';
   document.getElementById('liveClock').innerHTML = html;
+
+  /* 操作日提醒 */
+  var today = d.getDate();
+  var dayEl = document.getElementById('nextOpsDay');
+  if (today === 21) {
+    dayEl.className = 'next-ops-day today';
+    dayEl.innerHTML = '📌 今天是操作日！按策略执行';
+  } else if (today < 21) {
+    var left = 21 - today;
+    dayEl.className = 'next-ops-day ' + (left <= 5 ? 'soon' : 'later');
+    dayEl.innerHTML = '📌 距下个操作日还有 <strong>' + left + '</strong> 天（每月21日）';
+  } else {
+    /* 计算下个月21日距今天数 */
+    var next = new Date(d.getFullYear(), d.getMonth() + 1, 21);
+    var diff = Math.ceil((next - d) / (1000 * 60 * 60 * 24));
+    dayEl.className = 'next-ops-day ' + (diff <= 5 ? 'soon' : 'later');
+    dayEl.innerHTML = '📌 距下个操作日还有 <strong>' + diff + '</strong> 天（每月21日）';
+  }
 }
 updateClock();
 setInterval(updateClock, 1000);
 
-/* 渲染卡片 */
+/* ========== 渲染单个标的卡片 ========== */
 function updateCard(etf, idx) {
   var id = idx;
   var isPE = (etf.type === 'pe_drawdown');
@@ -840,61 +1005,66 @@ function updateCard(etf, idx) {
   document.getElementById('f' + id).textContent = etf.index_code || '';
 
   if (etf.error) {
-    document.getElementById('p' + id).textContent = '数据异常';
+    document.getElementById('p' + id).innerHTML = '<span class="currency">--</span>数据异常';
     document.getElementById('adv' + id).innerHTML = '<div class="error-msg">' + (etf.error || '获取失败') + '</div>';
     return;
   }
 
-  /* 行情信息 */
-  document.getElementById('info' + id).textContent = '指数行情 · ' + (etf.index_code || '') + ' ' + (etf.index_name || '') + (etf.data_source ? ' [' + etf.data_source + ']' : '');
+  /* 行情信息 — 精简 */
+  document.getElementById('info' + id).textContent = isPE ? '纳指100' : (etf.index_name || '--');
 
-  /* 价格 - 指数行情2位小数，ETF行情4位 */
+  /* 价格 */
   var dec = isIndexPrice ? 2 : 4;
   var priceEl = document.getElementById('p' + id);
-  priceEl.textContent = (etf.current_price != null) ? etf.current_price.toFixed(dec) : '--';
+  var curSymbol = isPE ? '$' : '¥';
+  if (etf.current_price != null) {
+    priceEl.innerHTML = '<span class="currency">' + curSymbol + '</span>' + etf.current_price.toFixed(dec);
+  } else {
+    priceEl.innerHTML = '<span class="currency">' + curSymbol + '</span>--';
+  }
   var cel = document.getElementById('c' + id);
   var pct = etf.price_change_pct;
   cel.textContent = (pct != null) ? ((pct >= 0 ? '+' : '') + pct.toFixed(2) + '%') : '--';
   cel.className = 'price-change ' + ((pct == null) ? 'price-flat' : (pct > 0 ? 'price-up' : (pct < 0 ? 'price-down' : 'price-flat')));
 
-  /* PE / RSI */
+  /* 指标区：PE / RSI */
   if (isPE) {
     document.getElementById('pe2').textContent = (etf.pe_ttm != null) ? etf.pe_ttm.toFixed(1) : '--';
     var pctEl = document.getElementById('pp2');
     pctEl.textContent = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
     var p = etf.pe_percentile;
     pctEl.style.color = (p == null) ? '#6b7280' : (p >= 85 ? '#f87171' : (p >= 70 ? '#fbbf24' : (p >= 50 ? '#f3f4f6' : '#34d399')));
-    /* 回撤信息 */
+    /* 回撤 */
     var ddEl = document.getElementById('dd2');
     if (ddEl) {
       var dd = etf.drawdown != null ? etf.drawdown : '--';
       var hp = etf.high_price != null ? etf.high_price.toFixed(0) : '--';
-      ddEl.innerHTML = '高点 ' + hp + ' · 回撤 <span style="color:' + (dd < -8 ? '#f87171' : '#6b7280') + ';">' + dd + '%</span> · ' + (etf.drawdown_zone || '');
+      var ddColor = (typeof dd === 'number' && dd < -15) ? '#f87171' : (typeof dd === 'number' && dd < -8) ? '#fbbf24' : '#6b7280';
+      var ddLabel = (typeof dd === 'number' && dd < -15) ? '深度回调 ⚠️' : (typeof dd === 'number' && dd < -8) ? '中级回调' : '正常波动';
+      ddEl.innerHTML = '阶段高点 ' + hp + ' · 回撤 <span style="color:' + ddColor + ';">' + dd + '%</span> · ' + ddLabel;
     }
   } else {
     document.getElementById('ma' + id).textContent = (etf.ma250 != null) ? etf.ma250.toFixed(2) : '--';
     document.getElementById('rsi' + id).textContent = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
   }
 
-  /* MA250状态（仅RSI+MA250标的） */
+  /* MA250状态 */
   var maStatEl = document.getElementById('maStat' + id);
   if (maStatEl && !isPE) {
     var mPct = etf.price_vs_ma250_pct;
-    var posText, posCls, devText, daysText;
     if (mPct == null) {
-      posText = '--'; posCls = ''; devText = '--'; daysText = '';
+      maStatEl.innerHTML = '<span class="ma-pos">数据不足</span>';
     } else if (mPct >= 0) {
-      posText = '高于MA250'; posCls = 'up';
-      devText = '+' + mPct.toFixed(2) + '%';
-      daysText = '站稳' + (etf.days_above_ma250 || 0) + '天';
+      var days = etf.days_above_ma250 || 0;
+      maStatEl.innerHTML = '<span class="ma-pos up">高于MA250</span>'
+                         + '<span class="ma-dev">偏离 +' + mPct.toFixed(2) + '%</span>'
+                         + '<span class="ma-days">站稳' + days + '天</span>';
     } else {
-      posText = '低于MA250'; posCls = 'down';
-      devText = mPct.toFixed(2) + '%';
-      daysText = '跌破' + (etf.days_below_ma250 || 0) + '天';
+      var days = etf.days_below_ma250 || 0;
+      maStatEl.innerHTML = '<span class="ma-pos down">低于MA250</span>'
+                         + '<span class="ma-dev">偏离 ' + mPct.toFixed(2) + '%</span>'
+                         + '<span class="ma-days">跌破' + days + '天</span>';
     }
-    maStatEl.innerHTML = '<span class="ma-pos ' + posCls + '">' + posText + '</span>'
-                       + '<span class="ma-dev">偏离 ' + devText + '</span>'
-                       + '<span class="ma-days">' + daysText + '</span>';
   } else if (maStatEl) {
     maStatEl.innerHTML = '';
   }
@@ -904,38 +1074,75 @@ function updateCard(etf, idx) {
   dot.className = 'signal-dot ' + etf.risk_signal;
   document.getElementById('sl' + id).textContent = etf.risk_label || '--';
 
-  /* 操作建议 - 内联格式 */
-  var html = '';
+  /* ========== 操作建议 — 三区块结构 ========== */
+  var html = '<div class="advice-blocks">';
 
-  /* 当前定投建议 */
+  /* ---- 定投区块 ---- */
   var investAmount = (etf.invest_amount != null) ? etf.invest_amount : '--';
   var investDetail = (etf.invest_detail != null) ? etf.invest_detail : '';
+  html += '<div class="advice-block invest">';
+  html += '<div class="ab-icon">💰</div>';
+  html += '<div class="ab-content">';
+  html += '<div class="ab-title">定投</div>';
+  html += '<div class="ab-value">' + investAmount + ' 份</div>';
   if (!isPE) {
-    var rsi = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
-    html += '<div class="advice-item"><span class="advice-icon">💰</span>';
-    html += '<div class="advice-line"><strong>' + investAmount + '</strong> <span class="advice-rule">RSI ' + rsi + ' · ' + investDetail + ' → ' + investAmount + '</span></div></div>';
+    var rsi = (etf.rsi21 != null) ? 'RSI ' + etf.rsi21.toFixed(1) : '--';
+    html += '<div class="ab-detail">' + rsi + ' · ' + investDetail + '</div>';
   } else {
-    var pePct = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
-    var ddVal = (etf.drawdown != null) ? etf.drawdown + '%' : '--';
-    html += '<div class="advice-item"><span class="advice-icon">💰</span>';
-    html += '<div class="advice-line"><strong>' + investAmount + '</strong> <span class="advice-rule">PE分位 ' + pePct + ' · 回撤' + ddVal + ' → ' + investAmount + '</span></div></div>';
+    var pePct = (etf.pe_percentile != null) ? 'PE分位 ' + etf.pe_percentile.toFixed(1) + '%' : '--';
+    var ddVal = (etf.drawdown != null) ? '回撤 ' + etf.drawdown + '%' : '--';
+    html += '<div class="ab-detail">' + pePct + ' · ' + ddVal + '</div>';
   }
+  html += '</div></div>';
 
-  /* 减仓建议 */
+  /* ---- 减仓区块 ---- */
   if (etf.reduce_advice && etf.reduce_advice.action) {
-    html += '<div class="advice-item"><span class="advice-icon">📉</span>';
-    html += '<div class="advice-line"><span style="color:#f87171;font-weight:600;">' + etf.reduce_advice.action + ' ' + (etf.reduce_advice.pct || '') + '</span> <span class="advice-rule">' + (etf.reduce_advice.detail || '') + '</span></div></div>';
+    html += '<div class="advice-block reduce">';
+    html += '<div class="ab-icon">📉</div>';
+    html += '<div class="ab-content">';
+    html += '<div class="ab-title">减仓</div>';
+    html += '<div class="ab-value">' + etf.reduce_advice.action + ' ' + (etf.reduce_advice.pct || '') + '</div>';
+    html += '<div class="ab-detail">' + (etf.reduce_advice.detail || '') + '</div>';
+    html += '</div></div>';
+  } else {
+    /* 显示条件说明，帮助用户理解为什么没有减仓 */
+    var reduceHint = isPE ? '需PE≥70%+回撤<8%+冷却外' : '需RSI≥65+强势区+冷却外';
+    html += '<div class="advice-block none">';
+    html += '<div class="ab-icon">📉</div>';
+    html += '<div class="ab-content">';
+    html += '<div class="ab-title">减仓</div>';
+    html += '<div class="ab-value">暂无操作</div>';
+    html += '<div class="ab-detail">' + reduceHint + '</div>';
+    html += '</div></div>';
   }
 
-  /* 回补建议 */
+  /* ---- 回补区块 ---- */
   if (etf.rebuy_advice && etf.rebuy_advice.action) {
-    html += '<div class="advice-item"><span class="advice-icon">📈</span>';
-    html += '<div class="advice-line"><span style="color:#fbbf24;font-weight:600;">' + etf.rebuy_advice.action + '</span> <span class="advice-rule">' + (etf.rebuy_advice.detail || '') + '</span></div></div>';
+    html += '<div class="advice-block rebuy">';
+    html += '<div class="ab-icon">📈</div>';
+    html += '<div class="ab-content">';
+    html += '<div class="ab-title">回补</div>';
+    html += '<div class="ab-value">' + etf.rebuy_advice.action + '</div>';
+    html += '<div class="ab-detail">' + (etf.rebuy_advice.detail || '') + '</div>';
+    html += '</div></div>';
+  } else {
+    var rebuyHint = isPE ? '需PE<70%+冷却外' : '需强势区+冷却期外';
+    html += '<div class="advice-block none">';
+    html += '<div class="ab-icon">📈</div>';
+    html += '<div class="ab-content">';
+    html += '<div class="ab-title">回补</div>';
+    html += '<div class="ab-value">暂无操作</div>';
+    html += '<div class="ab-detail">' + rebuyHint + '</div>';
+    html += '</div></div>';
   }
 
-  /* 历史操作建议 */
+  html += '</div>'; /* advice-blocks */
+
+  /* ---- 历史记录 ---- */
   if (etf.history_advice && etf.history_advice.length > 0) {
     html += '<div class="hist-title">近12个月操作建议（每月21日）</div>';
+    html += '<table class="hist-table">';
+    html += '<tr><th>日期</th><th>建议</th><th>操作</th></tr>';
     for (var h = etf.history_advice.length - 1; h >= 0; h--) {
       var ha = etf.history_advice[h];
       var detail = ha.invest_detail || '';
@@ -943,30 +1150,31 @@ function updateCard(etf, idx) {
       if (!isPE) {
         ruleText = 'RSI ' + (ha.rsi21 != null ? ha.rsi21 : '--') + ' · ' + detail + ' → ' + ha.invest;
       } else {
-        ruleText = 'PE分位' + (ha.pe_percentile != null ? ha.pe_percentile + '%' : '--') + ' · ' + detail + ' → ' + ha.invest;
+        ruleText = 'PE ' + (ha.pe_percentile != null ? ha.pe_percentile + '%' : '--') + ' · ' + detail + ' → ' + ha.invest;
       }
-      html += '<div class="hist-row">';
-      html += '<span class="hist-date">' + ha.date + '</span>';
-      html += '<span class="hist-rule">' + ruleText + '</span>';
-      var actHtml = '';
-      if (ha.reduce) actHtml += '<span class="ha-reduce">📉' + ha.reduce + '</span>';
-      if (ha.rebuy) actHtml += '<span class="ha-rebuy">📈' + ha.rebuy + '</span>';
-      if (actHtml) html += '<span class="hist-action">' + actHtml + '</span>';
-      html += '</div>';
+      html += '<tr>';
+      html += '<td class="h-date">' + ha.date + '</td>';
+      html += '<td>' + ruleText + '</td>';
+      html += '<td class="h-action">';
+      if (ha.reduce) html += '<span class="h-reduce">📉' + ha.reduce + '</span>';
+      if (ha.rebuy) html += '<span class="h-rebuy">📈' + ha.rebuy + '</span>';
+      html += '</td>';
+      html += '</tr>';
     }
+    html += '</table>';
   }
 
   document.getElementById('adv' + id).innerHTML = html;
 }
 
-/* 加载数据 */
+/* ========== 加载数据 ========== */
 function loadData() {
   var url = 'data.json?t=' + new Date().getTime();
   fetch(url)
     .then(function(r) { return r.json(); })
     .then(function(data) {
       CACHE = data;
-      document.getElementById('updateTime').textContent = '更新: ' + (data.update_time || '--');
+      document.getElementById('updateTime').textContent = (data.update_time || '--');
 
       /* 渲染估值横条 */
       var bar = document.getElementById('valBar');
@@ -980,18 +1188,24 @@ function loadData() {
           if (etf.risk_signal === 'yellow') colorCls = 'vc-yellow';
           else if (etf.risk_signal === 'red') colorCls = 'vc-red';
           if (isPE && colorCls === 'vc-green') colorCls = 'vc-purple';
+
           var gaugeVal = isPE ? (etf.pe_percentile != null ? etf.pe_percentile : 0) : (etf.rsi21 != null ? etf.rsi21 : 50);
           var gaugePct = Math.min(100, Math.max(0, gaugeVal));
           var gaugeColor;
           if (gaugePct <= 30) gaugeColor = '#34d399';
           else if (gaugePct <= 70) gaugeColor = '#fbbf24';
           else gaugeColor = '#f87171';
+
+          /* 建议定投份数 */
+          var investAmt = (etf.invest_amount != null) ? etf.invest_amount : '--';
+
           html += '<div class="val-card">';
           html += '<div class="vc-name">' + (etf.index_name || '--') + '</div>';
+          html += '<div class="vc-invest">' + investAmt + '<span class="unit"> 份</span></div>';
           html += '<div class="vc-zone ' + colorCls + '">' + zoneDetail + '</div>';
           if (isPE) {
             var pePct = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
-            html += '<div class="vc-sub">PE分位 ' + pePct + '</div>';
+            html += '<div class="vc-sub">PE ' + pePct + '</div>';
           } else {
             var rsi = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
             html += '<div class="vc-sub">RSI ' + rsi + '</div>';
