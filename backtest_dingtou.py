@@ -545,7 +545,7 @@ def run_one_backtest(dfs, names, start_dt, weights=None, rebalance_months=None, 
     
     # 保存 JSON
     if save_json:
-        output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'backtest_result.json')
+        output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'docs', 'data', 'backtest_result.json')
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         output = {
             "summary": s,

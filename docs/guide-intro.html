@@ -396,7 +396,7 @@ function el(id) { return document.getElementById(id); }
 
 var data, backtestInfo;
 
-fetch('../data/backtest_result.json')
+fetch('data/backtest_result.json')
   .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(function(json) {
     data = json;
