@@ -74,33 +74,105 @@
 | 组件 | 方案 |
 |------|------|
 | 前端 | 纯静态 HTML（深色主题 · 手机优先 · 卡片式垂直流） |
-| 数据引擎 | Python (AKShare + yfinance + 腾讯财经 + 乐咕PE + 新浪指数) |
-| A股数据源 | Yahoo → 腾讯财经 → 东方财富(AKShare) → 新浪 |
+| 数据引擎 | Python AKShare（本地运行） |
+| A股指数数据 | AKShare index_zh_a_hist（东方财富） |
 | 纳指PE数据 | 乐咕乐股 stock_market_pe_lg（近7年历史PE TTM） |
 | 纳指指数价格 | 新浪财经 index_us_stock_sina (.NDX) |
 | 部署 | GitHub Pages |
-| 自动更新 | GitHub Actions |
+| 数据更新 | **本地定时任务** → git push（替代原有 GitHub Actions） |
 
-### MA250参考值
-159263上市不足250天，使用 min_periods=120 计算MA250参考值，前端标注"参考"。
+### MA250 参考值
+159263 上市不足250天，使用 min_periods=120 计算 MA250 参考值，前端标注"参考"。
 
-### PE数据说明
-纳指100 PE数据来自乐咕乐股，历史约7年（2019年7月起），计算近7年分位（非10年），随数据积累自动扩展。
+### PE 数据说明
+纳指100 PE 数据来自乐咕乐股，历史约7年（2019年7月起），计算近7年分位（非10年），随数据积累自动扩展。
 
-## 文件结构
+---
+
+## 🚀 本地部署 & 每日自动更新
+
+### 首次配置
+
+```bash
+# 1. 安装依赖
+pip install -r requirements.txt
+
+# 2. 手动运行一次，验证数据正常
+python daily_update.py --no-push
+
+# 3. 查看输出的 JSON
+ls docs/
+#   → data.json  (合并版，前端加载此项)
+#   → 931446.json (红利低波独立数据)
+#   → 980081.json (价值100独立数据)
+#   → nd100.json   (纳指100独立数据)
+```
+
+### 每日自动更新（推荐）
+
+数据源（AKShare 东方财富 API）在国内网络环境下运行最稳定，建议在**本地 Windows 机器**上设置定时任务：
+
+```bash
+# 右键 → 以管理员身份运行 PowerShell
+# 导航到项目目录，执行：
+.\setup_task.ps1
+```
+
+此脚本会创建 Windows 定时任务：
+- **任务名称**：RSI Monitor Daily Update
+- **执行时间**：每日 **15:30**（A股收盘后）
+- **执行内容**：`python daily_update.py` → 自动 git push
+
+### 手动更新
+
+任何时候都可以手动运行：
+
+```bash
+python daily_update.py       # 更新数据 + git push
+python daily_update.py --no-push  # 只更新本地 JSON，不推送
+```
+
+### 文件结构
 
 ```
 ├── .github/workflows/
-│   ├── rsi_check.yml      # 交易日定时更新数据
+│   ├── rsi_check.yml      # [手动触发] 备用数据更新
 │   └── pages.yml          # GitHub Pages 部署
 ├── docs/
-│   ├── index.html          # 前端控制台（三标的+持仓记录）
+│   ├── index.html          # 前端控制台（三标的）
 │   ├── guide.html          # 策略科普+心理按摩
-│   ├── data.json           # 实时指标数据（自动生成）
-│   └── history.json        # K线+指标历史（自动生成）
-├── github_action_runner.py # 数据获取+策略计算主程序
+│   ├── data.json           # 合并数据（自动生成）
+│   ├── 931446.json         # 红利低波独立数据
+│   ├── 980081.json         # 价值100独立数据
+│   └── nd100.json          # 纳指100独立数据
+├── daily_update.py         # ⭐ 本地数据更新脚本（主力）
+├── github_action_runner.py # 旧版 GitHub Actions 脚本（备用）
+├── setup_task.ps1          # Windows 定时任务安装脚本
 ├── requirements.txt        # Python 依赖
 └── README.md
+```
+
+### 数据流示意图
+
+```
+AKShare (东方财富/乐咕/新浪)
+        │
+        ▼
+daily_update.py  ← 定时任务(每日15:30)
+        │
+        ├── docs/931446.json
+        ├── docs/980081.json
+        ├── docs/nd100.json
+        └── docs/data.json  (合并版)
+        │
+        ▼
+    git add + commit + push
+        │
+        ▼
+    GitHub Pages 自动部署
+        │
+        ▼
+    https://jack19521.github.io/rsi-monitor/
 ```
 
 ## 访问地址

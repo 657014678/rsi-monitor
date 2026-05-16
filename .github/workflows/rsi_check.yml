@@ -1,11 +1,8 @@
-name: RSI Monitor
+name: RSI Monitor (手动触发)
 
 on:
-  schedule:
-    # 北京时间 09:30-15:00 每30分钟检查一次
-    - cron: '*/30 1-7 * * 1-5'
   workflow_dispatch:
-    # 支持手动触发
+    # 手动触发 · 本地 daily_update.py 已替代自动运行
 
 permissions:
   contents: write
