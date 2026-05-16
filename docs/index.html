@@ -90,6 +90,9 @@ body {
   .vc-yellow { color:var(--yellow); }
   .vc-red { color:var(--red); }
   .vc-purple { color:var(--purple); }
+  .val-gauge { height:5px; border-radius:3px; background:rgba(255,255,255,0.08); margin-top:5px; overflow:hidden; }
+  .val-gauge-fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
+  .weight-label { text-align:center; font-size:11px; color:var(--text-dim); margin-bottom:6px; }
   .hist-title { font-size:11px; color:var(--text-dim); margin-top:10px; margin-bottom:6px; padding-top:8px; border-top:1px solid var(--border); }
   .hist-row { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); }
   .hist-date { color:var(--text-dim); min-width:72px; }
@@ -119,6 +122,7 @@ body {
   <div class="val-card"><div class="vc-name">加载中...</div></div>
 </div>
 
+<div class="weight-label">投资权重（长期目标配置）</div>
 <div class="weight-bar">
   <span class="weight-tag">红利低波 <span class="w">40%</span></span>
   <span class="weight-tag">价值100 <span class="w">40%</span></span>
@@ -304,7 +308,7 @@ function updateCard(etf, idx) {
 
   /* 历史操作建议 */
   if (etf.history_advice && etf.history_advice.length > 0) {
-    html += '<div class="hist-title">近6个月操作建议（每月21日）</div>';
+    html += '<div class="hist-title">近12个月操作建议（每月21日）</div>';
     for (var h = etf.history_advice.length - 1; h >= 0; h--) {
       var ha = etf.history_advice[h];
       var zLabel = ha.zone || (ha.pe_zone || '--');
@@ -347,14 +351,20 @@ function loadData() {
         for (var i = 0; i < data.etfs.length; i++) {
           var etf = data.etfs[i];
           var isPE = (etf.type === 'pe_drawdown');
-          var zone = etf.zone || '--';
+          var zoneDetail = isPE ? (etf.zone || '--') : (etf.invest_detail || etf.zone || '--');
           var colorCls = 'vc-green';
           if (etf.risk_signal === 'yellow') colorCls = 'vc-yellow';
           else if (etf.risk_signal === 'red') colorCls = 'vc-red';
           if (isPE && colorCls === 'vc-green') colorCls = 'vc-purple';
+          var gaugeVal = isPE ? (etf.pe_percentile != null ? etf.pe_percentile : 0) : (etf.rsi21 != null ? etf.rsi21 : 50);
+          var gaugePct = Math.min(100, Math.max(0, gaugeVal));
+          var gaugeColor;
+          if (gaugePct <= 30) gaugeColor = '#3fb950';
+          else if (gaugePct <= 70) gaugeColor = '#d29922';
+          else gaugeColor = '#f85149';
           html += '<div class="val-card">';
           html += '<div class="vc-name">' + (etf.fund_name || etf.index_name || '--') + '</div>';
-          html += '<div class="vc-zone ' + colorCls + '">' + zone + '</div>';
+          html += '<div class="vc-zone ' + colorCls + '">' + zoneDetail + '</div>';
           if (isPE) {
             var pePct = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
             html += '<div class="vc-sub">PE分位 ' + pePct + '</div>';
@@ -362,6 +372,7 @@ function loadData() {
             var rsi = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
             html += '<div class="vc-sub">RSI ' + rsi + '</div>';
           }
+          html += '<div class="val-gauge"><div class="val-gauge-fill" style="width:' + gaugePct + '%;background:' + gaugeColor + ';"></div></div>';
           html += '</div>';
         }
         bar.innerHTML = html;

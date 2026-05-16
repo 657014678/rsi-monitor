@@ -709,7 +709,7 @@ def make_error_result(config):
     return result, history
 
 # ============ 近6个月历史操作建议 ============
-def _get_monthly_dates(n_months=6):
+def _get_monthly_dates(n_months=12):
     """获取近n个月每月21日日期列表（从旧到新）"""
     dates = []
     today = datetime.now().date()
@@ -744,7 +744,7 @@ def _find_nearest_trading_day(df, target_date):
         return before.index[-1]
     return None
 
-def _calc_rsi_ma_history(df, ma250, rsi21, n_months=6):
+def _calc_rsi_ma_history(df, ma250, rsi21, n_months=12):
     """计算RSI+MA250标的近n个月每月21日的操作建议"""
     dates = _get_monthly_dates(n_months)
     history = []
@@ -779,7 +779,7 @@ def _calc_rsi_ma_history(df, ma250, rsi21, n_months=6):
         history.append(entry)
     return history
 
-def _calc_pe_drawdown_history(pe_df, idx_df, n_months=6):
+def _calc_pe_drawdown_history(pe_df, idx_df, n_months=12):
     """计算PE+回撤标的近n个月每月21日的操作建议"""
     dates = _get_monthly_dates(n_months)
     history = []
