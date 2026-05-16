@@ -280,7 +280,7 @@ def fetch_index_price_em(config):
 
     # 2. 获取K线历史数据
     kline_df = None
-    url_kline = f'https://push2his.eastmoney.com/api/qt/stock/kline/get?secid={secid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&beg=20200101&end=20991231&lmt=1500'
+    url_kline = f'https://push2his.eastmoney.com/api/qt/stock/kline/get?secid={secid}&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&beg=20180101&end=20991231&lmt=2000'
     try:
         req2 = urllib.request.Request(url_kline, headers=headers)
         resp2 = opener.open(req2, timeout=15)
@@ -561,20 +561,39 @@ def get_nasdaq_risk_signal(pe_percentile, drawdown):
 
 # ============ 处理RSI+MA250标的 ============
 def process_etf_rsi_ma(config):
-    """处理RSI+MA250标的：获取数据→计算指标→生成建议"""
+    """处理RSI+MA250标的：获取指数数据→计算指标→生成建议"""
     etf_name = config['etf_name']
     etf_code = config['etf_code']
     print(f"\n{'='*50}")
     print(f"处理标的: {etf_name}({etf_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
-    # 获取ETF数据（用于RSI/MA250计算）
-    df, source_used = fetch_etf_data(config)
-
-    # 获取指数数据（用于显示指数行情）
+    # 1. 优先获取指数K线数据（用于RSI/MA250计算 + 显示指数行情）
     index_data = fetch_index_price_em(config)
+    idx_df = index_data.get('kline_df') if index_data else None
 
-    # 计算指标
+    # 2. 判断主数据源：指数K线优先，ETF备用
+    use_index_kline = idx_df is not None and len(idx_df) >= 250
+    if use_index_kline:
+        # 用指数K线作为主数据（计算RSI/MA250 + 显示价格）
+        df = idx_df.copy()
+        # 确保列完整
+        for col in ['open', 'high', 'low', 'volume']:
+            if col not in df.columns:
+                df[col] = df['close'] if col != 'volume' else 0
+        source_used = "东方财富指数K线"
+        etf_price = None
+        etf_change_pct = None
+        print(f"  ✓ 使用指数K线数据({len(df)}条)计算RSI/MA250")
+    else:
+        # 指数K线不足，回退到ETF数据
+        df, source_used = fetch_etf_data(config)
+        etf_price = float(df.iloc[-1]['close'])
+        prev_price = float(df.iloc[-2]['close'])
+        etf_change_pct = round((etf_price - prev_price) / prev_price * 100, 2)
+        print(f"  ⚠ 指数K线不足，回退ETF数据({len(df)}条)")
+
+    # 3. 计算指标（基于主数据源）
     data_count = len(df)
     ma_min_periods = min(120, data_count)
     ma250 = calculate_ma(df['close'], MA_PERIOD, min_periods=ma_min_periods)
@@ -589,17 +608,13 @@ def process_etf_rsi_ma(config):
     else:
         ma_trend = 0
 
-    # 最新ETF数据（用于指标计算）
+    # 最新数据
     current = df.iloc[-1]
     latest_price = float(current['close'])
     latest_ma250 = float(ma250.iloc[-1]) if not pd.isna(ma250.iloc[-1]) else latest_price
     latest_rsi = float(rsi21.iloc[-1]) if not pd.isna(rsi21.iloc[-1]) else 50.0
 
-    # 涨跌（ETF数据）
-    prev_price = float(df.iloc[-2]['close'])
-    etf_change_pct = round((latest_price - prev_price) / prev_price * 100, 2)
-
-    # 指数价格和涨跌幅
+    # 4. 获取指数实时行情（覆盖显示价格）
     index_price = None
     index_change_pct = None
     if index_data and index_data.get('realtime_price'):
@@ -607,17 +622,29 @@ def process_etf_rsi_ma(config):
         index_change_pct = index_data.get('realtime_change_pct')
     # 如果没有实时行情但有K线数据，用K线最后一天
     if index_price is None and index_data and index_data.get('kline_df') is not None:
-        idx_df = index_data['kline_df']
-        if len(idx_df) > 0:
-            index_price = float(idx_df.iloc[-1]['close'])
-            if len(idx_df) > 1:
-                prev_idx = float(idx_df.iloc[-2]['close'])
+        idx_kline = index_data['kline_df']
+        if len(idx_kline) > 0:
+            index_price = float(idx_kline.iloc[-1]['close'])
+            if len(idx_kline) > 1:
+                prev_idx = float(idx_kline.iloc[-2]['close'])
                 index_change_pct = round((index_price - prev_idx) / prev_idx * 100, 2)
 
-    # 如果指数数据获取失败，用ETF价格
+    # 5. 确定显示价格和涨跌幅
     use_index_price = index_price is not None
     display_price = index_price if use_index_price else latest_price
     display_change_pct = index_change_pct if index_change_pct is not None else etf_change_pct
+
+    # 如果使用指数K线计算，etf_price需单独获取（仅作参考）
+    if use_index_kline and etf_price is None:
+        # 尝试从ETF数据获取参考价格
+        try:
+            etf_df, _ = fetch_etf_data(config, days=10)
+            etf_price = float(etf_df.iloc[-1]['close'])
+            prev_etf = float(etf_df.iloc[-2]['close'])
+            etf_change_pct = round((etf_price - prev_etf) / prev_etf * 100, 2)
+            print(f"  ETF参考价格: {etf_price:.4f}")
+        except Exception as e:
+            print(f"  ETF参考价格获取失败: {str(e)[:60]}")
 
     # 跌破/站上MA250天数
     days_below = 0
@@ -647,10 +674,10 @@ def process_etf_rsi_ma(config):
     rebuy_advice = get_rebuy_advice(latest_rsi, zone)
     risk_signal, risk_label = get_risk_signal(latest_price, latest_ma250, days_below, ma_trend)
 
-    print(f"  ETF价格: {latest_price:.4f} ({'+' if etf_change_pct >= 0 else ''}{etf_change_pct}%)")
-    if use_index_price:
-        print(f"  指数价格: {display_price:.2f} ({'+' if display_change_pct >= 0 else ''}{display_change_pct}%)")
-    print(f"  MA250: {latest_ma250:.4f}{'(参考)' if not ma_data_available else ''} | RSI21: {latest_rsi:.2f}")
+    print(f"  显示价格: {display_price:.2f} ({'+' if display_change_pct >= 0 else ''}{display_change_pct}%)")
+    if etf_price:
+        print(f"  ETF参考: {etf_price:.4f}")
+    print(f"  MA250: {latest_ma250:.2f}{'(参考)' if not ma_data_available else ''} | RSI21: {latest_rsi:.2f}")
     print(f"  分区: {zone} | 信号: {risk_signal}({risk_label})")
     print(f"  定投: {invest['amount']} | 减仓: {reduce_advice} | 回补: {rebuy_advice}")
 
@@ -668,7 +695,7 @@ def process_etf_rsi_ma(config):
         "current_price": round(display_price, 2),
         "price_change_pct": display_change_pct,
         "is_index_price": use_index_price,
-        "etf_price": round(latest_price, 4),
+        "etf_price": round(etf_price, 4) if etf_price else None,
         "ma250": round(latest_ma250, 2),
         "ma250_is_reference": not ma_data_available,
         "ma250_data_days": int(data_count),
@@ -688,21 +715,26 @@ def process_etf_rsi_ma(config):
         "history_advice": _calc_rsi_ma_history(df, ma250, rsi21),
     }
 
-    # K线+指标历史
+    # K线+指标历史（最近400条，减少数据量）
+    tail_n = min(400, len(df))
+    tail_df = df.tail(tail_n).reset_index(drop=True)
+    tail_ma250 = ma250.iloc[-tail_n:].reset_index(drop=True)
+    tail_rsi21 = rsi21.iloc[-tail_n:].reset_index(drop=True)
+
     klines = []
     ma_values = []
     rsi_values = []
-    for i in range(len(df)):
+    for i in range(len(tail_df)):
         klines.append({
-            "time": df.iloc[i]['date'].strftime('%Y-%m-%d'),
-            "open": float(df.iloc[i]['open']),
-            "high": float(df.iloc[i]['high']),
-            "low": float(df.iloc[i]['low']),
-            "close": float(df.iloc[i]['close']),
-            "volume": float(df.iloc[i]['volume'])
+            "time": tail_df.iloc[i]['date'].strftime('%Y-%m-%d'),
+            "open": float(tail_df.iloc[i]['open']),
+            "high": float(tail_df.iloc[i]['high']),
+            "low": float(tail_df.iloc[i]['low']),
+            "close": float(tail_df.iloc[i]['close']),
+            "volume": float(tail_df.iloc[i]['volume'])
         })
-        ma_values.append(None if pd.isna(ma250.iloc[i]) else round(float(ma250.iloc[i]), 2))
-        rsi_values.append(None if pd.isna(rsi21.iloc[i]) else round(float(rsi21.iloc[i]), 2))
+        ma_values.append(None if pd.isna(tail_ma250.iloc[i]) else round(float(tail_ma250.iloc[i]), 2))
+        rsi_values.append(None if pd.isna(tail_rsi21.iloc[i]) else round(float(tail_rsi21.iloc[i]), 2))
 
     history = {
         "etf_code": etf_code,
