@@ -305,21 +305,136 @@ def fetch_index_price_em(config):
     except Exception as e:
         print(f"  指数K线获取失败: {str(e)[:60]}")
 
-    # 3. AKShare备用（stock_zh_index_daily_em）
+    # 3. 腾讯财经指数K线（绕代理，GitHub Actions可用）
+    if kline_df is None:
+        tencent_prefix = 'sh' if secid.startswith('1.') or secid.startswith('2.') else 'sz'
+        tencent_code = f"{tencent_prefix}{index_code}"
+        print(f"  尝试腾讯财经指数K线: {tencent_code}")
+        try:
+            all_rows = []
+            batch_starts = ['2018-01-01', '2021-01-01', '2024-01-01']
+            for start in batch_starts:
+                url = f'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={tencent_code},day,{start},2099-12-31,800,'
+                try:
+                    req_tc = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                    resp_tc = opener.open(req_tc, timeout=15)
+                    data_tc = _json.loads(resp_tc.read().decode('utf-8'))
+                    key = tencent_code
+                    if key not in data_tc.get('data', {}):
+                        continue
+                    inner = data_tc['data'][key]
+                    day_list = inner.get('qfqday', inner.get('day', []))
+                    if not day_list:
+                        continue
+                    for item in day_list:
+                        if len(item) >= 6:
+                            all_rows.append({
+                                'date': item[0],
+                                'open': float(item[1]),
+                                'close': float(item[2]),
+                                'high': float(item[3]),
+                                'low': float(item[4]),
+                                'volume': float(item[5]),
+                            })
+                except Exception as e:
+                    print(f"    腾讯批次{start}失败: {str(e)[:60]}")
+                    continue
+            if all_rows:
+                kline_df = pd.DataFrame(all_rows)
+                kline_df = kline_df.drop_duplicates(subset='date', keep='last')
+                kline_df['date'] = pd.to_datetime(kline_df['date']).dt.tz_localize(None)
+                kline_df = kline_df.sort_values('date').reset_index(drop=True)
+                print(f"  腾讯财经指数K线: {len(kline_df)} 条")
+        except Exception as e:
+            print(f"  腾讯财经指数K线失败: {str(e)[:60]}")
+
+    # 4. AKShare index_zh_a_hist 备用
+    if kline_df is None:
+        try:
+            os.environ['no_proxy'] = '*'
+            os.environ['NO_PROXY'] = '*'
+            print(f"  尝试AKShare index_zh_a_hist: {index_code}")
+            df_ak2 = ak.index_zh_a_hist(symbol=index_code, period="daily", start_date="20180101", end_date="20991231")
+            if df_ak2 is not None and len(df_ak2) > 10:
+                df_ak2 = rename_columns(df_ak2)
+                df_ak2['date'] = pd.to_datetime(df_ak2['date']).dt.tz_localize(None)
+                kline_df = df_ak2
+                print(f"  AKShare index_zh_a_hist: {len(kline_df)} 条")
+        except Exception as e:
+            print(f"  AKShare index_zh_a_hist 失败: {str(e)[:60]}")
+
+    # 5. AKShare stock_zh_index_daily_em 备用
     if kline_df is None:
         try:
             os.environ['no_proxy'] = '*'
             os.environ['NO_PROXY'] = '*'
             prefix = 'sh' if secid.startswith('1.') or secid.startswith('2.') else 'sz'
             sym = prefix + index_code
+            print(f"  尝试AKShare stock_zh_index_daily_em: {sym}")
             df_ak = ak.stock_zh_index_daily_em(symbol=sym)
             if df_ak is not None and len(df_ak) > 10:
                 df_ak = rename_columns(df_ak)
                 df_ak['date'] = pd.to_datetime(df_ak['date']).dt.tz_localize(None)
                 kline_df = df_ak
-                print(f"  AKShare指数K线: {len(kline_df)} 条")
+                print(f"  AKShare stock_zh_index_daily_em: {len(kline_df)} 条")
         except Exception as e:
-            print(f"  AKShare备用失败: {str(e)[:60]}")
+            print(f"  AKShare stock_zh_index_daily_em 失败: {str(e)[:60]}")
+
+    # 6. 本地缓存回退（GitHub Actions海外无法访问东方财富时使用）
+    if kline_df is None:
+        cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'cache')
+        cache_file = os.path.join(cache_dir, f'{index_code}.csv')
+        print(f"  尝试本地缓存: {cache_file}")
+        try:
+            if os.path.exists(cache_file):
+                cache_df = pd.read_csv(cache_file, encoding='utf-8')
+                if cache_df is not None and len(cache_df) > 10:
+                    cache_df['date'] = pd.to_datetime(cache_df['date']).dt.tz_localize(None)
+                    cache_df = cache_df.sort_values('date').reset_index(drop=True)
+                    kline_df = cache_df
+                    cache_date = cache_df['date'].max().strftime('%Y-%m-%d')
+                    print(f"  ✓ 本地缓存加载成功: {len(kline_df)} 条, 最新日期: {cache_date}")
+                    # 标记数据来源为缓存
+                    if realtime_price is None:
+                        # 尝试加载缓存的实时行情
+                        rt_file = os.path.join(cache_dir, f'{index_code}_realtime.json')
+                        if os.path.exists(rt_file):
+                            with open(rt_file, 'r', encoding='utf-8') as f:
+                                rt_data = json.load(f)
+                            realtime_price = rt_data.get('price')
+                            realtime_change_pct = rt_data.get('change_pct')
+                            realtime_prev_close = rt_data.get('prev_close')
+                            rt_time = rt_data.get('update_time', '未知')
+                            print(f"  ✓ 缓存实时行情: 价格={realtime_price}, 缓存时间={rt_time}")
+            else:
+                print(f"  ✗ 本地缓存文件不存在")
+        except Exception as e:
+            print(f"  本地缓存加载失败: {str(e)[:60]}")
+
+    # 7. API成功时自动更新缓存（仅当数据来自API而非缓存时）
+    _cache_loaded = kline_df is not None and os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'cache', f'{index_code}.csv'))
+    if kline_df is not None:
+        try:
+            cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'cache')
+            os.makedirs(cache_dir, exist_ok=True)
+            cache_file = os.path.join(cache_dir, f'{index_code}.csv')
+            save_df = kline_df.copy()
+            save_df['date'] = save_df['date'].dt.strftime('%Y-%m-%d') if hasattr(save_df['date'], 'dt') else save_df['date']
+            save_df.to_csv(cache_file, index=False, encoding='utf-8')
+            print(f"  ✓ 缓存已自动更新: {cache_file}")
+            # 同时保存实时行情缓存
+            if realtime_price is not None:
+                rt_file = os.path.join(cache_dir, f'{index_code}_realtime.json')
+                rt_data = {
+                    'price': realtime_price,
+                    'change_pct': realtime_change_pct,
+                    'prev_close': realtime_prev_close,
+                    'update_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                }
+                with open(rt_file, 'w', encoding='utf-8') as f:
+                    json.dump(rt_data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"  缓存自动更新失败（不影响运行）: {str(e)[:60]}")
 
     return {
         'realtime_price': realtime_price,
