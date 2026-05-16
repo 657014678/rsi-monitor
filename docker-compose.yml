@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  rsi-monitor:
+    build: .
+    container_name: rsi-monitor
+    # 挂载 docs/ 到容器内，脚本生成的 JSON 会写入这里
+    volumes:
+      - ./docs:/app/docs
+    # 运行完即退出（用于定时任务调度）
+    restart: "no"
+    # 可选：设置内存上限
+    # mem_limit: 512m

@@ -3,8 +3,8 @@ daily_update.py - 本地每日数据更新脚本
 收盘后运行，用AKShare获取指数数据，计算指标，输出JSON，git push到GitHub
 
 数据源：
-  - 931446 东证红利低波：AKShare → 腾讯财经API（ETF价格512890）
-  - 980081 国证价值100：AKShare → 腾讯财经API（ETF价格159263）
+  - 931446 东证红利低波：中证指数官网 stock_zh_index_hist_csindex
+  - 980081 国证价值100：国证指数官网 index_hist_cni
   - NDX 纳斯达克100：AKShare stock_market_pe_lg + index_us_stock_sina
 
 用法：
@@ -142,17 +142,93 @@ def fetch_etf_tencent_klines(etf_code, prefix):
 
 
 def fetch_index_kline(config):
-    """获取A股指数/ETF日K线 - 多重数据源自动回退
-    1. AKShare index_zh_a_hist（东方财富，指数原始数据）
-    2. 腾讯财经API（ETF价格，作为回退）
+    """获取A股指数日K线 - 多源自动回退
+    返回: (df, is_index_price, data_source)
+    
+    数据源优先级（按可靠性排序）:
+    A.  中证/国证官网（直接指数数据）- 优先使用
+    B.  AKShare东方财富（多数网络环境被屏蔽）
+    C.  腾讯财经ETF价格（最后回退）
     """
     index_code = config['index_code']
     index_name = config['index_name']
     etf_code = config['etf_code']
     prefix = config.get('tencent_prefix')
 
-    # ---- 方案A: AKShare 东方财富指数 ----
-    print(f"  尝试获取指数K线: {index_name}({index_code})")
+    # ================================================================
+    # 方案A: 中证/国证官网 - 直接指数数据（最高优先级）
+    # ================================================================
+
+    # ---- A1: 中证指数官网 931446 东证红利低波 ----
+    if index_code == '931446':
+        print(f"  [A1] 尝试中证指数官网: {index_name}({index_code})")
+        try:
+            _build_no_proxy_opener()
+            today_str = datetime.now().strftime('%Y%m%d')
+            df = ak.stock_zh_index_hist_csindex(
+                symbol='931446', start_date='20180526', end_date=today_str
+            )
+            if df is not None and len(df) > 30:
+                col_map = {
+                    '日期': 'date', '开盘': 'open', '收盘': 'close',
+                    '最高': 'high', '最低': 'low', '成交量': 'volume',
+                }
+                df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+                df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+                df = df.sort_values('date').reset_index(drop=True)
+                for col in ['open', 'high', 'low']:
+                    if col not in df.columns:
+                        df[col] = df['close']
+                if 'volume' not in df.columns:
+                    df['volume'] = 0
+                for col in ['open', 'high', 'low', 'close', 'volume']:
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                print(f"  ✓ A1 中证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "中证指数官网"
+            else:
+                print(f"  ✗ A1 中证官网 {index_name}: 数据为空或不足")
+        except Exception as e:
+            print(f"  ✗ A1 中证官网 {index_name} 失败: {str(e)[:80]}")
+
+    # ---- A2: 国证指数官网 980081 国证价值100 ----
+    if index_code == '980081':
+        print(f"  [A2] 尝试国证指数官网: {index_name}({index_code})")
+        try:
+            _build_no_proxy_opener()
+            today_str = datetime.now().strftime('%Y%m%d')
+            df = ak.index_hist_cni(
+                symbol='980081', start_date='20180101', end_date=today_str
+            )
+            if df is not None and len(df) > 30:
+                col_map = {
+                    '日期': 'date', '开盘价': 'open', '收盘价': 'close',
+                    '最高价': 'high', '最低价': 'low', '成交量': 'volume',
+                }
+                df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+                df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+                df = df.sort_values('date').reset_index(drop=True)
+                for col in ['open', 'high', 'low']:
+                    if col not in df.columns:
+                        df[col] = df['close']
+                if 'volume' not in df.columns:
+                    df['volume'] = 0
+                for col in ['open', 'high', 'low', 'close', 'volume']:
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                print(f"  ✓ A2 国证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "国证指数官网"
+            else:
+                print(f"  ✗ A2 国证官网 {index_name}: 数据为空或不足")
+        except Exception as e:
+            print(f"  ✗ A2 国证官网 {index_name} 失败: {str(e)[:80]}")
+
+    # ================================================================
+    # 方案B: AKShare东方财富（备用）
+    # ================================================================
+
+    # ---- 方案B1: AKShare index_zh_a_hist 东方财富指数 ----
+    print(f"  [B1] 尝试东方财富指数: {index_name}({index_code})")
     try:
         _build_no_proxy_opener()
         df = ak.index_zh_a_hist(
@@ -178,23 +254,53 @@ def fetch_index_kline(config):
             for col in ['open', 'high', 'low', 'close', 'volume']:
                 if col in df.columns:
                     df[col] = pd.to_numeric(df[col], errors='coerce')
-            print(f"  ✓ 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
-            return df, True  # is_index_price=True
+            print(f"  ✓ B1 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+            return df, True, "东方财富指数"
         else:
-            print(f"  ✗ 东方财富 {index_name}: 数据为空或不足")
+            print(f"  ✗ B1 东方财富 {index_name}: 数据为空或不足")
     except Exception as e:
-        print(f"  ✗ 东方财富 {index_name} 失败: {str(e)[:80]}")
+        print(f"  ✗ B1 东方财富 {index_name} 失败: {str(e)[:80]}")
 
-    # ---- 方案B: 腾讯财经API（ETF价格回退）----
+    # ---- 方案B2: AKShare stock_zh_index_daily_em（仅限 980081 等国证指数）----
+    if index_code == '980081':
+        symbol_sz = 'sz' + index_code
+        print(f"  [B2] 尝试 stock_zh_index_daily_em: {symbol_sz}")
+        try:
+            _build_no_proxy_opener()
+            df = ak.stock_zh_index_daily_em(symbol=symbol_sz)
+            if df is not None and len(df) > 30:
+                col_map = {
+                    '日期': 'date', '开盘': 'open', '收盘': 'close',
+                    '最高': 'high', '最低': 'low', '成交量': 'volume',
+                }
+                df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+                df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+                df = df.sort_values('date').reset_index(drop=True)
+                for col in ['open', 'high', 'low']:
+                    if col not in df.columns:
+                        df[col] = df['close']
+                if 'volume' not in df.columns:
+                    df['volume'] = 0
+                for col in ['open', 'high', 'low', 'close', 'volume']:
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                print(f"  ✓ B2 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "国证指数"
+            else:
+                print(f"  ✗ B2 {index_name}: 数据为空或不足")
+        except Exception as e:
+            print(f"  ✗ B2 {index_name} 失败: {str(e)[:80]}")
+
+    # ---- 方案C: 腾讯财经API（ETF价格回退）----
     if prefix:
-        print(f"  → 回退到腾讯ETF数据: {prefix}{etf_code}")
+        print(f"  [C] → 回退到腾讯ETF数据: {prefix}{etf_code}")
         df, _ = fetch_etf_tencent_klines(etf_code, prefix)
         if df is not None and len(df) > 30:
-            return df, False  # is_index_price=False
+            return df, False, "腾讯ETF价格回退"
         else:
-            print(f"  ✗ 腾讯回退也失败")
+            print(f"  ✗ C 腾讯回退也失败")
     
-    return None, False
+    return None, False, "获取失败"
 
 
 def fetch_nasdaq_pe():
@@ -513,7 +619,7 @@ def process_rsi_ma(config):
     print(f"{'='*50}")
 
     # 获取指数K线（支持多数据源回退）
-    df, is_index_price = fetch_index_kline(config)
+    df, is_index_price, data_source = fetch_index_kline(config)
     if df is None or len(df) < 30:
         raise Exception(f"{index_name} 指数K线获取失败或数据不足")
 
@@ -601,6 +707,7 @@ def process_rsi_ma(config):
         "days_above_ma250": int(days_above),
         "price_vs_ma250_pct": round((latest_price / latest_ma250 - 1) * 100, 2) if latest_ma250 and latest_ma250 != 0 else None,
         "is_index_price": is_index_price,
+        "data_source": data_source,
         "market_date": current['date'].strftime('%Y-%m-%d'),
         "history_advice": calc_rsi_ma_history(df, ma250, rsi21),
     }
@@ -703,6 +810,8 @@ def process_nasdaq(config):
         "rebuy_advice": rebuy_advice,
         "risk_signal": risk_signal,
         "risk_label": risk_label,
+        "data_source": "乐咕PE+新浪指数",
+        "is_index_price": True,
         "market_date": pe_df['date'].iloc[-1].strftime('%Y-%m-%d'),
         "history_advice": calc_pe_drawdown_history(pe_df, idx_df),
     }
@@ -818,6 +927,7 @@ def main():
                 "weight": config['weight'],
                 "error": True,
                 "is_index_price": config.get('is_index_price', True),
+                "data_source": "获取失败",
                 "current_price": 0,
                 "price_change_pct": 0,
                 "zone": "数据异常",
@@ -834,7 +944,7 @@ def main():
     for i, config in enumerate(ETFS):
         fn = index_file_map.get(config['index_code'], f"{config['index_code']}.json")
         fp = os.path.join(DOCS_DIR, fn)
-        ds_label = "AKShare 指数" if results[i].get('is_index_price', True) else "腾讯ETF"
+        ds_label = results[i].get('data_source', "未知")
         n_data = {
             "update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "data_source": ds_label,
@@ -848,7 +958,7 @@ def main():
     # 输出 data.json（合并版，前端兼容格式）
     data_output = {
         "update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        "data_source": "AKShare 本地",
+        "data_source": "多数据源",
         "etfs": results,
     }
     data_path = os.path.join(DOCS_DIR, 'data.json')
