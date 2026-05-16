@@ -493,7 +493,7 @@ document.getElementById('wechatId').addEventListener('click', function() {
 /* ========== Chart.js 图表 ========== */
 fetch('data/backtest_result.json').then(function(r){ return r.json(); }).then(function(data) {
   var s = data.summary;
-  var ph = s.portfolio_history;
+  var ph = data.portfolio_history;
 
   /* --- 每年收益柱状图 --- */
   var years = s.yearly.map(function(y){ return y.year; });

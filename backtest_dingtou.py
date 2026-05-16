@@ -388,13 +388,17 @@ def backtest_with_rebalance(dfs, amounts, weights, names, start_date, rebalance_
         if prev_yr in yearly:
             prev_last = yearly[prev_yr][-1]
             yr_inv = last['total_invested'] - prev_last['total_invested']
+            # 每年收益率 = (年末市值 - 年初市值 - 当年投入) / 年初市值
+            yr_ret = round((last['portfolio_value'] - prev_last['portfolio_value'] - yr_inv) / prev_last['portfolio_value'] * 100, 2)
         else:
             yr_inv = last['total_invested']
+            yr_ret = last['pnl_pct']  # 第一年与累计收益率相同
         yearly_data.append({
             "year": yr,
             "invested": round(yr_inv, 0),
             "value": round(last['portfolio_value'], 0),
             "return_pct": last['pnl_pct'],
+            "year_return_pct": yr_ret,
             "max_dd": round(yr_dd, 2),
         })
     summary["yearly"] = yearly_data

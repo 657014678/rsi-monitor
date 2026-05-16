@@ -69,6 +69,7 @@
         "invested": 88000.0,
         "value": 96046.0,
         "return_pct": 9.14,
+        "year_return_pct": 9.14,
         "max_dd": 0.0
       },
       {
@@ -76,6 +77,7 @@
         "invested": 96000.0,
         "value": 241081.0,
         "return_pct": 31.02,
+        "year_return_pct": 51.05,
         "max_dd": 0.0
       },
       {
@@ -83,6 +85,7 @@
         "invested": 96000.0,
         "value": 296596.0,
         "return_pct": 5.93,
+        "year_return_pct": -16.79,
         "max_dd": -3.29
       },
       {
@@ -90,6 +93,7 @@
         "invested": 96000.0,
         "value": 477974.0,
         "return_pct": 27.12,
+        "year_return_pct": 28.79,
         "max_dd": -5.64
       },
       {
@@ -97,6 +101,7 @@
         "invested": 96000.0,
         "value": 680503.0,
         "return_pct": 44.17,
+        "year_return_pct": 22.29,
         "max_dd": -13.84
       },
       {
@@ -104,6 +109,7 @@
         "invested": 96000.0,
         "value": 905903.0,
         "return_pct": 59.49,
+        "year_return_pct": 19.02,
         "max_dd": -7.27
       },
       {
@@ -111,6 +117,7 @@
         "invested": 96000.0,
         "value": 961578.0,
         "return_pct": 44.82,
+        "year_return_pct": -4.45,
         "max_dd": -3.74
       },
       {
@@ -118,6 +125,7 @@
         "invested": 96000.0,
         "value": 1258895.0,
         "return_pct": 65.64,
+        "year_return_pct": 20.94,
         "max_dd": -3.53
       },
       {
@@ -125,6 +133,7 @@
         "invested": 96000.0,
         "value": 1797345.0,
         "return_pct": 109.97,
+        "year_return_pct": 35.15,
         "max_dd": -2.33
       },
       {
@@ -132,6 +141,7 @@
         "invested": 96000.0,
         "value": 2142309.0,
         "return_pct": 125.03,
+        "year_return_pct": 13.85,
         "max_dd": -1.79
       },
       {
@@ -139,6 +149,7 @@
         "invested": 32000.0,
         "value": 2274524.0,
         "return_pct": 131.15,
+        "year_return_pct": 4.68,
         "max_dd": -2.6
       }
     ],
