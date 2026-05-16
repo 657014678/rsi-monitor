@@ -497,7 +497,7 @@ fetch('data/backtest_result.json').then(function(r){ return r.json(); }).then(fu
 
   /* --- 每年收益柱状图 --- */
   var years = s.yearly.map(function(y){ return y.year; });
-  var rets = s.yearly.map(function(y){ return y.return_pct; });
+  var rets = s.yearly.map(function(y){ return y.year_return_pct; });
   var colors = rets.map(function(v){
     return v >= 20 ? 'rgba(52,211,153,0.7)' : v >= 10 ? 'rgba(96,165,250,0.6)' : 'rgba(251,191,36,0.6)';
   });
@@ -522,7 +522,7 @@ fetch('data/backtest_result.json').then(function(r){ return r.json(); }).then(fu
       responsive: true, maintainAspectRatio: true,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: function(ctx){ return '收益率: +' + ctx.parsed.y + '%'; } } }
+        tooltip: { callbacks: { label: function(ctx){ var v = ctx.parsed.y; return '收益率: ' + (v >= 0 ? '+' : '') + v + '%'; } } }
       },
       scales: {
         y: { beginAtZero: true, ticks: { callback: function(v){ return v + '%'; }, font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },

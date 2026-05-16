@@ -281,7 +281,7 @@ def backtest_with_rebalance(dfs, amounts, weights, names, start_date, rebalance_
         pnl_pct = round((total_v - total_inv) / total_inv * 100, 2) if total_inv > 0 else 0
         
         if total_v > peak_value:
-            peak_value = total_v
+            peak_value = round(total_v, 2)
         
         dd = (total_v - peak_value) / peak_value * 100 if peak_value > 0 else 0
         if dd < max_drawdown:
