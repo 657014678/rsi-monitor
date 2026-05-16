@@ -1,6 +1,6 @@
 {
-  "update_time": "2026-05-15 23:55:57",
-  "data_source": "乐咕+新浪 / Yahoo Finance",
+  "update_time": "2026-05-16 11:50:04",
+  "data_source": "AKShare 本地",
   "etfs": [
     {
       "type": "rsi_ma",
@@ -11,72 +11,138 @@
       "fund_code": "012708",
       "fund_name": "东方红红利低波A",
       "weight": "40%",
-      "current_price": null,
-      "price_change_pct": null,
-      "ma250": 1.1834,
+      "current_price": 1.17,
+      "price_change_pct": -0.77,
+      "ma250": 1.18,
       "ma250_is_reference": false,
-      "ma250_data_days": 400,
-      "rsi21": 45.49,
+      "ma250_data_days": 1600,
+      "rsi21": 41.68,
       "zone": "弱势区",
       "invest_amount": "1.2份",
       "invest_detail": "偏冷低估·弱势区",
       "reduce_advice": null,
       "rebuy_advice": null,
-      "risk_signal": "green",
-      "risk_label": "正常",
+      "risk_signal": "yellow",
+      "risk_label": "跌破MA250",
       "ma250_trend": "上升",
-      "days_below_ma250": 0,
+      "days_below_ma250": 7,
       "days_above_ma250": 0,
-      "price_vs_ma250_pct": null,
+      "price_vs_ma250_pct": -1.41,
+      "is_index_price": false,
       "market_date": "2026-05-15",
       "history_advice": [
         {
+          "date": "2025-05-21",
+          "price": 1.16,
+          "rsi21": 62.9,
+          "ma250": 1.07,
+          "zone": "强势区",
+          "invest": "0.6份",
+          "invest_detail": "中性偏热·强势区",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2025-06-21",
+          "price": 1.19,
+          "rsi21": 66.9,
+          "ma250": 1.08,
+          "zone": "强势区",
+          "invest": "0.3份",
+          "invest_detail": "偏热·强势区",
+          "reduce": "考虑减仓 15%"
+        },
+        {
+          "date": "2025-07-21",
+          "price": 1.21,
+          "rsi21": 60.1,
+          "ma250": 1.1,
+          "zone": "强势区",
+          "invest": "0.6份",
+          "invest_detail": "中性偏热·强势区",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2025-08-21",
+          "price": 1.21,
+          "rsi21": 58.4,
+          "ma250": 1.11,
+          "zone": "强势区",
+          "invest": "0.6份",
+          "invest_detail": "中性偏热·强势区"
+        },
+        {
+          "date": "2025-09-21",
+          "price": 1.15,
+          "rsi21": 35.9,
+          "ma250": 1.13,
+          "zone": "强势区",
+          "invest": "2份",
+          "invest_detail": "极度低估·强势区",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2025-10-21",
+          "price": 1.19,
+          "rsi21": 55.5,
+          "ma250": 1.13,
+          "zone": "强势区",
+          "invest": "0.6份",
+          "invest_detail": "中性偏热·强势区"
+        },
+        {
+          "date": "2025-11-21",
+          "price": 1.21,
+          "rsi21": 52.0,
+          "ma250": 1.15,
+          "zone": "强势区",
+          "invest": "1份",
+          "invest_detail": "中性合理·强势区"
+        },
+        {
           "date": "2025-12-21",
-          "price": 1.135,
-          "rsi21": 58.3,
-          "ma250": 1.155,
-          "zone": "弱势区",
-          "invest": "0.8份"
+          "price": 1.17,
+          "rsi21": 41.0,
+          "ma250": 1.15,
+          "zone": "强势区",
+          "invest": "1.5份",
+          "invest_detail": "偏冷低估·强势区",
+          "rebuy": "考虑回补"
         },
         {
           "date": "2026-01-21",
-          "price": 1.118,
-          "rsi21": 50.1,
-          "ma250": 1.158,
+          "price": 1.15,
+          "rsi21": 38.7,
+          "ma250": 1.16,
           "zone": "弱势区",
-          "invest": "1份"
+          "invest": "1.5份",
+          "invest_detail": "极度低估·弱势区"
         },
         {
           "date": "2026-02-21",
-          "price": 1.105,
-          "rsi21": 44.5,
+          "price": 1.17,
+          "rsi21": 50.5,
           "ma250": 1.16,
-          "zone": "弱势区",
-          "invest": "1.2份"
+          "zone": "强势区",
+          "invest": "1份",
+          "invest_detail": "中性合理·强势区"
         },
         {
           "date": "2026-03-21",
-          "price": 1.128,
-          "rsi21": 52.8,
-          "ma250": 1.162,
+          "price": 1.16,
+          "rsi21": 41.5,
+          "ma250": 1.17,
           "zone": "弱势区",
-          "invest": "1份"
+          "invest": "1.2份",
+          "invest_detail": "偏冷低估·弱势区"
         },
         {
           "date": "2026-04-21",
-          "price": 1.168,
-          "rsi21": 56.2,
-          "ma250": 1.165,
+          "price": 1.2,
+          "rsi21": 54.3,
+          "ma250": 1.18,
           "zone": "强势区",
-          "invest": "0.6份"
-        },
-        {
-          "date": "2026-05-21",
-          "price": 1.172,
-          "rsi21": 45.5,
-          "ma250": 1.1834,
-          "zone": "弱势区",
-          "invest": "1.2份"
+          "invest": "1份",
+          "invest_detail": "中性合理·强势区"
         }
       ]
     },
@@ -89,11 +155,11 @@
       "fund_code": "025497",
       "fund_name": "易方达价值100A",
       "weight": "40%",
-      "current_price": 1.166,
+      "current_price": 1.17,
       "price_change_pct": -0.26,
-      "ma250": 1.1019,
+      "ma250": 1.1,
       "ma250_is_reference": true,
-      "ma250_data_days": 205,
+      "ma250_data_days": 206,
       "rsi21": 44.66,
       "zone": "强势区",
       "invest_amount": "1.5份",
@@ -107,59 +173,48 @@
       "risk_label": "正常",
       "ma250_trend": "上升",
       "days_below_ma250": 0,
-      "days_above_ma250": 86,
-      "price_vs_ma250_pct": 5.82,
+      "days_above_ma250": 87,
+      "price_vs_ma250_pct": 5.81,
+      "is_index_price": false,
       "market_date": "2026-05-15",
       "history_advice": [
         {
-          "date": "2025-12-21",
-          "price": 1.092,
-          "rsi21": 48.5,
-          "ma250": 1.068,
-          "zone": "强势区",
-          "invest": "1份",
-          "rebuy": "考虑回补"
-        },
-        {
           "date": "2026-01-21",
-          "price": 1.105,
-          "rsi21": 52.1,
-          "ma250": 1.072,
+          "price": 1.14,
+          "rsi21": 66.0,
+          "ma250": 1.06,
           "zone": "强势区",
-          "invest": "1份"
+          "invest": "0.3份",
+          "invest_detail": "偏热·强势区",
+          "reduce": "考虑减仓 15%"
         },
         {
           "date": "2026-02-21",
-          "price": 1.088,
-          "rsi21": 42.3,
-          "ma250": 1.076,
+          "price": 1.2,
+          "rsi21": 63.1,
+          "ma250": 1.07,
           "zone": "强势区",
-          "invest": "1.5份"
+          "invest": "0.6份",
+          "invest_detail": "中性偏热·强势区"
         },
         {
           "date": "2026-03-21",
-          "price": 1.12,
-          "rsi21": 55.6,
-          "ma250": 1.082,
+          "price": 1.16,
+          "rsi21": 43.6,
+          "ma250": 1.09,
           "zone": "强势区",
-          "invest": "0.6份"
-        },
-        {
-          "date": "2026-04-21",
-          "price": 1.148,
-          "rsi21": 48.9,
-          "ma250": 1.091,
-          "zone": "强势区",
-          "invest": "1份",
+          "invest": "1.5份",
+          "invest_detail": "偏冷低估·强势区",
           "rebuy": "考虑回补"
         },
         {
-          "date": "2026-05-21",
-          "price": 1.166,
-          "rsi21": 44.7,
-          "ma250": 1.1019,
+          "date": "2026-04-21",
+          "price": 1.18,
+          "rsi21": 50.6,
+          "ma250": 1.1,
           "zone": "强势区",
-          "invest": "1.5份"
+          "invest": "1份",
+          "invest_detail": "中性合理·强势区"
         }
       ]
     },
@@ -196,63 +251,141 @@
       "market_date": "2026-05-15",
       "history_advice": [
         {
+          "date": "2025-05-21",
+          "price": 21080.36,
+          "pe_ttm": 48.5,
+          "pe_percentile": 48.4,
+          "pe_zone": "低估",
+          "drawdown": -4.94,
+          "drawdown_zone": "正常波动",
+          "invest": "1.8份",
+          "invest_detail": "低估·1.8份",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2025-06-21",
+          "price": 21856.33,
+          "pe_ttm": 48.5,
+          "pe_percentile": 48.7,
+          "pe_zone": "低估",
+          "drawdown": -1.44,
+          "drawdown_zone": "正常波动",
+          "invest": "1.8份",
+          "invest_detail": "低估·1.8份",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2025-07-21",
+          "price": 23180.06,
+          "pe_ttm": 52.6,
+          "pe_percentile": 54.6,
+          "pe_zone": "合理",
+          "drawdown": 0.0,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
+        },
+        {
+          "date": "2025-08-21",
+          "price": 23142.58,
+          "pe_ttm": 59.3,
+          "pe_percentile": 57.1,
+          "pe_zone": "合理",
+          "drawdown": -2.96,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
+        },
+        {
+          "date": "2025-09-21",
+          "price": 24761.07,
+          "pe_ttm": 67.2,
+          "pe_percentile": 63.4,
+          "pe_zone": "合理",
+          "drawdown": 0.55,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
+        },
+        {
+          "date": "2025-10-21",
+          "price": 25127.13,
+          "pe_ttm": 66.2,
+          "pe_percentile": 61.9,
+          "pe_zone": "合理",
+          "drawdown": -0.06,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
+        },
+        {
+          "date": "2025-11-21",
+          "price": 24239.57,
+          "pe_ttm": 61.5,
+          "pe_percentile": 56.3,
+          "pe_zone": "合理",
+          "drawdown": -7.2,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
+        },
+        {
           "date": "2025-12-21",
-          "price": 22050.0,
-          "pe_ttm": 40.2,
-          "pe_percentile": 75.5,
-          "pe_zone": "高估",
-          "drawdown": -3.2,
-          "invest": "0.5份",
-          "reduce": "考虑减仓 15%"
+          "price": 25461.7,
+          "pe_ttm": 65.7,
+          "pe_percentile": 61.5,
+          "pe_zone": "合理",
+          "drawdown": -2.52,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
         },
         {
           "date": "2026-01-21",
-          "price": 22380.0,
-          "pe_ttm": 41.8,
-          "pe_percentile": 79.1,
+          "price": 25326.58,
+          "pe_ttm": 77.3,
+          "pe_percentile": 77.3,
           "pe_zone": "高估",
-          "drawdown": -1.5,
+          "drawdown": -3.04,
+          "drawdown_zone": "正常波动",
           "invest": "0.5份",
+          "invest_detail": "高估·0.5份",
           "reduce": "考虑减仓 15%"
         },
         {
           "date": "2026-02-21",
-          "price": 21800.0,
-          "pe_ttm": 38.5,
-          "pe_percentile": 65.3,
-          "pe_zone": "合理",
-          "drawdown": -5.8,
-          "invest": "1份"
-        },
-        {
-          "date": "2026-03-21",
-          "price": 23500.0,
-          "pe_ttm": 42.2,
-          "pe_percentile": 80.5,
+          "price": 24708.94,
+          "pe_ttm": 75.2,
+          "pe_percentile": 74.6,
           "pe_zone": "高估",
-          "drawdown": -0.8,
+          "drawdown": -5.4,
+          "drawdown_zone": "正常波动",
           "invest": "0.5份",
+          "invest_detail": "高估·0.5份",
           "reduce": "考虑减仓 15%"
         },
         {
-          "date": "2026-04-21",
-          "price": 24800.0,
-          "pe_ttm": 45.5,
-          "pe_percentile": 87.2,
-          "pe_zone": "极度高估",
-          "drawdown": 0.0,
-          "invest": "暂停",
-          "reduce": "考虑减仓 30%"
+          "date": "2026-03-21",
+          "price": 24188.59,
+          "pe_ttm": 66.2,
+          "pe_percentile": 60.1,
+          "pe_zone": "合理",
+          "drawdown": -7.39,
+          "drawdown_zone": "正常波动",
+          "invest": "1份",
+          "invest_detail": "合理估值·1份基准"
         },
         {
-          "date": "2026-05-21",
-          "price": 28500.0,
-          "pe_ttm": 93.2,
-          "pe_percentile": 91.5,
-          "pe_zone": "极度高估",
-          "drawdown": -1.5,
-          "invest": "暂停",
-          "reduce": "考虑减仓 30%"
+          "date": "2026-04-21",
+          "price": 26479.47,
+          "pe_ttm": 77.0,
+          "pe_percentile": 77.4,
+          "pe_zone": "高估",
+          "drawdown": -0.72,
+          "drawdown_zone": "正常波动",
+          "invest": "0.5份",
+          "invest_detail": "高估·0.5份",
+          "reduce": "考虑减仓 15%"
         }
       ]
     }
