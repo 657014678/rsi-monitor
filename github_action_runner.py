@@ -234,6 +234,38 @@ def fetch_etf_data(config, days=400):
     return result, source_used
 
 # ============ 纳指100专属：PE分位+回撤数据 ============
+def fetch_index_data(config, days=400):
+    """获取A股指数历史数据（AKShare）"""
+    index_code = config['index_code']
+    index_name = config['index_name']
+    print(f"  数据源目标: 指数 {index_name}({index_code})")
+
+    df = None
+    for i in range(3):
+        try:
+            print(f"  AKShare指数 尝试 {i+1}/3...")
+            raw = ak.index_zh_a_hist(symbol=index_code, period="daily", start_date="20200101", end_date="20991231")
+            if raw is not None and len(raw) > 10:
+                df = raw
+                print(f"  AKShare指数 获取 {len(df)} 条数据")
+                break
+        except Exception as e:
+            print(f"  AKShare指数 失败: {str(e)[:80]}")
+        if i < 2:
+            time.sleep(3)
+
+    if df is None or len(df) == 0:
+        raise Exception(f"{index_name}({index_code}) 指数数据获取失败")
+
+    df = rename_columns(df)
+    df = standardize_columns(df)
+    df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+    df = df.sort_values('date').reset_index(drop=True)
+
+    result = df.tail(days).reset_index(drop=True)
+    print(f"  最终数据：{len(result)} 条，{result['date'].min().strftime('%Y-%m-%d')} → {result['date'].max().strftime('%Y-%m-%d')}")
+
+    return result
 def fetch_nasdaq_pe_data():
     """获取纳指100历史PE(TTM)数据 - 乐咕乐股"""
     print("  获取纳指100 PE数据（乐咕乐股）...")
@@ -441,8 +473,9 @@ def process_etf_rsi_ma(config):
     print(f"处理标的: {etf_name}({etf_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
-    # 获取数据
-    df, source_used = fetch_etf_data(config)
+    # 获取数据（使用指数数据）
+    df = fetch_index_data(config)
+    source_used = "AKShare指数"
 
     # 计算指标
     data_count = len(df)
@@ -505,6 +538,7 @@ def process_etf_rsi_ma(config):
     # 构建结果
     result = {
         "type": "rsi_ma",
+        "is_index": True,
         "etf_code": etf_code,
         "etf_name": config['etf_name'],
         "index_code": config['index_code'],
@@ -512,9 +546,9 @@ def process_etf_rsi_ma(config):
         "fund_code": config['fund_code'],
         "fund_name": config['fund_name'],
         "weight": config['weight'],
-        "current_price": round(latest_price, 4),
+        "current_price": round(latest_price, 2),
         "price_change_pct": price_change_pct,
-        "ma250": round(latest_ma250, 4),
+        "ma250": round(latest_ma250, 2),
         "ma250_is_reference": not ma_data_available,
         "ma250_data_days": int(data_count),
         "rsi21": round(latest_rsi, 2),
@@ -546,7 +580,7 @@ def process_etf_rsi_ma(config):
             "close": float(df.iloc[i]['close']),
             "volume": float(df.iloc[i]['volume'])
         })
-        ma_values.append(None if pd.isna(ma250.iloc[i]) else round(float(ma250.iloc[i]), 4))
+        ma_values.append(None if pd.isna(ma250.iloc[i]) else round(float(ma250.iloc[i]), 2))
         rsi_values.append(None if pd.isna(rsi21.iloc[i]) else round(float(rsi21.iloc[i]), 2))
 
     history = {
@@ -606,6 +640,7 @@ def process_nasdaq(config):
     # 构建结果
     result = {
         "type": "pe_drawdown",
+        "is_index": True,
         "etf_code": config['etf_code'],
         "etf_name": config['etf_name'],
         "index_code": config['index_code'],
@@ -766,9 +801,9 @@ def _calc_rsi_ma_history(df, ma250, rsi21, n_months=12):
 
         entry = {
             "date": d.strftime('%Y-%m-%d'),
-            "price": round(price, 4),
+            "price": round(price, 2),
             "rsi21": round(rsi_val, 1),
-            "ma250": round(ma_val, 4),
+            "ma250": round(ma_val, 2),
             "zone": zone,
             "invest": invest['amount'],
         }
