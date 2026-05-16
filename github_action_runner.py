@@ -750,6 +750,27 @@ def process_etf_rsi_ma(config):
     display_price = index_price if use_index_price else latest_price
     display_change_pct = index_change_pct if use_index_price and index_change_pct is not None else (etf_change_pct if etf_change_pct is not None else 0)
 
+    # 健壮性保护：display_price为NaN时回退到ETF价格
+    if display_price is not None and (math.isnan(display_price) if isinstance(display_price, float) else False):
+        print(f"  ⚠ display_price是NaN，尝试ETF价格回退")
+        use_index_price = False
+        if etf_price is not None:
+            display_price = etf_price
+            display_change_pct = etf_change_pct if etf_change_pct is not None else 0
+        else:
+            # 最后手段：尝试获取ETF数据
+            try:
+                etf_df, _ = fetch_etf_data(config, days=10)
+                etf_price = float(etf_df.iloc[-1]['close'])
+                prev_etf = float(etf_df.iloc[-2]['close'])
+                etf_change_pct = round((etf_price - prev_etf) / prev_etf * 100, 2)
+                display_price = etf_price
+                display_change_pct = etf_change_pct
+                print(f"  ✓ ETF价格回退成功: {etf_price:.4f}")
+            except Exception as e:
+                print(f"  ✗ ETF价格回退也失败: {str(e)[:60]}")
+                display_price = 0
+
     # 如果使用指数K线计算，etf_price需单独获取（仅作参考）
     if use_index_kline and etf_price is None:
         # 尝试从ETF数据获取参考价格
@@ -790,7 +811,7 @@ def process_etf_rsi_ma(config):
     rebuy_advice = get_rebuy_advice(latest_rsi, zone)
     risk_signal, risk_label = get_risk_signal(latest_price, latest_ma250, days_below, ma_trend)
 
-    print(f"  显示价格: {display_price:.2f} ({'+' if display_change_pct >= 0 else ''}{display_change_pct}%)")
+    print(f"  显示价格: {display_price} ({'+' if display_change_pct and display_change_pct >= 0 else ''}{display_change_pct}%)")
     if etf_price:
         print(f"  ETF参考: {etf_price:.4f}")
     print(f"  MA250: {latest_ma250:.2f}{'(参考)' if not ma_data_available else ''} | RSI21: {latest_rsi:.2f}")
@@ -826,7 +847,7 @@ def process_etf_rsi_ma(config):
         "ma250_trend": "上升" if ma_trend == 1 else ("下降" if ma_trend == -1 else "横盘"),
         "days_below_ma250": int(days_below),
         "days_above_ma250": int(days_above),
-        "price_vs_ma250_pct": round((latest_price / latest_ma250 - 1) * 100, 2),
+        "price_vs_ma250_pct": round((latest_price / latest_ma250 - 1) * 100, 2) if latest_ma250 and latest_ma250 != 0 and not (isinstance(latest_price, float) and math.isnan(latest_price)) and not (isinstance(latest_ma250, float) and math.isnan(latest_ma250)) else None,
         "market_date": current['date'].strftime('%Y-%m-%d'),
         "history_advice": _calc_rsi_ma_history(df, ma250, rsi21),
     }
