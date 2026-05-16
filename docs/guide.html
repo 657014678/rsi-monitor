@@ -2,209 +2,540 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>策略详情 · 价值投资控制台</title>
 <style>
-  :root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #c9d1d9;
-    --text-dim: #8b949e;
-    --text-bright: #f0f6fc;
-    --accent: #58a6ff;
-    --green: #3fb950;
-    --red: #f85149;
-    --yellow: #d29922;
-    --blue: #58a6ff;
-    --purple: #bc8cff;
+/* ========================================
+   CSS Variables & Theme (matching index.html)
+   ======================================== */
+:root {
+  --bg: #0b0e14;
+  --bg-gradient: linear-gradient(180deg, #0b0e14 0%, #0d1117 50%, #0f1419 100%);
+  --card: #141a24;
+  --card-border: rgba(255,255,255,0.06);
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --text: #d1d5db;
+  --text-dim: #6b7280;
+  --text-bright: #f3f4f6;
+  --accent: #60a5fa;
+  --accent-glow: rgba(96,165,250,0.12);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.1);
+  --green-glow: rgba(52,211,153,0.15);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.1);
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,0.1);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --max-width: 520px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text);
+  line-height: 1.8;
+  padding: 16px 16px 32px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   Back Link
+   ======================================== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(96,165,250,0.1);
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  background: rgba(96,165,250,0.18);
+  border-color: rgba(96,165,250,0.25);
+  transform: translateX(-2px);
+}
+
+/* ========================================
+   Page Header
+   ======================================== */
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--card-border);
+  position: relative;
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--text-bright) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-header .subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+/* ========================================
+   Section
+   ======================================== */
+.section { margin-bottom: 28px; }
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+.section-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+}
+.section-title.green { border-left-color: var(--green); }
+.section-title.green::before { background: linear-gradient(90deg, transparent, var(--green-glow), transparent); }
+.section-title.yellow { border-left-color: var(--yellow); }
+.section-title.yellow::before { background: linear-gradient(90deg, transparent, var(--yellow-dim), transparent); }
+.section-title.red { border-left-color: var(--red); }
+.section-title.red::before { background: linear-gradient(90deg, transparent, var(--red-dim), transparent); }
+.section-title.purple { border-left-color: var(--purple); }
+.section-title.purple::before { background: linear-gradient(90deg, transparent, var(--purple-dim), transparent); }
+
+.section-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s ease;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card h3.green { color: var(--green); }
+.card h3.yellow { color: var(--yellow); }
+.card h3.red { color: var(--red); }
+.card h3.purple { color: var(--purple); }
+.card p, .card li {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.9;
+}
+.card ul, .card ol { padding-left: 20px; }
+.card li { margin-bottom: 6px; }
+.card li:last-child { margin-bottom: 0; }
+
+/* ========================================
+   Highlight Colors
+   ======================================== */
+.highlight { color: var(--yellow); font-weight: 600; }
+.highlight-green { color: var(--green); font-weight: 600; }
+.highlight-red { color: var(--red); font-weight: 600; }
+
+/* ========================================
+   Tables
+   ======================================== */
+.table-wrap {
+  overflow-x: auto;
+  margin: 10px 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--card-border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+th {
+  background: rgba(255,255,255,0.06);
+  padding: 8px 10px;
+  text-align: center;
+  color: var(--text-dim);
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+td {
+  padding: 7px 10px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+}
+tr:last-child td { border-bottom: none; }
+.td-green { color: var(--green); font-weight: 600; }
+.td-yellow { color: var(--yellow); font-weight: 600; }
+.td-red { color: var(--red); font-weight: 600; }
+
+/* ========================================
+   Tags & Badges
+   ======================================== */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.tag-green { background: var(--green-dim); color: var(--green); }
+.tag-yellow { background: var(--yellow-dim); color: var(--yellow); }
+.tag-red { background: var(--red-dim); color: var(--red); }
+.tag-blue { background: var(--accent-glow); color: var(--accent); }
+.tag-purple { background: var(--purple-dim); color: var(--purple); }
+
+.etf-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.badge-a { background: var(--green-dim); color: var(--green); }
+.badge-us { background: var(--purple-dim); color: var(--purple); }
+
+/* ========================================
+   Flow Box (step-by-step)
+   ======================================== */
+.flow-box {
+  background: rgba(96,165,250,0.05);
+  border: 1px solid rgba(96,165,250,0.12);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 2;
+}
+.flow-box .step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.flow-box .step:last-child { margin-bottom: 0; }
+.flow-box .step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ========================================
+   Iron Rules
+   ======================================== */
+.iron-rule {
+  background: rgba(248,113,113,0.06);
+  border: 1px solid rgba(248,113,113,0.15);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+.iron-rule::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--red), rgba(248,113,113,0.3));
+  border-radius: 3px 0 0 3px;
+}
+.iron-rule h4 {
+  color: var(--red);
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.iron-rule li {
+  font-size: 12px;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+/* ========================================
+   Massage / Danger Cards
+   ======================================== */
+.massage-card {
+  background: rgba(52,211,153,0.05);
+  border: 1px solid rgba(52,211,153,0.12);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  transition: all 0.2s;
+}
+.massage-card:hover {
+  border-color: rgba(52,211,153,0.2);
+  box-shadow: 0 0 20px rgba(52,211,153,0.05);
+}
+.massage-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--green), rgba(52,211,153,0.3));
+  border-radius: 3px 0 0 3px;
+}
+.massage-card h3 {
+  color: var(--green);
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.massage-card p, .massage-card li {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.danger-card {
+  background: rgba(248,113,113,0.04);
+  border: 1px solid rgba(248,113,113,0.12);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.danger-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--red), rgba(248,113,113,0.3));
+  border-radius: 3px 0 0 3px;
+}
+.danger-card h3 {
+  color: var(--red);
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.danger-card p, .danger-card li {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+/* ========================================
+   Quote Boxes
+   ======================================== */
+.quote-box {
+  background: rgba(96,165,250,0.04);
+  border: 1px solid rgba(96,165,250,0.1);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 12px 0;
+  position: relative;
+}
+.quote-box::before {
+  content: '\201C';
+  position: absolute;
+  top: -4px;
+  left: 10px;
+  font-size: 48px;
+  color: var(--accent);
+  opacity: 0.15;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.quote-box .quote {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-bright);
+  line-height: 1.8;
+  padding-left: 20px;
+}
+.quote-box .author {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: right;
+  margin-top: 8px;
+  padding-right: 4px;
+}
+
+/* ========================================
+   Decision Tree
+   ======================================== */
+.decision-tree {
+  font-size: 12px;
+  line-height: 2.3;
+  padding: 4px 0 4px 12px;
+  border-left: 2px solid var(--green);
+  margin: 8px 0;
+}
+.decision-tree.purple-tree {
+  border-left-color: var(--purple);
+}
+.decision-tree .tree-root {
+  color: var(--text-bright);
+  font-weight: 600;
+}
+.decision-tree .tree-branch {
+  padding-left: 20px;
+  color: var(--text-dim);
+}
+.decision-tree .tree-leaf {
+  padding-left: 40px;
+  color: var(--text);
+}
+.decision-tree .tree-highlight {
+  color: var(--green);
+  font-weight: 600;
+}
+.decision-tree .tree-warn {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* ========================================
+   Emoji Big
+   ======================================== */
+.emoji-big {
+  font-size: 36px;
+  text-align: center;
+  margin: 20px 0 16px;
+}
+
+/* ========================================
+   Divider
+   ======================================== */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  margin: 28px 0;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.footer-text {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--card-border);
+  opacity: 0.7;
+}
+
+.footer-nav {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (hover: none) {
+  .card:hover, .massage-card:hover, .danger-card:hover {
+    transform: none;
+    border-color: var(--card-border);
+    box-shadow: var(--card-shadow);
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.8;
-    padding: 16px;
-    max-width: 520px;
-    margin: 0 auto;
-  }
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    color: var(--accent);
-    text-decoration: none;
-    margin-bottom: 16px;
-    padding: 4px 0;
-  }
-  .back-link:hover { text-decoration: underline; }
-  h1 { font-size: 22px; color: var(--text-bright); margin-bottom: 4px; }
-  .subtitle { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
-  .section { margin-bottom: 24px; }
-  .section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 10px;
-    padding-left: 10px;
-    border-left: 3px solid var(--accent);
-  }
-  .section-title.green { border-left-color: var(--green); }
-  .section-title.yellow { border-left-color: var(--yellow); }
-  .section-title.red { border-left-color: var(--red); }
-  .section-title.purple { border-left-color: var(--purple); }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .card h3 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
-  .card h3.green { color: var(--green); }
-  .card h3.yellow { color: var(--yellow); }
-  .card h3.red { color: var(--red); }
-  .card h3.purple { color: var(--purple); }
-  .card p, .card li { font-size: 13px; color: var(--text); line-height: 1.9; }
-  .card ul, .card ol { padding-left: 18px; }
-  .card li { margin-bottom: 4px; }
-  .highlight { color: var(--yellow); font-weight: 600; }
-  .highlight-green { color: var(--green); font-weight: 600; }
-  .highlight-red { color: var(--red); font-weight: 600; }
-  table { width:100%; border-collapse: collapse; font-size: 12px; margin: 8px 0; }
-  th {
-    background: rgba(255,255,255,0.05);
-    padding: 6px 8px;
-    text-align: center;
-    color: var(--text-dim);
-    font-weight: 600;
-    border: 1px solid var(--border);
-  }
-  td {
-    padding: 5px 8px;
-    text-align: center;
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  .td-green { color: var(--green); font-weight: 600; }
-  .td-yellow { color: var(--yellow); font-weight: 600; }
-  .td-red { color: var(--red); font-weight: 600; }
-  .tag {
-    display: inline-block;
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 600;
-  }
-  .tag-green { background: rgba(63,185,80,0.2); color: var(--green); }
-  .tag-yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
-  .tag-red { background: rgba(248,81,73,0.2); color: var(--red); }
-  .tag-blue { background: rgba(88,166,255,0.2); color: var(--blue); }
-  .tag-purple { background: rgba(188,140,255,0.2); color: var(--purple); }
-  .flow-box {
-    background: rgba(88,166,255,0.06);
-    border: 1px solid rgba(88,166,255,0.15);
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin: 10px 0;
-    font-size: 13px;
-    line-height: 2;
-  }
-  .flow-box .step {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
-  .flow-box .step-num {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .iron-rule {
-    background: rgba(248,81,73,0.08);
-    border: 1px solid rgba(248,81,73,0.2);
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin: 10px 0;
-  }
-  .iron-rule h4 { color: var(--red); font-size: 13px; margin-bottom: 6px; }
-  .iron-rule li { font-size: 12px; }
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 24px 0;
-  }
-  .etf-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    margin-right: 4px;
-  }
-  .badge-a { background: rgba(63,185,80,0.15); color: var(--green); }
-  .badge-us { background: rgba(188,140,255,0.15); color: var(--purple); }
-  .massage-card {
-    background: rgba(63,185,80,0.05);
-    border: 1px solid rgba(63,185,80,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .massage-card h3 { color: var(--green); font-size: 14px; margin-bottom: 8px; }
-  .massage-card p, .massage-card li { font-size: 13px; line-height: 1.9; }
-  .danger-card {
-    background: rgba(248,81,73,0.05);
-    border: 1px solid rgba(248,81,73,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .danger-card h3 { color: var(--red); font-size: 14px; margin-bottom: 8px; }
-  .danger-card p, .danger-card li { font-size: 13px; line-height: 1.9; }
-  .quote-box {
-    background: rgba(88,166,255,0.06);
-    border: 1px solid rgba(88,166,255,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin: 12px 0;
-  }
-  .quote-box .quote {
-    font-size: 15px;
-    font-style: italic;
-    color: var(--text-bright);
-    line-height: 1.7;
-  }
-  .quote-box .author {
-    font-size: 12px;
-    color: var(--text-dim);
-    text-align: right;
-    margin-top: 6px;
-  }
-  .emoji-big {
-    font-size: 32px;
-    text-align: center;
-    margin: 16px 0;
-  }
+  .back-link:hover { transform: none; }
+}
 </style>
 </head>
 <body>
 
 <a class="back-link" href="index.html">← 返回控制台</a>
 
-<h1>📖 策略详情</h1>
-<div class="subtitle">三标的 · 双策略 · 月度执行</div>
+<div class="page-header">
+  <h1>策略详情</h1>
+  <div class="subtitle">三标的 · 双策略 · 月度执行</div>
+</div>
 
 <!-- ========== 一、策略总览 ========== -->
 
@@ -212,7 +543,7 @@
   <div class="section-title green">一、策略总览</div>
 
   <div class="card">
-    <h3 class="green">🎯 投资目标</h3>
+    <h3 class="green">投资目标</h3>
     <ul>
       <li>长期持有，<span class="highlight-green">低回撤</span>，复利增长</li>
       <li>年化目标：<span class="highlight-green">8-15%</span>（不追求暴利）</li>
@@ -222,7 +553,7 @@
   </div>
 
   <div class="card">
-    <h3>📊 三标的配置</h3>
+    <h3>三标的配置</h3>
     <ul>
       <li><span class="etf-badge badge-a">A股</span> <strong>红利低波 40%</strong>（012708 · 东证红利低波）</li>
       <li><span class="etf-badge badge-a">A股</span> <strong>价值100 40%</strong>（025497 · 国证价值100）</li>
@@ -232,7 +563,7 @@
   </div>
 
   <div class="card">
-    <h3>🧠 核心逻辑（一句话）</h3>
+    <h3>核心逻辑（一句话）</h3>
     <p><span class="highlight">低位多买，高位少买，强势区减仓，弱势区死扛。</span></p>
     <p style="margin-top:8px;">用数学纪律代替情绪决策，用时间换空间。</p>
   </div>
@@ -244,27 +575,31 @@
 
 <div class="section">
   <div class="section-title">二、A股策略：RSI21 + MA250</div>
-  <div class="subtitle" style="margin-bottom:12px; font-size:12px;">适用：红利低波 · 价值100</div>
+  <div class="section-desc">适用：红利低波 · 价值100</div>
 
   <div class="card">
-    <h3>📐 指标说明</h3>
-    <table>
-      <tr><th>指标</th><th>含义</th><th>作用</th></tr>
-      <tr><td><strong>RSI21</strong></td><td>21日相对强弱指数</td><td>判断"超买/超卖"</td></tr>
-      <tr><td><strong>MA250</strong></td><td>250日均线（≈年线）</td><td>判断"强势/弱势区"</td></tr>
-    </table>
+    <h3>指标说明</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>指标</th><th>含义</th><th>作用</th></tr>
+        <tr><td><strong>RSI21</strong></td><td>21日相对强弱指数</td><td>判断"超买/超卖"</td></tr>
+        <tr><td><strong>MA250</strong></td><td>250日均线（≈年线）</td><td>判断"强势/弱势区"</td></tr>
+      </table>
+    </div>
     <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">为什么是RSI21？与月度定投节奏匹配，过滤短期噪音。</p>
   </div>
 
   <div class="card">
-    <h3>🗺️ 市场分区规则</h3>
-    <table>
-      <tr><th>分区</th><th>条件</th><th>可执行操作</th></tr>
-      <tr><td class="td-green"><strong>强势区</strong></td><td>价格 ≥ MA250</td><td class="td-green">定投 + 减仓 + 回补</td></tr>
-      <tr><td class="td-red"><strong>弱势区</strong></td><td>价格 &lt; MA250</td><td class="td-red">只定投，不减仓，不回补</td></tr>
-    </table>
+    <h3>市场分区规则</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>分区</th><th>条件</th><th>可执行操作</th></tr>
+        <tr><td class="td-green"><strong>强势区</strong></td><td>价格 ≥ MA250</td><td class="td-green">定投 + 减仓 + 回补</td></tr>
+        <tr><td class="td-red"><strong>弱势区</strong></td><td>价格 &lt; MA250</td><td class="td-red">只定投，不减仓，不回补</td></tr>
+      </table>
+    </div>
     <div class="iron-rule">
-      <h4>⚡ 铁则：弱势区不减仓</h4>
+      <h4>铁则：弱势区不减仓</h4>
       <ul>
         <li>浮亏卖出 = 真亏 + 确认亏损</li>
         <li>红利/价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
@@ -274,48 +609,54 @@
   </div>
 
   <div class="card">
-    <h3 class="green">💰 A股定投梯度表</h3>
-    <table>
-      <tr><th>RSI21</th><th>强势区</th><th>弱势区</th></tr>
-      <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong></td><td class="td-green"><strong>1.5份</strong></td></tr>
-      <tr><td>40–47</td><td class="td-green"><strong>1.5份</strong></td><td class="td-green"><strong>1.2份</strong></td></tr>
-      <tr><td>48–52</td><td>1.0份</td><td>1.0份</td></tr>
-      <tr><td>53–60</td><td>0.8份</td><td>0.8份</td></tr>
-      <tr><td>61–65</td><td>0.5份</td><td>0.5份</td></tr>
-      <tr><td>66–71</td><td>0.3份</td><td>0.3份</td></tr>
-      <tr><td>≥72</td><td class="td-red">暂停</td><td class="td-red">暂停</td></tr>
-    </table>
+    <h3 class="green">A股定投梯度表</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>RSI21</th><th>强势区</th><th>弱势区</th></tr>
+        <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong></td><td class="td-green"><strong>1.5份</strong></td></tr>
+        <tr><td>40–47</td><td class="td-green"><strong>1.5份</strong></td><td class="td-green"><strong>1.2份</strong></td></tr>
+        <tr><td>48–52</td><td>1.0份</td><td>1.0份</td></tr>
+        <tr><td>53–60</td><td>0.8份</td><td>0.8份</td></tr>
+        <tr><td>61–65</td><td>0.5份</td><td>0.5份</td></tr>
+        <tr><td>66–71</td><td>0.3份</td><td>0.3份</td></tr>
+        <tr><td>≥72</td><td class="td-red">暂停</td><td class="td-red">暂停</td></tr>
+      </table>
+    </div>
     <p style="margin-top:6px; font-size:11px; color:var(--text-dim);">1份 = 基准定投额（你设定的每月基础金额）。强势区+低位 = 双倍加码。</p>
   </div>
 
   <div class="card">
-    <h3 class="yellow">📉 A股减仓规则</h3>
+    <h3 class="yellow">A股减仓规则</h3>
     <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足才可以减）：</div>
     <ol>
       <li>处于<span class="highlight-green">强势区</span>（价格 ≥ MA250）</li>
       <li>RSI21 ≥ <span class="highlight-red">65</span>（市场偏热）</li>
       <li>不在<span class="highlight">30天冷却期</span>内</li>
     </ol>
-    <table style="margin-top:10px;">
-      <tr><th>RSI21</th><th>减仓比例</th></tr>
-      <tr><td>65–71</td><td>减仓 <span class="td-yellow">15%</span>（动态仓部分）</td></tr>
-      <tr><td>≥72</td><td>减仓 <span class="td-red">30%</span>（动态仓部分）</td></tr>
-    </table>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>RSI21</th><th>减仓比例</th></tr>
+        <tr><td>65–71</td><td>减仓 <span class="td-yellow">15%</span>（动态仓部分）</td></tr>
+        <tr><td>≥72</td><td>减仓 <span class="td-red">30%</span>（动态仓部分）</td></tr>
+      </table>
+    </div>
     <p style="margin-top:8px; font-size:12px;">减仓对象：<span class="highlight">仅动态仓（30%部分）</span>，核心仓（70%）永不卖出。</p>
   </div>
 
   <div class="card">
-    <h3 class="green">📈 A股回补规则</h3>
+    <h3 class="green">A股回补规则</h3>
     <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足才可以回补）：</div>
     <ol>
       <li>处于<span class="highlight-green">强势区</span></li>
       <li>之前有减仓操作 + 减仓日期在<span class="highlight">30天冷却期外</span></li>
     </ol>
-    <table style="margin-top:10px;">
-      <tr><th>RSI21</th><th>回补比例</th></tr>
-      <tr><td>59–63</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
-      <tr><td>&lt;50</td><td>接回<span class="td-green">全部剩余</span></td></tr>
-    </table>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>RSI21</th><th>回补比例</th></tr>
+        <tr><td>59–63</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+        <tr><td>&lt;50</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+      </table>
+    </div>
     <p style="margin-top:8px; font-size:12px;">回补后重新计算30天冷却期。</p>
   </div>
 </div>
@@ -326,10 +667,10 @@
 
 <div class="section">
   <div class="section-title purple">三、美股策略：PE分位 + 回撤</div>
-  <div class="subtitle" style="margin-bottom:12px; font-size:12px;">适用：纳指100（159941）</div>
+  <div class="section-desc">适用：纳指100（159941）</div>
 
   <div class="card">
-    <h3 class="purple">📐 为什么纳指100不用RSI+MA250？</h3>
+    <h3 class="purple">为什么纳指100不用RSI+MA250？</h3>
     <ul>
       <li>纳指100长期牛市，MA250几乎永远在价格下方 → <span class="highlight">弱势区信号极少</span></li>
       <li>美股科技股波动大，RSI频繁超买超卖 → <span class="highlight">信号噪声太大</span></li>
@@ -338,36 +679,42 @@
   </div>
 
   <div class="card">
-    <h3 class="purple">📊 指标说明</h3>
-    <table>
-      <tr><th>指标</th><th>含义</th><th>数据来源</th></tr>
-      <tr><td><strong>PE分位</strong></td><td>当前PE(TTM)在近7年中的排名百分位</td><td>乐咕乐股</td></tr>
-      <tr><td><strong>高点回撤</strong></td><td>(当前价-阶段最高价)/阶段最高价</td><td>新浪财经</td></tr>
-    </table>
+    <h3 class="purple">指标说明</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>指标</th><th>含义</th><th>数据来源</th></tr>
+        <tr><td><strong>PE分位</strong></td><td>当前PE(TTM)在近7年中的排名百分位</td><td>乐咕乐股</td></tr>
+        <tr><td><strong>高点回撤</strong></td><td>(当前价-阶段最高价)/阶段最高价</td><td>新浪财经</td></tr>
+      </table>
+    </div>
   </div>
 
   <div class="card">
-    <h3 class="purple">🗺️ PE分位分区</h3>
-    <table>
-      <tr><th>PE分位</th><th>估值状态</th><th>定投动作</th></tr>
-      <tr><td class="td-green">&lt;30%</td><td>极度低估</td><td class="td-green"><strong>2.5份封顶</strong></td></tr>
-      <tr><td class="td-green">30–49%</td><td>低估</td><td class="td-green"><strong>1.8份</strong></td></tr>
-      <tr><td>50–69%</td><td>合理</td><td>1.0份（基准）</td></tr>
-      <tr><td class="td-yellow">70–84%</td><td>高估</td><td class="td-yellow">0.5份</td></tr>
-      <tr><td class="td-red">≥85%</td><td>极度高估</td><td class="td-red"><strong>暂停定投</strong></td></tr>
-    </table>
+    <h3 class="purple">PE分位分区</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>PE分位</th><th>估值状态</th><th>定投动作</th></tr>
+        <tr><td class="td-green">&lt;30%</td><td>极度低估</td><td class="td-green"><strong>2.5份封顶</strong></td></tr>
+        <tr><td class="td-green">30–49%</td><td>低估</td><td class="td-green"><strong>1.8份</strong></td></tr>
+        <tr><td>50–69%</td><td>合理</td><td>1.0份（基准）</td></tr>
+        <tr><td class="td-yellow">70–84%</td><td>高估</td><td class="td-yellow">0.5份</td></tr>
+        <tr><td class="td-red">≥85%</td><td>极度高估</td><td class="td-red"><strong>暂停定投</strong></td></tr>
+      </table>
+    </div>
   </div>
 
   <div class="card">
-    <h3 class="purple">🌊 回撤分区</h3>
-    <table>
-      <tr><th>回撤幅度</th><th>分区</th><th>对操作的影响</th></tr>
-      <tr><td>&lt;8%</td><td>正常波动</td><td>按PE分位正常执行</td></tr>
-      <tr><td>8–15%</td><td>中级回调</td><td>可适度加码</td></tr>
-      <tr><td class="td-red">&gt;15%</td><td><strong>深度回调</strong></td><td class="td-red">永不减仓！可大幅加码</td></tr>
-    </table>
+    <h3 class="purple">回撤分区</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>回撤幅度</th><th>分区</th><th>对操作的影响</th></tr>
+        <tr><td>&lt;8%</td><td>正常波动</td><td>按PE分位正常执行</td></tr>
+        <tr><td>8–15%</td><td>中级回调</td><td>可适度加码</td></tr>
+        <tr><td class="td-red">&gt;15%</td><td><strong>深度回调</strong></td><td class="td-red">永不减仓！可大幅加码</td></tr>
+      </table>
+    </div>
     <div class="iron-rule">
-      <h4>⚡ 铁则：深度回调（回撤&gt;15%）永不减仓</h4>
+      <h4>铁则：深度回调（回撤&gt;15%）永不减仓</h4>
       <ul>
         <li>深度回调时即使PE高估，也只暂停定投，<span class="highlight-red">绝不卖出</span></li>
         <li>历史数据：纳指100深度回调后6-12个月内多能收复失地</li>
@@ -376,34 +723,38 @@
   </div>
 
   <div class="card">
-    <h3 class="purple">📉 纳指减仓规则</h3>
+    <h3 class="purple">纳指减仓规则</h3>
     <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足）：</div>
     <ol>
       <li>PE分位 ≥ <span class="highlight-red">70%</span></li>
       <li>回撤 &lt; <span class="highlight-green">8%</span>（正常波动，非深度回调）</li>
       <li>不在<span class="highlight">60天冷却期</span>内</li>
     </ol>
-    <table style="margin-top:10px;">
-      <tr><th>PE分位</th><th>减仓比例</th></tr>
-      <tr><td>70–84%</td><td>减仓 <span class="td-yellow">15%</span></td></tr>
-      <tr><td>≥85%</td><td>减仓 <span class="td-red">30%</span></td></tr>
-    </table>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>PE分位</th><th>减仓比例</th></tr>
+        <tr><td>70–84%</td><td>减仓 <span class="td-yellow">15%</span></td></tr>
+        <tr><td>≥85%</td><td>减仓 <span class="td-red">30%</span></td></tr>
+      </table>
+    </div>
     <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">纳指冷却期60天（比A股长），因为美股波动大，避免频繁操作。</p>
   </div>
 
   <div class="card">
-    <h3 class="purple">📈 纳指回补规则</h3>
+    <h3 class="purple">纳指回补规则</h3>
     <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足）：</div>
     <ol>
       <li>PE分位 &lt; <span class="highlight-green">70%</span>（退出高估区）</li>
       <li>回撤 &lt; <span class="highlight-green">15%</span>（不在深度回调中）</li>
       <li>之前有减仓 + 减仓日期在<span class="highlight">60天冷却期外</span></li>
     </ol>
-    <table style="margin-top:10px;">
-      <tr><th>PE分位</th><th>回补比例</th></tr>
-      <tr><td>40–50%</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
-      <tr><td>&lt;40%</td><td>接回<span class="td-green">全部剩余</span></td></tr>
-    </table>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>PE分位</th><th>回补比例</th></tr>
+        <tr><td>40–50%</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+        <tr><td>&lt;40%</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -424,7 +775,7 @@
   </div>
 
   <div class="card">
-    <h3 class="yellow">⏰ 为什么是21日？</h3>
+    <h3 class="yellow">为什么是21日？</h3>
     <ul>
       <li>避开月初（资金面紧张）和月末（机构结算）</li>
       <li>与工资现金流匹配（多数人到账时间在15-20日）</li>
@@ -433,7 +784,7 @@
   </div>
 
   <div class="card">
-    <h3>📊 "一份"是多少钱？</h3>
+    <h3>"一份"是多少钱？</h3>
     <p>由你自己决定。建议：</p>
     <ul>
       <li>先计算每月可用于定投的<span class="highlight-green">闲钱总额</span></li>
@@ -452,28 +803,28 @@
   <div class="section-title">五、操作逻辑决策树</div>
 
   <div class="card">
-    <h3 class="green">🌱 A股标的决策树</h3>
-    <div style="font-size:12px; line-height:2.2; padding-left:8px; border-left:2px solid var(--green); margin:8px 0;">
-      <div>当前价格 vs MA250 → 判断强势区/弱势区</div>
-      <div style="padding-left:16px; color:var(--text-dim);">├─ 弱势区 → 只定投，不减仓，不回补</div>
-      <div style="padding-left:16px; color:var(--text-dim);">└─ 强势区 → 继续判断...</div>
-      <div style="padding-left:32px;">→ 看RSI21 → 决定定投几份</div>
-      <div style="padding-left:32px;">→ RSI≥65 + 不在冷却期 → 考虑减仓</div>
-      <div style="padding-left:32px;">→ 之前减过 + RSI回落 + 冷却期已过 → 考虑回补</div>
+    <h3 class="green">A股标的决策树</h3>
+    <div class="decision-tree">
+      <div class="tree-root">当前价格 vs MA250 → 判断强势区/弱势区</div>
+      <div class="tree-branch">├─ 弱势区 → 只定投，不减仓，不回补</div>
+      <div class="tree-branch">└─ 强势区 → 继续判断...</div>
+      <div class="tree-leaf">→ 看RSI21 → 决定定投几份</div>
+      <div class="tree-leaf">→ RSI≥65 + 不在冷却期 → 考虑减仓</div>
+      <div class="tree-leaf">→ 之前减过 + RSI回落 + 冷却期已过 → 考虑回补</div>
     </div>
   </div>
 
   <div class="card">
-    <h3 class="purple">🌎 纳指100决策树</h3>
-    <div style="font-size:12px; line-height:2.2; padding-left:8px; border-left:2px solid var(--purple); margin:8px 0;">
-      <div>看PE分位 → 判断估值状态</div>
-      <div style="padding-left:16px; color:var(--text-dim);">├─ PE≥85% → 暂停定投，考虑减仓30%</div>
-      <div style="padding-left:16px; color:var(--text-dim);">├─ PE 70-84% → 0.5份，考虑减仓15%</div>
-      <div style="padding-left:16px; color:var(--text-dim);">├─ PE 50-69% → 1份基准</div>
-      <div style="padding-left:16px; color:var(--text-green);">└─ PE&lt;50% → 加码定投</div>
-      <div>看回撤幅度 → 判断是否深度回调</div>
-      <div style="padding-left:16px; color:var(--red);">→ 回撤>15% → 永不减仓！可加码</div>
-      <div>减仓后 → 看PE分位回落 + 冷却期过 → 考虑回补</div>
+    <h3 class="purple">纳指100决策树</h3>
+    <div class="decision-tree purple-tree">
+      <div class="tree-root">看PE分位 → 判断估值状态</div>
+      <div class="tree-branch">├─ PE≥85% → 暂停定投，考虑减仓30%</div>
+      <div class="tree-branch">├─ PE 70-84% → 0.5份，考虑减仓15%</div>
+      <div class="tree-branch">├─ PE 50-69% → 1份基准</div>
+      <div class="tree-branch">└─ PE&lt;50% → 加码定投</div>
+      <div class="tree-root" style="margin-top:6px;">看回撤幅度 → 判断是否深度回调</div>
+      <div class="tree-warn">→ 回撤>15% → 永不减仓！可加码</div>
+      <div class="tree-leaf">减仓后 → 看PE分位回落 + 冷却期过 → 考虑回补</div>
     </div>
   </div>
 </div>
@@ -486,7 +837,7 @@
   <div class="section-title red">六、铁则汇总（必须牢记）</div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则1：3年以上闲钱</h4>
+    <h4>铁则1：3年以上闲钱</h4>
     <ul>
       <li>短期要用的钱不进市场</li>
       <li>定投的本质是用时间换空间，需要足够长的时间维度</li>
@@ -494,7 +845,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则2：无杠杆，不融资</h4>
+    <h4>铁则2：无杠杆，不融资</h4>
     <ul>
       <li>不用融资融券，不做杠杆ETF</li>
       <li>复利的前提是"还在场上"，杠杆会让你被迫离场</li>
@@ -502,7 +853,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则3：每月只操作1次</h4>
+    <h4>铁则3：每月只操作1次</h4>
     <ul>
       <li>只在每月21日操作（遇节假日顺延）</li>
       <li>非操作日不看净值，不操作，不后悔</li>
@@ -510,7 +861,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则4：弱势区（价格&lt;MA250）不减仓</h4>
+    <h4>铁则4：弱势区（价格&lt;MA250）不减仓</h4>
     <ul>
       <li>浮亏不是真亏，卖出才是</li>
       <li>弱势区只做一件事：按表定投</li>
@@ -518,7 +869,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则5：深度回调（回撤&gt;15%）永不减仓</h4>
+    <h4>铁则5：深度回调（回撤&gt;15%）永不减仓</h4>
     <ul>
       <li>适用于纳指100</li>
       <li>即使PE高估，深度回调时也只暂停定投，不卖出</li>
@@ -526,7 +877,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则6：冷却期内不重复操作</h4>
+    <h4>铁则6：冷却期内不重复操作</h4>
     <ul>
       <li>A股减仓后30天内不回补（回补时重新计时）</li>
       <li>纳指减仓后60天内不回补（美股波动大，冷却期更长）</li>
@@ -535,7 +886,7 @@
   </div>
 
   <div class="iron-rule">
-    <h4>⚡ 铁则7：不追涨，不抄底，按表操作</h4>
+    <h4>铁则7：不追涨，不抄底，按表操作</h4>
     <ul>
       <li>策略里没有"追涨"选项，也没有"抄底"选项</li>
       <li>所有的买入/卖出都按RSI/PE分位的既定梯度执行</li>
@@ -552,27 +903,27 @@
   <div class="section-title">七、常见问题</div>
 
   <div class="card">
-    <h3>❓ 红利低波没有ETF，怎么参考512890？</h3>
+    <h3>红利低波没有ETF，怎么参考512890？</h3>
     <p>012708（东方红红利低波A）是指数基金，跟踪931446（东证红利低波指数）。512890（红利低波ETF）也跟踪同一指数，流动性更好，数据更及时。所以用512890的行情数据来<span class="highlight">替代参考</span>，实际操作中买入/卖出的是012708。</p>
   </div>
 
   <div class="card">
-    <h3>❓ 价值100ETF（159263）上市时间短，MA250准吗？</h3>
+    <h3>价值100ETF（159263）上市时间短，MA250准吗？</h3>
     <p>159263于2025年7月上市，目前只有约205个交易日数据，不足250天。策略会自动检测：数据不足250天时，MA250标记为<span class="highlight">"参考值"</span>，同时用更短均线作为辅助判断，不会影响定投建议的准确性。</p>
   </div>
 
   <div class="card">
-    <h3>❓ 纳指100 PE分位用近7年够吗？</h3>
+    <h3>纳指100 PE分位用近7年够吗？</h3>
     <p>近7年（约1650个交易日）覆盖了：2018年关税战、2020年疫情、2022年加息周期、2023年AI爆发。包含了多种市场环境下的PE分布，足够用于分位计算。数据太少会失真，太多会稀释近期状态。</p>
   </div>
 
   <div class="card">
-    <h3>❓ 如果三只标的都触发减仓，怎么办？</h3>
+    <h3>如果三只标的都触发减仓，怎么办？</h3>
     <p>按策略分别执行，互不影响。每只标的的<span class="highlight">冷却期独立计算</span>。减仓比例也是针对每只标的的动态仓（30%部分）分别操作，不是整体仓位一刀切。</p>
   </div>
 
   <div class="card">
-    <h3>❓ 数据是实时更新的吗？</h3>
+    <h3>数据是实时更新的吗？</h3>
     <p>数据每30分钟自动更新一次（GitHub Actions定时任务）。A股数据更新时间为交易日9:30-15:00，纳指100数据更新时间为北京时间21:00-次日5:00。网页也每30分钟自动刷新数据。</p>
   </div>
 </div>
@@ -587,13 +938,13 @@
   <div class="emoji-big">🧘</div>
 
   <div class="massage-card">
-    <h3>😰 "我亏了好多钱，要不要跑？"</h3>
+    <h3>"我亏了好多钱，要不要跑？"</h3>
     <p>你看到的"亏损"是浮亏，不是真亏。只要你不在弱势区卖出，这个数字没有任何意义。</p>
     <p style="margin-top:6px;">红利低波ETF的成分股每年分红4-5%，即使价格不涨，你的份额也在积累越来越多的分红权。<span class="highlight-green">时间的玫瑰会绽放。</span></p>
   </div>
 
   <div class="massage-card">
-    <h3>😱 "大盘暴跌，我慌了"</h3>
+    <h3>"大盘暴跌，我慌了"</h3>
     <p>暴跌恰恰是策略发挥威力的时候：</p>
     <ul>
       <li>RSI跌破40 → 你自动加仓到1.5-2份</li>
@@ -604,25 +955,25 @@
   </div>
 
   <div class="massage-card">
-    <h3>😤 "涨了这么多，我要不要先卖了锁利？"</h3>
+    <h3>"涨了这么多，我要不要先卖了锁利？"</h3>
     <p>如果你在强势区、RSI≥65、不在冷却期——策略已经告诉你减仓了，按策略执行。</p>
     <p style="margin-top:6px;">如果你不满足减仓条件——说明市场还没到过热，耐心持有。<span class="highlight">提前下车是最常见的踏空原因。</span></p>
   </div>
 
   <div class="massage-card">
-    <h3>😩 "为什么我的策略跑不赢别人？"</h3>
+    <h3>"为什么我的策略跑不赢别人？"</h3>
     <p>你看到的"别人"是幸存者偏差。赚了的人会晒，亏了的人沉默。</p>
     <p style="margin-top:6px;">你的策略目标不是"跑赢所有人"，而是<span class="highlight-green">用最小的心理压力获得合理的长期回报</span>。年化8-15%，持续20年，结果是惊人的。</p>
   </div>
 
   <div class="massage-card">
-    <h3>🥱 "定投太无聊了，我想做点刺激的"</h3>
+    <h3>"定投太无聊了，我想做点刺激的"</h3>
     <p>无聊 = 纪律 = 赚钱。刺激 = 情绪 = 亏钱。</p>
     <p style="margin-top:6px;">如果你真的手痒，拿总资金的5%去做短线，亏光了也无所谓。剩下的95%严格按策略走。<span class="highlight">让你的"赌性"和"纪律"井水不犯河水。</span></p>
   </div>
 
   <div class="massage-card">
-    <h3>😴 "我坚持不下去了"</h3>
+    <h3>"我坚持不下去了"</h3>
     <p>每个人都会经历这个时刻。但你想想：</p>
     <ul>
       <li>你在弱势区坚持定投，每一次买入都在收集更便宜的筹码</li>
@@ -644,7 +995,7 @@
   <div class="section-title red">九、极端行情应对手册</div>
 
   <div class="danger-card">
-    <h3>📉 单日暴跌 &gt;5%</h3>
+    <h3>单日暴跌 &gt;5%</h3>
     <ul>
       <li><span class="tag tag-red">不做</span> 当天不要任何操作，关闭行情软件</li>
       <li><span class="tag tag-green">等待</span> 等到21日操作日，看RSI和MA250再决策</li>
@@ -653,7 +1004,7 @@
   </div>
 
   <div class="danger-card">
-    <h3>📉 连续下跌一周以上</h3>
+    <h3>连续下跌一周以上</h3>
     <ul>
       <li>检查是否进入弱势区 → 如果是，<span class="highlight-green">按定投表加倍投入</span></li>
       <li>检查RSI是否跌破40 → 如果是，下次操作日加码到1.5-2份</li>
@@ -662,7 +1013,7 @@
   </div>
 
   <div class="danger-card">
-    <h3>🔥 连续暴涨，FOMO严重</h3>
+    <h3>连续暴涨，FOMO严重</h3>
     <ul>
       <li>检查RSI → 如果≥65，下次操作日按策略减仓15%-30%</li>
       <li>如果RSI在50-64区间，<span class="highlight">什么都不做</span>，继续持有</li>
@@ -671,7 +1022,7 @@
   </div>
 
   <div class="danger-card">
-    <h3>🌊 全市场恐慌（千股跌停级别）</h3>
+    <h3>全市场恐慌（千股跌停级别）</h3>
     <ul>
       <li>这是<span class="highlight-green">十年一遇的加仓机会</span></li>
       <li>RSI很可能跌到40以下，下次操作日直接2份</li>
@@ -681,7 +1032,7 @@
   </div>
 
   <div class="danger-card">
-    <h3>🇺🇸 纳指100单日暴跌 &gt;3%（美股熔断级）</h3>
+    <h3>纳指100单日暴跌 &gt;3%（美股熔断级）</h3>
     <ul>
       <li><span class="tag tag-red">不做</span> 当天不操作，尤其不要恐慌卖出</li>
       <li><span class="tag tag-green">等待</span> 等到21日操作日，看PE分位和回撤幅度再决策</li>
@@ -691,7 +1042,7 @@
   </div>
 
   <div class="danger-card">
-    <h3>📉 纳指100持续阴跌，PE分位持续走低</h3>
+    <h3>纳指100持续阴跌，PE分位持续走低</h3>
     <ul>
       <li>PE分位跌到30%以下 → 极度低估，加码到2-2.5份</li>
       <li>PE分位跌到50%以下 → 低估区，适度加码</li>
@@ -758,13 +1109,11 @@
   </div>
 </div>
 
-<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:24px;">
-  🌱 慢慢变富，才是最快的路
-</p>
+<div class="footer-nav">
+  <a class="back-link" href="index.html">← 返回控制台</a>
+</div>
 
-<p style="text-align:center; margin-top:12px;">
-  <a class="back-link" href="index.html" style="font-size:14px;">← 返回控制台</a>
-</p>
+<div class="footer-text">慢慢变富，才是最快的路 🌱</div>
 
 </body>
 </html>
