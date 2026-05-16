@@ -105,6 +105,12 @@ body {
   .hist-action { font-size:10px; margin-left:auto; }
   .ha-reduce { color:var(--red); }
   .ha-rebuy { color:var(--yellow); }
+  .ma-status { display:flex; gap:12px; flex-wrap:wrap; padding:6px 0 2px; font-size:11px; }
+  .ma-pos { font-weight:600; }
+  .ma-pos.up { color:var(--red); }
+  .ma-pos.down { color:var(--green); }
+  .ma-dev { color:var(--text-dim); }
+  .ma-days { color:var(--text-dim); }
 </style>
 </head>
 <body>
@@ -146,8 +152,9 @@ body {
       <div class="metric-box"><div class="metric-label">MA250</div><div class="metric-value" id="ma0">--</div></div>
       <div class="metric-box"><div class="metric-label">RSI21</div><div class="metric-value" id="rsi0">--</div></div>
     </div>
+    <div class="ma-status" id="maStat0"></div>
   </div>
-  <div class="card">
+ <div class="card">
     <div class="signal-bar">
       <div class="signal-dot green" id="dot0"></div>
       <span class="signal-label" id="sl0">--</span>
@@ -179,8 +186,9 @@ body {
       <div class="metric-box"><div class="metric-label">MA250</div><div class="metric-value" id="ma1">--</div></div>
       <div class="metric-box"><div class="metric-label">RSI21</div><div class="metric-value" id="rsi1">--</div></div>
     </div>
+    <div class="ma-status" id="maStat1"></div>
   </div>
-  <div class="card">
+ <div class="card">
     <div class="signal-bar">
       <div class="signal-dot green" id="dot1"></div>
       <span class="signal-label" id="sl1">--</span>
@@ -285,6 +293,36 @@ function updateCard(etf, idx) {
   } else {
     document.getElementById('ma' + id).textContent = (etf.ma250 != null) ? etf.ma250.toFixed(4) : '--';
     document.getElementById('rsi' + id).textContent = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
+  }
+
+  /* MA250状态（仅RSI+MA250标的） */
+  var maStatEl = document.getElementById('maStat' + id);
+  if (maStatEl && !isPE) {
+    var pct = etf.price_vs_ma250_pct;
+    var posText, posCls, devText, daysText;
+    if (pct == null) {
+      posText = '--';
+      posCls = '';
+      devText = '--';
+      daysText = '';
+    } else if (pct >= 0) {
+      posText = '高于MA250';
+      posCls = 'up';
+      devText = '+' + pct.toFixed(2) + '%';
+      var dAbove = etf.days_above_ma250 || 0;
+      daysText = '站稳' + dAbove + '天';
+    } else {
+      posText = '低于MA250';
+      posCls = 'down';
+      devText = pct.toFixed(2) + '%';
+      var dBelow = etf.days_below_ma250 || 0;
+      daysText = '跌破' + dBelow + '天';
+    }
+    maStatEl.innerHTML = '<span class="ma-pos ' + posCls + '">' + posText + '</span>'
+                       + '<span class="ma-dev">偏离 ' + devText + '</span>'
+                       + '<span class="ma-days">' + daysText + '</span>';
+  } else if (maStatEl) {
+    maStatEl.innerHTML = '';
   }
 
   /* 信号灯 */
