@@ -108,7 +108,7 @@ body {
 /* ========================================
    Section
    ======================================== */
-.section { margin-bottom: 28px; }
+.section { margin-bottom: 24px; }
 .section-title {
   font-size: 16px;
   font-weight: 700;
@@ -155,8 +155,8 @@ body {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
   box-shadow: var(--card-shadow);
   transition: all 0.25s ease;
   position: relative;
@@ -510,37 +510,6 @@ tr:last-child td { border-bottom: none; }
 /* ========================================
    Decision Tree
    ======================================== */
-.decision-tree {
-  font-size: 12px;
-  line-height: 2.3;
-  padding: 4px 0 4px 12px;
-  border-left: 2px solid var(--green);
-  margin: 8px 0;
-}
-.decision-tree.purple-tree {
-  border-left-color: var(--purple);
-}
-.decision-tree .tree-root {
-  color: var(--text-bright);
-  font-weight: 600;
-}
-.decision-tree .tree-branch {
-  padding-left: 20px;
-  color: var(--text-dim);
-}
-.decision-tree .tree-leaf {
-  padding-left: 40px;
-  color: var(--text);
-}
-.decision-tree .tree-highlight {
-  color: var(--green);
-  font-weight: 600;
-}
-.decision-tree .tree-warn {
-  color: var(--red);
-  font-weight: 600;
-}
-
 /* ========================================
    Emoji Big
    ======================================== */
@@ -599,13 +568,178 @@ tr:last-child td { border-bottom: none; }
 }
 
 /* ========================================
-   Divider
+   Back to Top
    ======================================== */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-  margin: 28px 0;
+.back-top {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--accent);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
 }
+.back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-top:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translateY(-2px);
+}
+@media (min-width: 600px) {
+  .back-top { right: calc((100vw - 520px) / 2 + 16px); }
+}
+
+/* ========================================
+   Section Number Badge
+   ======================================== */
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.section-title .st-badge {
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+.section-title.green .st-badge {
+  background: var(--green-dim);
+  color: var(--green);
+}
+.section-title.yellow .st-badge {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+.section-title.red .st-badge {
+  background: var(--red-dim);
+  color: var(--red);
+}
+.section-title.purple .st-badge {
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+
+/* ========================================
+   Decision Tree (升级版)
+   ======================================== */
+.decision-tree {
+  font-size: 12px;
+  line-height: 2.3;
+  padding: 4px 0 4px 4px;
+  margin: 8px 0;
+}
+.decision-tree .dt-root {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.decision-tree .dt-root .dt-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.decision-tree .dt-root .dt-text {
+  color: var(--text-bright);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.decision-tree .dt-branch {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 5px 12px 5px 28px;
+  border-left: 2px solid var(--card-border);
+  margin-left: 12px;
+  position: relative;
+}
+.decision-tree .dt-branch::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 50%;
+  width: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.decision-tree .dt-branch:last-child::before {
+  bottom: calc(50% + 5px);
+}
+.decision-tree .dt-branch .dt-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+.decision-tree .dt-branch .dt-text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.decision-tree .dt-highlight .dt-text {
+  color: var(--green);
+  font-weight: 600;
+}
+.decision-tree .dt-warn .dt-text {
+  color: var(--red);
+  font-weight: 600;
+}
+.decision-tree.purple-tree .dt-root {
+  border-color: rgba(167,139,250,0.12);
+  background: rgba(167,139,250,0.03);
+}
+.decision-tree.purple-tree .dt-branch {
+  border-left-color: rgba(167,139,250,0.2);
+}
+
+/* ========================================
+   Flow Box Hover
+   ======================================== */
+.flow-box .step-num {
+  transition: all 0.25s ease;
+}
+.flow-box .step:hover .step-num {
+  transform: scale(1.1);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* ========================================
+   Section spacing adjustments
+   ======================================== */
+.section { margin-bottom: 24px; }
+.divider { margin: 24px 0; }
+.card { margin-bottom: 10px; padding: 14px; }
 
 /* ========================================
    Footer
@@ -664,7 +798,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 一、策略总览 ========== -->
 
 <div class="section" id="overview">
-  <div class="section-title green">📊 策略总览</div>
+  <div class="section-title green"><span class="st-badge">01</span>📊 策略总览</div>
   <div class="section-desc">投资目标 · 配置比例 · 核心逻辑</div>
 
   <div class="card">
@@ -708,7 +842,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 二、A股策略：RSI21+MA250 ========== -->
 
 <div class="section" id="a-share">
-  <div class="section-title">📈 A股策略：RSI21 + MA250</div>
+  <div class="section-title"><span class="st-badge">02</span>📈 A股策略：RSI21 + MA250</div>
   <div class="section-desc">适用：红利低波 · 价值100 · 本月定投份数由此决定</div>
 
   <div class="card">
@@ -810,7 +944,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 三、美股策略：PE分位+回撤 ========== -->
 
 <div class="section" id="us">
-  <div class="section-title purple">🇺🇸 美股策略：PE分位 + 回撤</div>
+  <div class="section-title purple"><span class="st-badge">03</span>🇺🇸 美股策略：PE分位 + 回撤</div>
   <div class="section-desc">适用：纳指100（159941）· 估值+回调双维度判断</div>
 
   <div class="card">
@@ -921,7 +1055,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 四、执行方法 ========== -->
 
 <div class="section" id="execute">
-  <div class="section-title yellow">📅 执行方法</div>
+  <div class="section-title yellow"><span class="st-badge">04</span>📅 执行方法</div>
   <div class="section-desc">每月21日操作 · 遇节假日顺延</div>
 
   <div class="flow-box">
@@ -959,32 +1093,32 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 五、操作逻辑决策树 ========== -->
 
 <div class="section" id="decision-tree">
-  <div class="section-title">🌳 操作逻辑决策树</div>
+  <div class="section-title"><span class="st-badge">05</span>🌳 操作逻辑决策树</div>
   <div class="section-desc">快速查看如何根据指标做出操作决策</div>
 
   <div class="card">
     <h3 class="green">A股标的决策树</h3>
     <div class="decision-tree">
-      <div class="tree-root">判断：价格 vs MA250 → 强势区/弱势区</div>
-      <div class="tree-branch">├─ <span class="tree-warn">弱势区</span> → 只定投，不减仓，不回补</div>
-      <div class="tree-branch">└─ <span class="tree-highlight">强势区</span> → 三个方向：</div>
-      <div class="tree-leaf"> └─ RSI21 → 按表定投几份</div>
-      <div class="tree-leaf"> └─ RSI≥65 + 冷却外 → 减仓15-30%</div>
-      <div class="tree-leaf"> └─ 之前减过 + RSI回落 + 冷却过 → 回补</div>
+      <div class="dt-root"><span class="dt-icon">🎯</span><span class="dt-text">判断：价格 vs MA250 → 强势区 / 弱势区</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">弱势区 → 只定投，不减仓，不回补</span></div>
+      <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">强势区 → 三个方向：</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">RSI21 → 按表定投几份</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">RSI≥65 + 冷却外 → 减仓15-30%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">之前减过 + RSI回落 + 冷却过 → 回补</span></div>
     </div>
   </div>
 
   <div class="card">
     <h3 class="purple">纳指100决策树</h3>
     <div class="decision-tree purple-tree">
-      <div class="tree-root">第一步：看 PE分位 → 判断估值</div>
-      <div class="tree-branch">├─ <span class="tree-warn">≥85%</span> → 暂停定投，减仓30%</div>
-      <div class="tree-branch">├─ 70-84% → 0.5份，减仓15%</div>
-      <div class="tree-branch">├─ 50-69% → 1份基准</div>
-      <div class="tree-branch">└─ <span class="tree-highlight">&lt;50%</span> → 加码定投</div>
-      <div class="tree-root" style="margin-top:8px;">第二步：看 回撤幅度 → 是否深度回调</div>
-      <div class="tree-warn">└─ 回撤&gt;15% → 永不减仓！可加码</div>
-      <div class="tree-leaf">减仓后 → PE分位回落 + 冷却期过 → 回补</div>
+      <div class="dt-root"><span class="dt-icon">📊</span><span class="dt-text">第一步：看 PE分位 → 判断估值</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">≥85% → 暂停定投，减仓30%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">70-84% → 0.5份，减仓15%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--text-dim);"></span><span class="dt-text">50-69% → 1份基准</span></div>
+      <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">&lt;50% → 加码定投</span></div>
+      <div class="dt-root" style="margin-top:8px;"><span class="dt-icon">📉</span><span class="dt-text">第二步：看 回撤幅度 → 是否深度回调</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">回撤&gt;15% → 永不减仓！可加码</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">减仓后 → PE分位回落 + 冷却期过 → 回补</span></div>
     </div>
   </div>
 </div>
@@ -994,7 +1128,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 六、铁则汇总 ========== -->
 
 <div class="section" id="rules">
-  <div class="section-title red">⚠️ 铁则汇总</div>
+  <div class="section-title red"><span class="st-badge">06</span>⚠️ 铁则汇总</div>
   <div class="section-desc">以下7条铁则是策略的底线，任何时候都不能打破。</div>
 
   <div class="rules-grid">
@@ -1042,7 +1176,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 七、常见问题 ========== -->
 
 <div class="section" id="faq">
-  <div class="section-title">❓ 常见问题</div>
+  <div class="section-title"><span class="st-badge">07</span>❓ 常见问题</div>
 
   <div class="card">
     <h3>🔹 红利低波没有ETF，怎么参考512890？</h3>
@@ -1075,7 +1209,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 八、心理按摩室 ========== -->
 
 <div class="section" id="massage">
-  <div class="section-title yellow">🧘 心理按摩室</div>
+  <div class="section-title yellow"><span class="st-badge">08</span>🧘 心理按摩室</div>
   <div class="section-desc">坚持不下去的时候，来看一眼</div>
 
   <div class="emoji-big">🧘</div>
@@ -1135,7 +1269,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 九、极端行情应对手册 ========== -->
 
 <div class="section" id="crisis">
-  <div class="section-title red">🚨 极端行情应对手册</div>
+  <div class="section-title red"><span class="st-badge">09</span>🚨 极端行情应对手册</div>
 
   <div class="danger-card">
     <h3>📉 单日暴跌 &gt;5%</h3>
@@ -1200,7 +1334,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 十、投资大师的话 ========== -->
 
 <div class="section">
-  <div class="section-title">💬 投资大师的话</div>
+  <div class="section-title"><span class="st-badge">10</span>💬 投资大师的话</div>
   <div class="section-desc">经典语录，常读常新</div>
 
   <div class="quote-box" style="border-left:3px solid var(--green);">
@@ -1239,7 +1373,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 十一、给自己的承诺 ========== -->
 
 <div class="section">
-  <div class="section-title green">✅ 给自己的承诺</div>
+  <div class="section-title green"><span class="st-badge">11</span>✅ 给自己的承诺</div>
   <div class="section-desc">每次打开，在心里默念</div>
   <div class="card">
     <p>每次打开这个页面，在心里默念：</p>
@@ -1259,6 +1393,17 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <div class="footer-text">慢慢变富，才是最快的路 🌱</div>
+
+<!-- 返回顶部按钮 -->
+<div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+/* 返回顶部按钮显隐 */
+var bt = document.getElementById('backTop');
+window.addEventListener('scroll', function() {
+  bt.classList.toggle('visible', window.scrollY > 300);
+});
+</script>
 
 </body>
 </html>

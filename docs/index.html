@@ -58,8 +58,8 @@ body {
    ======================================== */
 .header {
   text-align: center;
-  padding: 20px 0 16px;
-  margin-bottom: 16px;
+  padding: 16px 0 12px;
+  margin-bottom: 12px;
   position: relative;
 }
 .header::after {
@@ -87,37 +87,51 @@ body {
   color: var(--text-dim);
   letter-spacing: 0.3px;
 }
+.header-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
 .live-clock {
-  font-size: 22px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-bright);
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
-  margin-top: 8px;
   font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
 }
 .live-clock .date-part {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
-  margin-left: 8px;
+  margin-left: 6px;
   font-weight: 400;
 }
 .live-clock .sep {
   animation: blink 1s step-end infinite;
 }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-.header-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px; }
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
 
 /* 操作日提醒 */
 .next-ops-day {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-top: 8px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 .next-ops-day.today {
   background: var(--green-dim);
@@ -141,7 +155,6 @@ body {
   gap: 4px;
   font-size: 11px;
   color: var(--text-dim);
-  margin-top: 8px;
   font-variant-numeric: tabular-nums;
 }
 .update-time::before {
@@ -254,8 +267,8 @@ body {
    ======================================== */
 .val-bar {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 14px;
   overflow-x: auto;
   padding: 2px;
   scrollbar-width: none;
@@ -264,7 +277,7 @@ body {
 .val-card {
   flex: 1;
   min-width: 0;
-  padding: 10px 8px 8px;
+  padding: 8px 6px 6px;
   border-radius: var(--radius);
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -283,31 +296,31 @@ body {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
 }
 .val-card .vc-name {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-dim);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 /* 建议定投份数 - 估值横条内 */
 .val-card .vc-invest {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-bright);
   font-variant-numeric: tabular-nums;
-  margin: 2px 0;
+  margin: 1px 0 2px;
 }
 .val-card .vc-zone {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 1px;
   letter-spacing: 0.2px;
 }
 .val-card .vc-sub {
   font-size: 9px;
   color: var(--text-dim);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 .vc-green { color: var(--green); }
 .vc-yellow { color: var(--yellow); }
@@ -589,26 +602,48 @@ body {
    ======================================== */
 .ma-status {
   display: flex;
-  gap: 12px;
+  gap: 6px;
   flex-wrap: wrap;
-  padding: 6px 0 2px;
+  padding: 8px 0 2px;
   font-size: 11px;
 }
 .ma-pos { font-weight: 600; }
+.ma-pos.neutral {
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 10px;
+  border-radius: 4px;
+}
 .ma-pos.up {
   color: var(--red);
   background: var(--red-dim);
-  padding: 1px 8px;
+  padding: 2px 10px;
   border-radius: 4px;
 }
 .ma-pos.down {
   color: var(--green);
   background: var(--green-dim);
-  padding: 1px 8px;
+  padding: 2px 10px;
   border-radius: 4px;
 }
-.ma-dev { color: var(--text-dim); }
-.ma-days { color: var(--text-dim); }
+.ma-dev {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text-dim);
+}
+.ma-days {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--accent-glow);
+  color: var(--accent);
+}
 .drawdown-info {
   margin-top: 8px;
   font-size: 11px;
@@ -848,12 +883,14 @@ html { scroll-behavior: smooth; }
 <div class="header">
   <h1>价值投资控制台</h1>
   <div class="subtitle">RSI21+MA250 / PE+回撤 · 三标的策略</div>
-  <div class="live-clock" id="liveClock">--:--:--</div>
-  <div class="next-ops-day" id="nextOpsDay"></div>
+  <div class="header-meta">
+    <span class="live-clock" id="liveClock">--:--:--</span>
+    <span class="next-ops-day" id="nextOpsDay"></span>
+  </div>
   <div class="header-row">
+    <div class="update-time" id="updateTime">加载中...</div>
     <a class="guide-btn" href="guide.html">📖 策略详情</a>
   </div>
-  <div class="update-time" id="updateTime">加载中...</div>
 </div>
 
 <div class="val-bar" id="valBar">
@@ -1072,7 +1109,7 @@ function updateCard(etf, idx) {
   if (maStatEl && !isPE) {
     var mPct = etf.price_vs_ma250_pct;
     if (mPct == null) {
-      maStatEl.innerHTML = '<span class="ma-pos">数据不足</span>';
+      maStatEl.innerHTML = '<span class="ma-pos neutral">数据不足</span>';
     } else if (mPct >= 0) {
       var days = etf.days_above_ma250 || 0;
       maStatEl.innerHTML = '<span class="ma-pos up">高于MA250</span>'
