@@ -206,7 +206,7 @@ body {
 }
 
 /* ========================================
-   Weight Tags
+   Weight Graphic Bar
    ======================================== */
 .weight-label {
   text-align: center;
@@ -215,26 +215,57 @@ body {
   margin-bottom: 8px;
   letter-spacing: 0.5px;
 }
-.weight-bar {
-  display: flex;
-  gap: 8px;
+.weight-graphic {
   margin-bottom: 18px;
-  justify-content: center;
   padding: 0 4px;
 }
-.weight-tag {
-  font-size: 11px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  color: var(--text-dim);
-  transition: all 0.2s;
-  font-weight: 400;
+.weight-bar {
+  display: flex;
+  height: 38px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
 }
-.weight-tag .w {
-  color: var(--text-bright);
+.weight-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
   font-weight: 700;
+  color: #fff;
+  position: relative;
+  transition: filter 0.2s;
+}
+.weight-seg:hover { filter: brightness(1.15); }
+.weight-seg.w40 {
+  flex: 4;
+  background: linear-gradient(135deg, #059669, #34d399);
+}
+.weight-seg.w40-2 {
+  flex: 4;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+.weight-seg.w20 {
+  flex: 2;
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+}
+.weight-labels {
+  display: flex;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.weight-labels .wl-item {
+  text-align: center;
+}
+.weight-labels .wl-name {
+  color: var(--text);
+  font-weight: 500;
+}
+.weight-labels .wl-code {
+  color: var(--text-dim);
+  font-size: 9px;
+  margin-top: 1px;
 }
 
 /* ========================================
@@ -285,11 +316,6 @@ body {
   color: var(--text-bright);
   font-variant-numeric: tabular-nums;
   margin: 2px 0;
-}
-.val-card .vc-invest .unit {
-  font-size: 9px;
-  color: var(--text-dim);
-  font-weight: 400;
 }
 .val-card .vc-zone {
   font-size: 11px;
@@ -440,12 +466,6 @@ body {
   letter-spacing: -0.5px;
   font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
   line-height: 1.2;
-}
-.price-main .currency {
-  font-size: 16px;
-  color: var(--text-dim);
-  font-weight: 400;
-  margin-right: 2px;
 }
 .price-change {
   font-size: 14px;
@@ -859,11 +879,18 @@ html { scroll-behavior: smooth; }
   <div class="val-card"><div class="vc-name">加载中...</div></div>
 </div>
 
-<div class="weight-label">投资权重（长期目标配置）</div>
-<div class="weight-bar">
-  <span class="weight-tag">红利低波 <span class="w">40%</span></span>
-  <span class="weight-tag">价值100 <span class="w">40%</span></span>
-  <span class="weight-tag">纳指100 <span class="w">20%</span></span>
+<div class="weight-label">长期目标配置</div>
+<div class="weight-graphic">
+  <div class="weight-bar">
+    <div class="weight-seg w40">红利低波 40%</div>
+    <div class="weight-seg w40-2">价值100 40%</div>
+    <div class="weight-seg w20">纳指100 20%</div>
+  </div>
+  <div class="weight-labels" style="justify-content:space-between;">
+    <div class="wl-item" style="flex:4;"><div class="wl-name">🔵 012708</div><div class="wl-code">512890</div></div>
+    <div class="wl-item" style="flex:4;"><div class="wl-name">🔵 025497</div><div class="wl-code">159263</div></div>
+    <div class="wl-item" style="flex:2;"><div class="wl-name">🟣 159941</div><div class="wl-code">.NDX</div></div>
+  </div>
 </div>
 
 <!-- 标的0: 红利低波 -->
@@ -879,7 +906,7 @@ html { scroll-behavior: smooth; }
       <a class="xueqiu-link" href="https://xueqiu.com/S/CSI931446" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
     </div>
     <div class="price-row">
-      <span class="price-main" id="p0"><span class="currency">¥</span>--</span>
+      <span class="price-main" id="p0">--</span>
       <span class="price-change price-flat" id="c0">--</span>
     </div>
     <div class="metrics-grid">
@@ -914,7 +941,7 @@ html { scroll-behavior: smooth; }
       <a class="xueqiu-link" href="https://xueqiu.com/S/CSI980081" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
     </div>
     <div class="price-row">
-      <span class="price-main" id="p1"><span class="currency">¥</span>--</span>
+      <span class="price-main" id="p1">--</span>
       <span class="price-change price-flat" id="c1">--</span>
     </div>
     <div class="metrics-grid">
@@ -949,7 +976,7 @@ html { scroll-behavior: smooth; }
       <a class="xueqiu-link" href="https://xueqiu.com/S/.NDX" target="_blank" rel="noopener"><span class="x-icon">⛄</span> 雪球实时</a>
     </div>
     <div class="price-row">
-      <span class="price-main" id="p2"><span class="currency">$</span>--</span>
+      <span class="price-main" id="p2">--</span>
       <span class="price-change price-flat" id="c2">--</span>
     </div>
     <div class="metrics-grid">
@@ -1022,7 +1049,7 @@ function updateCard(etf, idx) {
   document.getElementById('f' + id).textContent = etf.index_code || '';
 
   if (etf.error) {
-    document.getElementById('p' + id).innerHTML = '<span class="currency">--</span>数据异常';
+    document.getElementById('p' + id).textContent = '--';
     document.getElementById('adv' + id).innerHTML = '<div class="error-msg">' + (etf.error || '获取失败') + '</div>';
     return;
   }
@@ -1030,14 +1057,13 @@ function updateCard(etf, idx) {
   /* 行情信息 — 精简 */
   document.getElementById('info' + id).textContent = isPE ? '纳指100' : (etf.index_name || '--');
 
-  /* 价格 */
+  /* 价格 — 纯数字，无货币符号 */
   var dec = isIndexPrice ? 2 : 4;
   var priceEl = document.getElementById('p' + id);
-  var curSymbol = isPE ? '$' : '¥';
   if (etf.current_price != null) {
-    priceEl.innerHTML = '<span class="currency">' + curSymbol + '</span>' + etf.current_price.toFixed(dec);
+    priceEl.textContent = etf.current_price.toFixed(dec);
   } else {
-    priceEl.innerHTML = '<span class="currency">' + curSymbol + '</span>--';
+    priceEl.textContent = '--';
   }
   var cel = document.getElementById('c' + id);
   var pct = etf.price_change_pct;
@@ -1101,7 +1127,7 @@ function updateCard(etf, idx) {
   html += '<div class="ab-icon">💰</div>';
   html += '<div class="ab-content">';
   html += '<div class="ab-title">定投</div>';
-  html += '<div class="ab-value">' + investAmount + ' 份</div>';
+  html += '<div class="ab-value">' + investAmount + '</div>';
   if (!isPE) {
     var rsi = (etf.rsi21 != null) ? 'RSI ' + etf.rsi21.toFixed(1) : '--';
     html += '<div class="ab-detail">' + rsi + ' · ' + investDetail + '</div>';
@@ -1213,7 +1239,7 @@ function loadData() {
 
           html += '<div class="val-card">';
           html += '<div class="vc-name">' + (etf.index_name || '--') + '</div>';
-          html += '<div class="vc-invest">' + investAmt + '<span class="unit"> 份</span></div>';
+          html += '<div class="vc-invest">' + investAmt + '</div>';
           html += '<div class="vc-zone ' + colorCls + '">' + zoneDetail + '</div>';
           if (isPE) {
             var pePct = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';

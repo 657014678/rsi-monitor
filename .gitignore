@@ -24,6 +24,7 @@ Thumbs.db
 
 # WorkBuddy
 .workbuddy/
+.codebuddy/
 
 # Test
 test_*.py
