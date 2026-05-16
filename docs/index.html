@@ -191,6 +191,72 @@ body {
   transform: translateY(-1px);
 }
 
+/* 底部三策略导航按钮 */
+.strategy-nav {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--card-border);
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 0;
+}
+@media (max-width: 380px) {
+  .nav-btn { font-size: 11px; padding: 8px 4px; }
+}
+.nav-core {
+  background: linear-gradient(135deg, rgba(52,211,153,0.1), rgba(52,211,153,0.05));
+  color: var(--green);
+  border-color: rgba(52,211,153,0.15);
+}
+.nav-core:hover {
+  background: rgba(52,211,153,0.18);
+  box-shadow: 0 0 12px rgba(52,211,153,0.15);
+  transform: translateY(-1px);
+}
+.nav-rules {
+  background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05));
+  color: var(--yellow);
+  border-color: rgba(251,191,36,0.15);
+}
+.nav-rules:hover {
+  background: rgba(251,191,36,0.18);
+  box-shadow: 0 0 12px rgba(251,191,36,0.15);
+  transform: translateY(-1px);
+}
+.nav-mindset {
+  background: linear-gradient(135deg, rgba(96,165,250,0.1), rgba(96,165,250,0.05));
+  color: var(--accent);
+  border-color: rgba(96,165,250,0.15);
+}
+.nav-mindset:hover {
+  background: rgba(96,165,250,0.18);
+  box-shadow: 0 0 12px rgba(96,165,250,0.15);
+  transform: translateY(-1px);
+}
+.nav-intro {
+  background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(167,139,250,0.05));
+  color: var(--purple);
+  border-color: rgba(167,139,250,0.15);
+}
+.nav-intro:hover {
+  background: rgba(167,139,250,0.18);
+  box-shadow: 0 0 12px rgba(167,139,250,0.15);
+  transform: translateY(-1px);
+}
+
 /* 雪球行情链接 */
 .xueqiu-link {
   display: inline-flex;
@@ -889,7 +955,7 @@ html { scroll-behavior: smooth; }
   </div>
   <div class="header-row">
     <div class="update-time" id="updateTime">加载中...</div>
-    <a class="guide-btn" href="guide-core.html">📖 策略详情</a>
+    <a class="guide-btn" href="guide-intro.html">📊 策略简介</a>
   </div>
 </div>
 
@@ -1010,7 +1076,12 @@ html { scroll-behavior: smooth; }
 </div>
 
 <div class="footer-nav">
-  <a class="guide-btn" href="guide-core.html">📖 查看完整策略详情</a>
+  <div class="strategy-nav">
+    <a class="nav-btn nav-intro" href="guide-intro.html">📊 策略简介</a>
+    <a class="nav-btn nav-core" href="guide-core.html">📈 核心策略</a>
+    <a class="nav-btn nav-rules" href="guide-rules.html">📋 执行规则</a>
+    <a class="nav-btn nav-mindset" href="guide-mindset.html">🧘 心法补给</a>
+  </div>
 </div>
 
 <div class="footer-credit">价值投资控制台 · 三标的定投决策系统 · 数据每30分钟更新</div>

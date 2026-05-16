@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>策略简介 · 慢慢变富</title>
+<style>
+/* ========================================
+   CSS Variables & Theme
+   ======================================== */
+:root {
+  --bg: #0b0e14;
+  --bg-gradient: linear-gradient(180deg, #0b0e14 0%, #0d1117 50%, #0f1419 100%);
+  --card: #141a24;
+  --card-border: rgba(255,255,255,0.06);
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --text: #d1d5db;
+  --text-dim: #6b7280;
+  --text-bright: #f3f4f6;
+  --accent: #60a5fa;
+  --accent-glow: rgba(96,165,250,0.12);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.1);
+  --green-glow: rgba(52,211,153,0.15);
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,0.1);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --purple-glow: rgba(167,139,250,0.15);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --max-width: 520px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text);
+  line-height: 1.8;
+  padding: 16px 16px 32px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   Back Link
+   ======================================== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(96,165,250,0.1);
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  background: rgba(96,165,250,0.18);
+  border-color: rgba(96,165,250,0.25);
+  transform: translateX(-2px);
+}
+
+/* ========================================
+   Hero
+   ======================================== */
+.hero {
+  text-align: center;
+  padding: 28px 16px 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+.hero .hero-emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+.hero h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+.hero .subtitle strong {
+  color: var(--text);
+}
+
+/* ========================================
+   Section
+   ======================================== */
+.section { margin-bottom: 24px; }
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+.section-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+}
+.section-title.green { border-left-color: var(--green); }
+.section-title.green::before { background: linear-gradient(90deg, transparent, var(--green-glow), transparent); }
+.section-title.purple { border-left-color: var(--purple); }
+.section-title.purple::before { background: linear-gradient(90deg, transparent, var(--purple-glow), transparent); }
+
+/* ========================================
+   Cards
+   ======================================== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s ease;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card h3.green { color: var(--green); }
+.card h3.purple { color: var(--purple); }
+.card p, .card li {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 2;
+}
+.card p strong, .card li strong { color: var(--text-bright); }
+
+/* ========================================
+   Highlight / Inspiration Blocks
+   ======================================== */
+.inspire-box {
+  background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(96,165,250,0.04));
+  border: 1px solid rgba(52,211,153,0.12);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+.inspire-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--green), rgba(52,211,153,0.3));
+  border-radius: 3px 0 0 3px;
+}
+.inspire-box h3 {
+  color: var(--green);
+  font-size: 15px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.inspire-box p {
+  font-size: 13px;
+  line-height: 2;
+  color: var(--text);
+}
+.inspire-box .big-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--green);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.inspire-box .big-num.purple {
+  color: var(--purple);
+}
+
+/* ========================================
+   Table
+   ======================================== */
+.table-wrap {
+  overflow-x: auto;
+  margin: 10px 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--card-border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+th {
+  background: rgba(255,255,255,0.06);
+  padding: 8px 10px;
+  text-align: center;
+  color: var(--text-dim);
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+td {
+  padding: 7px 10px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+tr:last-child td { border-bottom: none; }
+.table-wrap table tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+.td-green { color: var(--green); font-weight: 600; }
+.td-bright { color: var(--text-bright); font-weight: 600; }
+
+/* ========================================
+   Milestone
+   ======================================== */
+.milestone {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.milestone .ms-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.milestone .ms-body { flex: 1; }
+.milestone .ms-body .ms-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+.milestone .ms-body .ms-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+.milestone .ms-body .ms-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+}
+
+/* ========================================
+   Contact
+   ======================================== */
+.contact-box {
+  text-align: center;
+  padding: 24px 16px;
+  margin: 16px 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(96,165,250,0.06), rgba(167,139,250,0.04));
+  border: 1px solid rgba(96,165,250,0.12);
+}
+.contact-box .ct-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.contact-box .ct-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+}
+.contact-box .ct-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.contact-box .ct-wechat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(52,211,153,0.1), rgba(52,211,153,0.05));
+  border: 1px solid rgba(52,211,153,0.15);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  letter-spacing: 0.5px;
+  user-select: all;
+}
+.contact-box .ct-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.footer-text {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--card-border);
+  opacity: 0.7;
+}
+
+.footer-nav {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ========================================
+   Back to Top
+   ======================================== */
+.back-top {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--accent);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+.back-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-top:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translateY(-2px);
+}
+@media (min-width: 600px) {
+  .back-top { right: calc((100vw - 520px) / 2 + 16px); }
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (hover: none) {
+  .card:hover, .inspire-box:hover, .contact-box:hover {
+    transform: none;
+    border-color: var(--card-border);
+    box-shadow: var(--card-shadow);
+  }
+  .back-link:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">← 返回控制台</a>
+
+<!-- ========== Hero ========== -->
+<div class="hero">
+  <span class="hero-emoji">🌱</span>
+  <h1>慢慢变富，才是最快的路</h1>
+  <div class="subtitle">一套普通人可执行的 <strong>三赛道定投策略</strong></div>
+  <div class="subtitle" style="margin-top:4px;font-size:12px;">红利低波 · 价值100 · 纳指100 · 每月21日 · 10分钟搞定</div>
+</div>
+
+<!-- ========== 一、核心理念 ========== -->
+<div class="section">
+  <div class="section-title green">💡 核心理念</div>
+
+  <div class="inspire-box">
+    <h3>📜 投资，不该是焦虑的来源</h3>
+    <p>大多数人在股市亏钱，不是因为选错了股票，而是因为<strong>拿不住</strong>。</p>
+    <p>涨了想追，跌了想跑——这是人性。我们不想跟人性对抗，我们用<strong>规则</strong>来绕开它。</p>
+    <p style="margin-top:8px;">这套策略的核心就三句话：</p>
+    <p style="padding-left:16px;margin-top:4px;">
+      ✅ <strong>选定好赛道</strong>——三只ETF，覆盖A股红利、A股价值、美股科技<br>
+      ✅ <strong>机械定投</strong>——每月21号，看数据，按表操作，10分钟搞定<br>
+      ✅ <strong>用纪律对抗恐惧</strong>——跌得越狠，买得越多；涨得过高，适当收网
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 class="green">🎯 为什么选这三只？</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="milestone">
+        <div class="ms-icon">🟢</div>
+        <div class="ms-body">
+          <div class="ms-title">红利低波 40%</div>
+          <div class="ms-desc">A股高股息+低波动精选，牛市不掉队，熊市扛得住，是组合的"压舱石"</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-icon">🔵</div>
+        <div class="ms-body">
+          <div class="ms-title">价值100 40%</div>
+          <div class="ms-desc">A股百大核心资产，ROE驱动，长期来看价值回归是确定性最强的事情</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-icon">🟣</div>
+        <div class="ms-body">
+          <div class="ms-title">纳指100 20%</div>
+          <div class="ms-desc">全球科技龙头集结号，人类创新的发动机，20%仓位刚刚好</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 二、收益展望 ========== -->
+<div class="section">
+  <div class="section-title purple">📈 种一棵树最好的时间是十年前，其次是现在</div>
+
+  <div class="card">
+    <h3 class="purple">💰 复利的力量，远超你的直觉</h3>
+    <p>假设你每个月定投 <strong>¥6,000</strong>（三只各按比例分配），来看看不同年化收益率下的长期成果：</p>
+
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr>
+          <th>年化</th>
+          <th>5年后</th>
+          <th>10年后</th>
+          <th>15年后</th>
+          <th class="td-bright">20年后</th>
+          <th class="td-bright">25年后</th>
+        </tr>
+        <tr>
+          <td class="td-green">6%</td>
+          <td>¥42万</td>
+          <td>¥99万</td>
+          <td>¥176万</td>
+          <td class="td-bright">¥279万</td>
+          <td class="td-bright">¥419万</td>
+        </tr>
+        <tr>
+          <td class="td-green">8%</td>
+          <td>¥44万</td>
+          <td>¥110万</td>
+          <td>¥209万</td>
+          <td class="td-bright">¥356万</td>
+          <td class="td-bright">¥575万</td>
+        </tr>
+        <tr>
+          <td class="td-green">10%</td>
+          <td>¥47万</td>
+          <td>¥124万</td>
+          <td>¥252万</td>
+          <td class="td-bright">¥461万</td>
+          <td class="td-bright">¥797万</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">
+      ※ 以上为复利测算，未扣除通胀和管理费。实际收益受市场影响有波动，<strong>不构成收益承诺</strong>。
+    </p>
+
+    <div class="inspire-box" style="margin-top:12px;">
+      <h3>⏳ 时间，是你最好的朋友</h3>
+      <p>
+        每月¥6,000，看起来不多对吧？<br>
+        但如果坚持<strong>20年</strong>，你总共只投入了 <strong>¥144万</strong>——<br>
+        而按照 8% 的年化，这笔钱会变成 <span class="big-num">¥356万</span>！<br><br>
+        多出来的 <span class="big-num">¥212万</span> 从哪里来？<br>
+        <strong style="color:var(--green);">从时间中来。从纪律中来。从复利中来。</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="green">📊 更具体的假设：按工资现金流算</h3>
+    <p>
+      假如你现在 <strong>30岁</strong>，每月工资结余 <strong>¥6,000</strong> 用于定投：<br><br>
+      🎯 <strong>40岁</strong>（10年）→ 累计投入¥72万 → 按8%年化，账面约 <strong>¥110万</strong><br>
+      🎯 <strong>50岁</strong>（20年）→ 累计投入¥144万 → 按8%年化，账面约 <strong>¥356万</strong><br>
+      🎯 <strong>55岁</strong>（25年）→ 累计投入¥180万 → 按8%年化，账面约 <strong>¥575万</strong><br><br>
+      <strong style="color:var(--green);">55岁时，你账上的钱超过一半是市场给你的"奖金"。</strong><br>
+      而且这还没有算你的工资增长——随着收入提升，定投金额只会越来越多。
+    </p>
+  </div>
+</div>
+
+<!-- ========== 三、核心优势 ========== -->
+<div class="section">
+  <div class="section-title green">🌟 为什么这套策略值得你信任</div>
+
+  <div class="card">
+    <div class="milestone">
+      <div class="ms-icon">🛡️</div>
+      <div class="ms-body">
+        <div class="ms-title">低回撤设计</div>
+        <div class="ms-desc">RSI21+MA250 双指标防守，弱势区"只定投不清仓"，极端行情也能扛过去</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">🤖</div>
+      <div class="ms-body">
+        <div class="ms-title">机械化执行</div>
+        <div class="ms-desc">看数据→按表投→关掉，每月只需10分钟，不盯盘、不焦虑、不追涨杀跌</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">🌍</div>
+      <div class="ms-body">
+        <div class="ms-title">跨国别配置</div>
+        <div class="ms-desc">A股打底 + 纳指增⻓，两个不同的经济引擎，降低单一市场风险</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">📊</div>
+      <div class="ms-body">
+        <div class="ms-title">数据驱动</div>
+        <div class="ms-desc">每个操作建议背后都有实时数据支撑（RSI、PE分位、回撤幅度），不拍脑袋</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 四、怎么开始 ========== -->
+<div class="section">
+  <div class="section-title green">🚀 现在就开始，只需要三步</div>
+
+  <div class="card">
+    <div class="milestone">
+      <div class="ms-icon">1️⃣</div>
+      <div class="ms-body">
+        <div class="ms-title">开一个证券账户</div>
+        <div class="ms-desc">推荐华泰、中信、东方财富等支持ETF交易的券商，开通场内基金交易权限</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">2️⃣</div>
+      <div class="ms-body">
+        <div class="ms-title">买入三只ETF底仓</div>
+        <div class="ms-desc">红利低波(512890)、价值100(159263)、纳指100(159941)，按40/40/20分配</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">3️⃣</div>
+      <div class="ms-body">
+        <div class="ms-title">每月21日来看数据</div>
+        <div class="ms-desc">打开控制台，看操作建议，按表执行，10分钟完成当月操作</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:var(--text-dim);text-align:center;margin-top:8px;">
+    💡 更多细节请查看 <a href="guide-core.html" style="color:var(--accent);">核心策略</a> · <a href="guide-rules.html" style="color:var(--yellow);">执行规则</a>
+  </p>
+</div>
+
+<!-- ========== 五、联系我 ========== -->
+<div class="section">
+  <div class="section-title purple">💬 一起交流，一起变富</div>
+
+  <div class="contact-box">
+    <div class="ct-icon">🤝</div>
+    <div class="ct-title">欢迎添加我的微信</div>
+    <div class="ct-desc">
+      有任何疑问、想法，或者只是想找个人聊聊投资，都可以加我<br>
+      一个人的路很孤单，一群人的路走得更远 🌱
+    </div>
+    <div class="ct-wechat" id="wechatId">wei415489</div>
+    <div class="ct-hint">👆 点击复制微信号，去微信添加好友</div>
+  </div>
+</div>
+
+<div class="footer-nav">
+  <a class="back-link" href="index.html">← 返回控制台</a>
+</div>
+
+<div class="footer-text">种一棵树最好的时间是十年前，其次是现在 🌳</div>
+
+<!-- 返回顶部按钮 -->
+<div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+/* 返回顶部按钮显隐 */
+var bt = document.getElementById('backTop');
+window.addEventListener('scroll', function() {
+  bt.classList.toggle('visible', window.scrollY > 300);
+});
+
+/* 点击微信号复制 */
+document.getElementById('wechatId').addEventListener('click', function() {
+  var range = document.createRange();
+  range.selectNode(this);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  try {
+    document.execCommand('copy');
+    var orig = this.textContent;
+    this.textContent = '✅ 已复制！';
+    var self = this;
+    setTimeout(function() { self.textContent = orig; }, 1500);
+  } catch(e) {}
+  window.getSelection().removeAllRanges();
+});
+</script>
+
+</body>
+</html>
