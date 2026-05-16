@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>策略科普 · 心理按摩 · 价值投资控制台</title>
+<title>策略详情 · 价值投资控制台</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -40,19 +40,9 @@
     padding: 4px 0;
   }
   .back-link:hover { text-decoration: underline; }
-  h1 {
-    font-size: 22px;
-    color: var(--text-bright);
-    margin-bottom: 4px;
-  }
-  .subtitle {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-bottom: 20px;
-  }
-  .section {
-    margin-bottom: 24px;
-  }
+  h1 { font-size: 22px; color: var(--text-bright); margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+  .section { margin-bottom: 24px; }
   .section-title {
     font-size: 16px;
     font-weight: 700;
@@ -72,38 +62,18 @@
     padding: 14px;
     margin-bottom: 10px;
   }
-  .card h3 {
-    font-size: 14px;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .card p, .card li {
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.9;
-  }
-  .card ul, .card ol {
-    padding-left: 18px;
-  }
+  .card h3 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+  .card h3.green { color: var(--green); }
+  .card h3.yellow { color: var(--yellow); }
+  .card h3.red { color: var(--red); }
+  .card h3.purple { color: var(--purple); }
+  .card p, .card li { font-size: 13px; color: var(--text); line-height: 1.9; }
+  .card ul, .card ol { padding-left: 18px; }
   .card li { margin-bottom: 4px; }
-  .highlight {
-    color: var(--yellow);
-    font-weight: 600;
-  }
-  .highlight-green {
-    color: var(--green);
-    font-weight: 600;
-  }
-  .highlight-red {
-    color: var(--red);
-    font-weight: 600;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin: 8px 0;
-  }
+  .highlight { color: var(--yellow); font-weight: 600; }
+  .highlight-green { color: var(--green); font-weight: 600; }
+  .highlight-red { color: var(--red); font-weight: 600; }
+  table { width:100%; border-collapse: collapse; font-size: 12px; margin: 8px 0; }
   th {
     background: rgba(255,255,255,0.05);
     padding: 6px 8px;
@@ -118,67 +88,9 @@
     border: 1px solid var(--border);
     color: var(--text);
   }
-  .quote-box {
-    background: rgba(88,166,255,0.06);
-    border: 1px solid rgba(88,166,255,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin: 12px 0;
-  }
-  .quote-box .quote {
-    font-size: 15px;
-    font-style: italic;
-    color: var(--text-bright);
-    line-height: 1.7;
-  }
-  .quote-box .author {
-    font-size: 12px;
-    color: var(--text-dim);
-    text-align: right;
-    margin-top: 6px;
-  }
-  .massage-card {
-    background: rgba(63,185,80,0.05);
-    border: 1px solid rgba(63,185,80,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .massage-card h3 {
-    color: var(--green);
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  .massage-card p, .massage-card li {
-    font-size: 13px;
-    line-height: 1.9;
-  }
-  .danger-card {
-    background: rgba(248,81,73,0.05);
-    border: 1px solid rgba(248,81,73,0.15);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .danger-card h3 {
-    color: var(--red);
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-  .danger-card p, .danger-card li {
-    font-size: 13px;
-    line-height: 1.9;
-  }
-  .emoji-big {
-    font-size: 32px;
-    text-align: center;
-    margin: 16px 0;
-  }
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 24px 0;
-  }
+  .td-green { color: var(--green); font-weight: 600; }
+  .td-yellow { color: var(--yellow); font-weight: 600; }
+  .td-red { color: var(--red); font-weight: 600; }
   .tag {
     display: inline-block;
     padding: 1px 6px;
@@ -190,390 +102,436 @@
   .tag-yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
   .tag-red { background: rgba(248,81,73,0.2); color: var(--red); }
   .tag-blue { background: rgba(88,166,255,0.2); color: var(--blue); }
+  .tag-purple { background: rgba(188,140,255,0.2); color: var(--purple); }
+  .flow-box {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .flow-box .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .flow-box .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .iron-rule {
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 10px 0;
+  }
+  .iron-rule h4 { color: var(--red); font-size: 13px; margin-bottom: 6px; }
+  .iron-rule li { font-size: 12px; }
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+  .etf-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .badge-a { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-us { background: rgba(188,140,255,0.15); color: var(--purple); }
 </style>
 </head>
 <body>
 
 <a class="back-link" href="index.html">← 返回控制台</a>
 
-<h1>📖 策略科普 · 心理按摩</h1>
-<div class="subtitle">坚持长期主义，做时间的朋友</div>
+<h1>📖 策略详情</h1>
+<div class="subtitle">三标的 · 双策略 · 月度执行</div>
 
-<!-- ========== 第一部分：策略科普 ========== -->
+<!-- ========== 一、策略总览 ========== -->
 
 <div class="section">
-  <div class="section-title green">一、为什么选红利低波+价值100？</div>
+  <div class="section-title green">一、策略总览</div>
 
   <div class="card">
-    <h3>🧬 红利低波（512890 · 东证红利低波指数）</h3>
+    <h3 class="green">🎯 投资目标</h3>
     <ul>
-      <li>选股逻辑：从全市场选<span class="highlight-green">股息率高+波动率低</span>的100只股票</li>
-      <li>每年调仓两次，天然"高抛低吸"——涨多了股息率下降自动卖出，跌多了股息率上升自动买入</li>
-      <li>指数自2005年以来年化收益约 <span class="highlight-green">12-15%</span>，最大回撤远小于沪深300</li>
-      <li>"收息+赚价差"双轮驱动，熊市靠分红扛住，牛市靠估值修复吃肉</li>
+      <li>长期持有，<span class="highlight-green">低回撤</span>，复利增长</li>
+      <li>年化目标：<span class="highlight-green">8-15%</span>（不追求暴利）</li>
+      <li>最大回撤控制：<span class="highlight-green">≤20%</span></li>
+      <li>操作频率：<span class="highlight">每月仅1次</span>（21日执行）</li>
     </ul>
   </div>
 
   <div class="card">
-    <h3>💎 价值100（159263 · 国证价值100指数）</h3>
+    <h3>📊 三标的配置</h3>
     <ul>
-      <li>选股逻辑：从全市场选<span class="highlight-green">估值低+基本面好</span>的100只股票</li>
-      <li>价值因子长期有效：低PE/PB组合在A股历史表现显著优于高估值组合</li>
-      <li>与红利低波互补——红利低波偏大盘稳健，价值100覆盖更多中盘价值股</li>
+      <li><span class="etf-badge badge-a">A股</span> <strong>红利低波 40%</strong>（012708 · 东证红利低波）</li>
+      <li><span class="etf-badge badge-a">A股</span> <strong>价值100 40%</strong>（025497 · 国证价值100）</li>
+      <li><span class="etf-badge badge-us">美股</span> <strong>纳指100 20%</strong>（159941 · 纳斯达克100）</li>
     </ul>
+    <p style="margin-top:8px;">A股双价值打底，美股科技增强，低相关性分散风险。</p>
   </div>
 
   <div class="card">
-    <h3>🤝 三标的为什么这样配？（40/40/20）</h3>
-    <ul>
-      <li><span class="tag tag-green">A股价值底座</span> 红利低波40%+价值10040%，分享中国价值股长期回报</li>
-      <li><span class="tag tag-blue">海外成长引擎</span> 纳指100占20%，配置全球最强科技公司</li>
-      <li><span class="tag tag-yellow">对冲</span> A股价值vs海外科技，低相关性分散风险</li>
-      <li><span class="tag tag-purple">互补</span> RSI+MA250适合A股价值慢牛，PE+回撤适合美股高波动</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3 style="color:var(--purple);">🌎 纳斯达克100（159941 · 广发纳指100联接A）</h3>
-    <ul>
-      <li>纳指100 = 美国最大100家非金融科技公司（苹果、微软、英伟达、Meta等）</li>
-      <li>长期年化收益约 <span class="highlight-green">15-18%</span>，但波动远大于A股</li>
-      <li><span class="highlight-red">为什么不用RSI+MA250？</span> 美股科技股波动极大，RSI频繁触顶/触底，MA250在长牛市中几乎永远在上方——信号失灵</li>
-      <li><span class="highlight">PE分位+回撤</span> 更适合：PE反映估值是否合理，回撤反映是否在"打折"</li>
-      <li>纳指100的PE(TTM)近7年范围约25~110，当前处于历史高位区间</li>
-      <li>只占20%仓位，即使短期大跌对整体组合影响有限</li>
-    </ul>
+    <h3>🧠 核心逻辑（一句话）</h3>
+    <p><span class="highlight">低位多买，高位少买，强势区减仓，弱势区死扛。</span></p>
+    <p style="margin-top:8px;">用数学纪律代替情绪决策，用时间换空间。</p>
   </div>
 </div>
 
 <div class="divider"></div>
 
+<!-- ========== 二、A股策略：RSI21+MA250 ========== -->
+
 <div class="section">
-  <div class="section-title">二、RSI21 是什么？为什么用21？</div>
+  <div class="section-title">二、A股策略：RSI21 + MA250</div>
+  <div class="subtitle" style="margin-bottom:12px; font-size:12px;">适用：红利低波 · 价值100</div>
 
   <div class="card">
-    <h3>📐 RSI 原理（Relative Strength Index）</h3>
-    <p>RSI 衡量一段时间内<span class="highlight">涨的力量 vs 跌的力量</span>，取值0-100：</p>
+    <h3>📐 指标说明</h3>
     <table>
-      <tr><th>RSI</th><th>含义</th><th>市场情绪</th></tr>
-      <tr><td>&gt;70</td><td>涨的力度远超跌</td><td>过度乐观/超买</td></tr>
-      <tr><td>50-70</td><td>涨的力度略强</td><td>偏强</td></tr>
-      <tr><td>30-50</td><td>跌的力度略强</td><td>偏弱</td></tr>
-      <tr><td>&lt;30</td><td>跌的力度远超涨</td><td>过度悲观/超卖</td></tr>
+      <tr><th>指标</th><th>含义</th><th>作用</th></tr>
+      <tr><td><strong>RSI21</strong></td><td>21日相对强弱指数</td><td>判断"超买/超卖"</td></tr>
+      <tr><td><strong>MA250</strong></td><td>250日均线（≈年线）</td><td>判断"强势/弱势区"</td></tr>
     </table>
+    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">为什么是RSI21？与月度定投节奏匹配，过滤短期噪音。</p>
   </div>
 
   <div class="card">
-    <h3>🤔 为什么是RSI21而不是RSI14？</h3>
-    <ul>
-      <li>RSI14是传统默认值，偏短线交易，信号频繁</li>
-      <li>RSI21约等于1个月交易日的周期，<span class="highlight">与月度定投节奏匹配</span></li>
-      <li>更长周期 = 更少噪音 = 更少假信号 = 更少冲动操作</li>
-      <li>配合MA250长周期均线，形成"月级择时+年级趋势"的双重保护</li>
-    </ul>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<div class="section">
-  <div class="section-title">三、MA250 是什么？为什么用它分区？</div>
-
-  <div class="card">
-    <h3>📏 MA250 = 250日均线 ≈ 一年均线</h3>
-    <ul>
-      <li>250个交易日≈一年，MA250反映过去一年的平均成本</li>
-      <li>价格在MA250上方 = <span class="highlight-green">强势区</span> → 大多数持仓者盈利，市场偏乐观</li>
-      <li>价格在MA250下方 = <span class="highlight">弱势区</span> → 大多数持仓者亏损，市场偏悲观</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3>🎯 分区的核心意义</h3>
-    <ul>
-      <li><span class="tag tag-green">强势区</span> 可以做减仓+回补（市场给了你获利了结的机会）</li>
-      <li><span class="tag tag-yellow">弱势区</span> <span class="highlight-red">只买不卖</span>（亏着卖是最愚蠢的事，浮亏不是真亏）</li>
-      <li>分区不是为了预测涨跌，而是<span class="highlight">决定你能做什么操作</span></li>
-    </ul>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<div class="section">
-  <div class="section-title purple">三.五、纳指100专属：PE分位+回撤是什么？</div>
-
-  <div class="card">
-    <h3 style="color:var(--purple);">📊 PE(TTM) 近7年分位</h3>
-    <ul>
-      <li>PE(TTM) = 市盈率(滚动12个月) = 当前价格 / 过去12个月每股收益</li>
-      <li>"近7年分位" = 当前PE在近7年所有交易日中的排名百分位</li>
-      <li>分位90%意味着：当前PE比近7年90%的时间都高 → 估值偏贵</li>
-      <li>分位20%意味着：当前PE比近7年80%的时间都低 → 估值便宜</li>
-    </ul>
+    <h3>🗺️ 市场分区规则</h3>
     <table>
-      <tr><th>PE分位</th><th>估值状态</th><th>含义</th></tr>
-      <tr><td>&lt;30%</td><td>极度低估</td><td>历史性便宜，加大定投</td></tr>
-      <tr><td>30-49%</td><td>低估</td><td>低于中位数，适度加仓</td></tr>
-      <tr><td>50-69%</td><td>合理</td><td>正常估值，标准定投</td></tr>
-      <tr><td>70-84%</td><td>高估</td><td>偏贵，减仓区</td></tr>
-      <tr><td>≥85%</td><td>极度高估</td><td>历史高位，暂停+大幅减仓</td></tr>
+      <tr><th>分区</th><th>条件</th><th>可执行操作</th></tr>
+      <tr><td class="td-green"><strong>强势区</strong></td><td>价格 ≥ MA250</td><td class="td-green">定投 + 减仓 + 回补</td></tr>
+      <tr><td class="td-red"><strong>弱势区</strong></td><td>价格 &lt; MA250</td><td class="td-red">只定投，不减仓，不回补</td></tr>
     </table>
-  </div>
-
-  <div class="card">
-    <h3 style="color:var(--purple);">📉 高点回撤幅度</h3>
-    <ul>
-      <li>回撤 = (当前价格 - 阶段最高价) / 阶段最高价 × 100%</li>
-      <li>衡量当前价格离最高点跌了多少，反映"打折力度"</li>
-    </ul>
-    <table>
-      <tr><th>回撤幅度</th><th>分区</th><th>含义</th></tr>
-      <tr><td>&lt;8%</td><td>正常波动</td><td>常规涨跌，可以正常操作</td></tr>
-      <tr><td>8-15%</td><td>中级回调</td><td>跌了一波，注意观察</td></tr>
-      <tr><td>&gt;15%</td><td>深度回调</td><td>大幅打折，<span class="highlight-red">永不减仓</span>，加码定投</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h3 style="color:var(--purple);">❓ 为什么纳指不用RSI+MA250？</h3>
-    <ul>
-      <li>纳指100长期牛市，MA250几乎永远在价格下方 → 弱势区信号极少出现</li>
-      <li>RSI在美股高波动中频繁超买超卖 → 信号噪声太大</li>
-      <li>PE分位直接看"贵不贵"，回撤直接看"跌了多少"，比技术指标更直观</li>
-      <li>巴菲特也看PE做决策："别人恐惧时我贪婪" = PE极低时多买</li>
-    </ul>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<div class="section">
-  <div class="section-title">四、策略设计的底层逻辑</div>
-
-  <div class="card">
-    <h3>🧠 为什么"低位多买"比"高位少买"重要？</h3>
-    <p>数学原理：同样涨10%，从1元涨到1.1元你赚10%，从0.8元涨到0.88元你也赚10%——但你在0.8元时多买了25%的份额，所以实际收益是<span class="highlight-green">12.5%</span>。</p>
-    <p style="margin-top:8px;">低位多买的复利效应，远大于高位少买省下的那点钱。</p>
-  </div>
-
-  <div class="card">
-    <h3>🛡️ 为什么弱势区"永远不减仓"？</h3>
-    <ul>
-      <li>弱势区减仓 = <span class="highlight-red">浮亏变现为真亏</span></li>
-      <li>红利低波和价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
-      <li>历史数据：512890自2018年成立，每次跌破MA250后最终都涨回来了</li>
-      <li>你卖出的那个价格，很可能是别人眼中"打折的好机会"</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3>⏳ 为什么30天冷却期？</h3>
-    <ul>
-      <li>防止"减了又买、买了又减"的反复操作</li>
-      <li>每次操作都有摩擦成本（赎回费、申购费）</li>
-      <li>冷却期强迫你等待，<span class="highlight">用时间换空间</span></li>
-      <li>30天≈1个月，与定投节奏对齐，不会增加操作复杂度</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3>📅 为什么每月只操作1次（21日）？</h3>
-    <ul>
-      <li>定投的本质是"纪律"，不是"择时"</li>
-      <li>每月1次操作，消除日内情绪波动的影响</li>
-      <li>21日选在月中，避开月初月末的资金面波动</li>
-      <li><span class="highlight">操作越少，犯错的概率越低</span></li>
-    </ul>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ========== 第二部分：心理按摩 ========== -->
-
-<div class="section">
-  <div class="section-title yellow">五、心理按摩室</div>
-
-  <div class="emoji-big">🧘</div>
-
-  <div class="massage-card">
-    <h3>😰 "我亏了好多钱，要不要跑？"</h3>
-    <p>你看到的"亏损"是浮亏，不是真亏。只要你不在弱势区卖出，这个数字没有任何意义。</p>
-    <p style="margin-top:6px;">红利低波ETF的成分股每年分红4-5%，即使价格不涨，你的份额也在积累越来越多的分红权。<span class="highlight-green">时间的玫瑰会绽放。</span></p>
-  </div>
-
-  <div class="massage-card">
-    <h3>😱 "大盘暴跌，我慌了"</h3>
-    <p>暴跌恰恰是策略发挥威力的时候：</p>
-    <ul>
-      <li>RSI跌破40 → 你自动加仓到1.5-2份</li>
-      <li>跌破MA250 → 弱势区铁律保护你，<span class="highlight-green">不会让你卖出</span></li>
-      <li>别人恐惧时你贪婪——不是口号，是写在策略里的纪律</li>
-    </ul>
-    <p style="margin-top:6px;">问自己：公司的基本面变了吗？分红取消了吗？都没有的话，价格下跌只是在打折。</p>
-  </div>
-
-  <div class="massage-card">
-    <h3>😤 "涨了这么多，我要不要先卖了锁利？"</h3>
-    <p>如果你在强势区、RSI≥65、不在冷却期——策略已经告诉你减仓了，按策略执行。</p>
-    <p style="margin-top:6px;">如果你不满足减仓条件——说明市场还没到过热，耐心持有。<span class="highlight">提前下车是最常见的踏空原因。</span></p>
-  </div>
-
-  <div class="massage-card">
-    <h3>😩 "为什么我的策略跑不赢别人？"</h3>
-    <p>你看到的"别人"是幸存者偏差。赚了的人会晒，亏了的人沉默。</p>
-    <p style="margin-top:6px;">你的策略目标不是"跑赢所有人"，而是<span class="highlight-green">用最小的心理压力获得合理的长期回报</span>。年化5-8%，持续20年，结果是惊人的。</p>
-  </div>
-
-  <div class="massage-card">
-    <h3>🥱 "定投太无聊了，我想做点刺激的"</h3>
-    <p>无聊 = 纪律 = 赚钱。刺激 = 情绪 = 亏钱。</p>
-    <p style="margin-top:6px;">如果你真的手痒，拿总资金的5%去做短线，亏光了也无所谓。剩下的95%严格按策略走。<span class="highlight">让你的"赌性"和"纪律"井水不犯河水。</span></p>
-  </div>
-
-  <div class="massage-card">
-    <h3>😴 "我坚持不下去了"</h3>
-    <p>每个人都会经历这个时刻。但你想想：</p>
-    <ul>
-      <li>你在弱势区坚持定投，每一次买入都在收集更便宜的筹码</li>
-      <li>市场终会回归均值，这是被几百年金融史反复验证的铁律</li>
-      <li>放弃的那一刻，往往就是黎明前最暗的时刻</li>
-    </ul>
-    <div class="quote-box" style="margin-top:10px;">
-      <div class="quote">"股市是把钱从没耐心的人转移到有耐心的人手里的工具。"</div>
-      <div class="author">—— 巴菲特</div>
+    <div class="iron-rule">
+      <h4>⚡ 铁则：弱势区不减仓</h4>
+      <ul>
+        <li>浮亏卖出 = 真亏 + 确认亏损</li>
+        <li>红利/价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
+        <li>弱势区只做一件事：<span class="highlight-green">按表定投，收集便宜筹码</span></li>
+      </ul>
     </div>
   </div>
 
-  <div class="massage-card">
-    <h3>😰 "纳指PE这么高，要不要跑？"</h3>
-    <p>纳指100的PE长期偏高是常态——科技公司的高增长预期推高了PE。关键看<span class="highlight">分位</span>而不是绝对值。</p>
-    <ul>
-      <li>PE分位≥85% → 策略已建议暂停定投+减仓30%</li>
-      <li>PE分位70-84% → 策略已建议减仓15%</li>
-      <li>只要回撤>15%（深度回调），<span class="highlight-green">永不减仓</span>，这是铁律</li>
-    </ul>
-    <p style="margin-top:6px;">纳指100只占20%仓位，即使短期大幅回调，对整体组合影响有限。但它的长期涨幅是三只里最高的——错过上涨比忍受下跌更可惜。</p>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ========== 第三部分：极端行情应对 ========== -->
-
-<div class="section">
-  <div class="section-title red">六、极端行情应对手册</div>
-
-  <div class="danger-card">
-    <h3>📉 单日暴跌 &gt;5%</h3>
-    <ul>
-      <li><span class="tag tag-red">不做</span> 当天不要任何操作，关闭行情软件</li>
-      <li><span class="tag tag-green">等待</span> 等到21日操作日，看RSI和MA250再决策</li>
-      <li>暴跌后的第二天往往有反弹，冲动操作容易两面挨耳光</li>
-    </ul>
-  </div>
-
-  <div class="danger-card">
-    <h3>📉 连续下跌一周以上</h3>
-    <ul>
-      <li>检查是否进入弱势区 → 如果是，<span class="highlight-green">按定投表加倍投入</span></li>
-      <li>检查RSI是否跌破40 → 如果是，下次操作日加码到1.5-2份</li>
-      <li>回忆：512890在2022年4月、2022年10月、2024年1月都跌破MA250，每次都在3-6个月内涨回</li>
-    </ul>
-  </div>
-
-  <div class="danger-card">
-    <h3>🔥 连续暴涨，FOMO严重</h3>
-    <ul>
-      <li>检查RSI → 如果≥65，下次操作日按策略减仓15%-30%</li>
-      <li>如果RSI在50-64区间，<span class="highlight">什么都不做</span>，继续持有</li>
-      <li>不要在非操作日追涨——你的策略里没有"追涨"这个选项</li>
-    </ul>
-  </div>
-
-  <div class="danger-card">
-    <h3>🌊 全市场恐慌（千股跌停级别）</h3>
-    <ul>
-      <li>这是<span class="highlight-green">十年一遇的加仓机会</span></li>
-      <li>RSI很可能跌到40以下，下次操作日直接2份</li>
-      <li>红利低波的成分股是最抗跌的一批公司，恐慌中它们跌得最少、弹得最快</li>
-      <li>历史不会重复，但会押韵——每次大恐慌后都是丰厚回报</li>
-    </ul>
-  </div>
-
-  <div class="danger-card">
-    <h3>🇺🇸 纳指100暴跌 &gt;15%</h3>
-    <ul>
-      <li>这是纳指100的<span class="highlight-green">加仓良机</span>——深度回调+低PE分位 = 双重加码信号</li>
-      <li><span class="highlight-red">绝不减仓！</span> 深度回调时即使PE高估也只暂停定投，永远不卖</li>
-      <li>纳指100历史回撤20-30%后通常在6-12个月内收复失地</li>
-      <li>20%仓位限制 + 永不止损 = 你扛得住</li>
-    </ul>
-  </div>
-
-  <div class="danger-card">
-    <h3>🇺🇸 纳指PE持续极高位（≥85%分位）</h3>
-    <ul>
-      <li>按策略暂停定投 + 考虑减仓30%</li>
-      <li>但要确认：回撤&lt;8%（正常波动）+ 不在冷却期</li>
-      <li>如果PE高但还在涨，<span class="highlight">不要追涨</span>——你的策略里没有追涨选项</li>
-      <li>减仓后保留底仓≥40%，不要试图"全卖在最高点"</li>
-    </ul>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ========== 第四部分：名人名言 ========== -->
-
-<div class="section">
-  <div class="section-title">七、投资大师的话</div>
-
-  <div class="quote-box">
-    <div class="quote">"别人恐惧时我贪婪，别人贪婪时我恐惧。"</div>
-    <div class="author">—— 沃伦·巴菲特</div>
-  </div>
-
-  <div class="quote-box">
-    <div class="quote">"投资最重要的品质不是智力，而是耐心。"</div>
-    <div class="author">—— 菲利普·费雪</div>
-  </div>
-
-  <div class="quote-box">
-    <div class="quote">"在投资中，时间就是你的朋友。不要着急，不要恐慌。"</div>
-    <div class="author">—— 约翰·博格</div>
-  </div>
-
-  <div class="quote-box">
-    <div class="quote">"市场短期是投票机，长期是称重机。"</div>
-    <div class="author">—— 本杰明·格雷厄姆</div>
-  </div>
-
-  <div class="quote-box">
-    <div class="quote">"你不需要做很多正确的事情，你只需要避免做愚蠢的事情。"</div>
-    <div class="author">—— 查理·芒格</div>
-  </div>
-
-  <div class="quote-box">
-    <div class="quote">"定投的本质是：用纪律打败人性，用时间换取空间。"</div>
-    <div class="author">—— 致你自己</div>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<div class="section">
-  <div class="section-title green">八、给自己的承诺</div>
   <div class="card">
-    <p>每次打开这个页面，在心里默念：</p>
+    <h3 class="green">💰 A股定投梯度表</h3>
+    <table>
+      <tr><th>RSI21</th><th>强势区</th><th>弱势区</th></tr>
+      <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong></td><td class="td-green"><strong>1.5份</strong></td></tr>
+      <tr><td>40–47</td><td class="td-green"><strong>1.5份</strong></td><td class="td-green"><strong>1.2份</strong></td></tr>
+      <tr><td>48–52</td><td>1.0份</td><td>1.0份</td></tr>
+      <tr><td>53–60</td><td>0.8份</td><td>0.8份</td></tr>
+      <tr><td>61–65</td><td>0.5份</td><td>0.5份</td></tr>
+      <tr><td>66–71</td><td>0.3份</td><td>0.3份</td></tr>
+      <tr><td>≥72</td><td class="td-red">暂停</td><td class="td-red">暂停</td></tr>
+    </table>
+    <p style="margin-top:6px; font-size:11px; color:var(--text-dim);">1份 = 基准定投额（你设定的每月基础金额）。强势区+低位 = 双倍加码。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="yellow">📉 A股减仓规则</h3>
+    <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足才可以减）：</div>
+    <ol>
+      <li>处于<span class="highlight-green">强势区</span>（价格 ≥ MA250）</li>
+      <li>RSI21 ≥ <span class="highlight-red">65</span>（市场偏热）</li>
+      <li>不在<span class="highlight">30天冷却期</span>内</li>
+    </ol>
+    <table style="margin-top:10px;">
+      <tr><th>RSI21</th><th>减仓比例</th></tr>
+      <tr><td>65–71</td><td>减仓 <span class="td-yellow">15%</span>（动态仓部分）</td></tr>
+      <tr><td>≥72</td><td>减仓 <span class="td-red">30%</span>（动态仓部分）</td></tr>
+    </table>
+    <p style="margin-top:8px; font-size:12px;">减仓对象：<span class="highlight">仅动态仓（30%部分）</span>，核心仓（70%）永不卖出。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="green">📈 A股回补规则</h3>
+    <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足才可以回补）：</div>
+    <ol>
+      <li>处于<span class="highlight-green">强势区</span></li>
+      <li>之前有减仓操作 + 减仓日期在<span class="highlight">30天冷却期外</span></li>
+    </ol>
+    <table style="margin-top:10px;">
+      <tr><th>RSI21</th><th>回补比例</th></tr>
+      <tr><td>59–63</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+      <tr><td>&lt;50</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+    </table>
+    <p style="margin-top:8px; font-size:12px;">回补后重新计算30天冷却期。</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 三、美股策略：PE分位+回撤 ========== -->
+
+<div class="section">
+  <div class="section-title purple">三、美股策略：PE分位 + 回撤</div>
+  <div class="subtitle" style="margin-bottom:12px; font-size:12px;">适用：纳指100（159941）</div>
+
+  <div class="card">
+    <h3 class="purple">📐 为什么纳指100不用RSI+MA250？</h3>
     <ul>
-      <li>✅ 我只用闲钱投资，生活不受影响</li>
-      <li>✅ 我每月只操作1次，不受市场情绪左右</li>
-      <li>✅ 弱势区绝不止损卖出，浮亏不是真亏</li>
-      <li>✅ 我相信复利的力量，做时间的朋友</li>
-      <li>✅ 坚持纪律，让策略替我做决定</li>
+      <li>纳指100长期牛市，MA250几乎永远在价格下方 → <span class="highlight">弱势区信号极少</span></li>
+      <li>美股科技股波动大，RSI频繁超买超卖 → <span class="highlight">信号噪声太大</span></li>
+      <li>PE分位直接看"贵不贵"，回撤直接看"打折没" → <span class="highlight-green">更直观，更适合纳指</span></li>
     </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">📊 指标说明</h3>
+    <table>
+      <tr><th>指标</th><th>含义</th><th>数据来源</th></tr>
+      <tr><td><strong>PE分位</strong></td><td>当前PE(TTM)在近7年中的排名百分位</td><td>乐咕乐股</td></tr>
+      <tr><td><strong>高点回撤</strong></td><td>(当前价-阶段最高价)/阶段最高价</td><td>新浪财经</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">🗺️ PE分位分区</h3>
+    <table>
+      <tr><th>PE分位</th><th>估值状态</th><th>定投动作</th></tr>
+      <tr><td class="td-green">&lt;30%</td><td>极度低估</td><td class="td-green"><strong>2.5份封顶</strong></td></tr>
+      <tr><td class="td-green">30–49%</td><td>低估</td><td class="td-green"><strong>1.8份</strong></td></tr>
+      <tr><td>50–69%</td><td>合理</td><td>1.0份（基准）</td></tr>
+      <tr><td class="td-yellow">70–84%</td><td>高估</td><td class="td-yellow">0.5份</td></tr>
+      <tr><td class="td-red">≥85%</td><td>极度高估</td><td class="td-red"><strong>暂停定投</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">🌊 回撤分区</h3>
+    <table>
+      <tr><th>回撤幅度</th><th>分区</th><th>对操作的影响</th></tr>
+      <tr><td>&lt;8%</td><td>正常波动</td><td>按PE分位正常执行</td></tr>
+      <tr><td>8–15%</td><td>中级回调</td><td>可适度加码</td></tr>
+      <tr><td class="td-red">&gt;15%</td><td><strong>深度回调</strong></td><td class="td-red">永不减仓！可大幅加码</td></tr>
+    </table>
+    <div class="iron-rule">
+      <h4>⚡ 铁则：深度回调（回撤&gt;15%）永不减仓</h4>
+      <ul>
+        <li>深度回调时即使PE高估，也只暂停定投，<span class="highlight-red">绝不卖出</span></li>
+        <li>历史数据：纳指100深度回调后6-12个月内多能收复失地</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">📉 纳指减仓规则</h3>
+    <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足）：</div>
+    <ol>
+      <li>PE分位 ≥ <span class="highlight-red">70%</span></li>
+      <li>回撤 &lt; <span class="highlight-green">8%</span>（正常波动，非深度回调）</li>
+      <li>不在<span class="highlight">60天冷却期</span>内</li>
+    </ol>
+    <table style="margin-top:10px;">
+      <tr><th>PE分位</th><th>减仓比例</th></tr>
+      <tr><td>70–84%</td><td>减仓 <span class="td-yellow">15%</span></td></tr>
+      <tr><td>≥85%</td><td>减仓 <span class="td-red">30%</span></td></tr>
+    </table>
+    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">纳指冷却期60天（比A股长），因为美股波动大，避免频繁操作。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">📈 纳指回补规则</h3>
+    <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足）：</div>
+    <ol>
+      <li>PE分位 &lt; <span class="highlight-green">70%</span>（退出高估区）</li>
+      <li>回撤 &lt; <span class="highlight-green">15%</span>（不在深度回调中）</li>
+      <li>之前有减仓 + 减仓日期在<span class="highlight">60天冷却期外</span></li>
+    </ol>
+    <table style="margin-top:10px;">
+      <tr><th>PE分位</th><th>回补比例</th></tr>
+      <tr><td>40–50%</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+      <tr><td>&lt;40%</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 四、执行方法 ========== -->
+
+<div class="section">
+  <div class="section-title yellow">四、执行方法（每月21日）</div>
+
+  <div class="flow-box">
+    <div class="step"><div class="step-num">1</div><div>打开 <strong>价值投资控制台</strong>（本网页）</div></div>
+    <div class="step"><div class="step-num">2</div><div>查看 <strong>三标的估值横条</strong>，了解当前市场状态</div></div>
+    <div class="step"><div class="step-num">3</div><div>展开每个标的卡片，查看 <strong>定投建议</strong>（几份）</div></div>
+    <div class="step"><div class="step-num">4</div><div>如有 <strong>减仓/回补建议</strong>，确认不在冷却期内再执行</div></div>
+    <div class="step"><div class="step-num">5</div><div>按建议金额执行申购/赎回（在券商APP操作）</div></div>
+    <div class="step"><div class="step-num">6</div><div>如有减仓操作，在网页 <strong>持仓记录</strong> 中登记日期和比例</div></div>
+  </div>
+
+  <div class="card">
+    <h3 class="yellow">⏰ 为什么是21日？</h3>
+    <ul>
+      <li>避开月初（资金面紧张）和月末（机构结算）</li>
+      <li>与工资现金流匹配（多数人到账时间在15-20日）</li>
+      <li>遇节假日顺延到下一个工作日</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📊 "一份"是多少钱？</h3>
+    <p>由你自己决定。建议：</p>
+    <ul>
+      <li>先计算每月可用于定投的<span class="highlight-green">闲钱总额</span></li>
+      <li>三标的各40%/40%/20%，算出每个标的的基准月投额</li>
+      <li>这个基准月投额 = <span class="highlight">1份</span></li>
+      <li>例如：月投总额6000元 → 红利低波2400元(1份) → RSI40时投入2份=4800元</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 五、操作逻辑决策树 ========== -->
+
+<div class="section">
+  <div class="section-title">五、操作逻辑决策树</div>
+
+  <div class="card">
+    <h3 class="green">🌱 A股标的决策树</h3>
+    <div style="font-size:12px; line-height:2.2; padding-left:8px; border-left:2px solid var(--green); margin:8px 0;">
+      <div>当前价格 vs MA250 → 判断强势区/弱势区</div>
+      <div style="padding-left:16px; color:var(--text-dim);">├─ 弱势区 → 只定投，不减仓，不回补</div>
+      <div style="padding-left:16px; color:var(--text-dim);">└─ 强势区 → 继续判断...</div>
+      <div style="padding-left:32px;">→ 看RSI21 → 决定定投几份</div>
+      <div style="padding-left:32px;">→ RSI≥65 + 不在冷却期 → 考虑减仓</div>
+      <div style="padding-left:32px;">→ 之前减过 + RSI回落 + 冷却期已过 → 考虑回补</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">🌎 纳指100决策树</h3>
+    <div style="font-size:12px; line-height:2.2; padding-left:8px; border-left:2px solid var(--purple); margin:8px 0;">
+      <div>看PE分位 → 判断估值状态</div>
+      <div style="padding-left:16px; color:var(--text-dim);">├─ PE≥85% → 暂停定投，考虑减仓30%</div>
+      <div style="padding-left:16px; color:var(--text-dim);">├─ PE 70-84% → 0.5份，考虑减仓15%</div>
+      <div style="padding-left:16px; color:var(--text-dim);">├─ PE 50-69% → 1份基准</div>
+      <div style="padding-left:16px; color:var(--text-green);">└─ PE&lt;50% → 加码定投</div>
+      <div>看回撤幅度 → 判断是否深度回调</div>
+      <div style="padding-left:16px; color:var(--red);">→ 回撤>15% → 永不减仓！可加码</div>
+      <div>减仓后 → 看PE分位回落 + 冷却期过 → 考虑回补</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 六、铁则汇总 ========== -->
+
+<div class="section">
+  <div class="section-title red">六、铁则汇总（必须牢记）</div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则1：3年以上闲钱</h4>
+    <ul>
+      <li>短期要用的钱不进市场</li>
+      <li>定投的本质是用时间换空间，需要足够长的时间维度</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则2：无杠杆，不融资</h4>
+    <ul>
+      <li>不用融资融券，不做杠杆ETF</li>
+      <li>复利的前提是"还在场上"，杠杆会让你被迫离场</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则3：每月只操作1次</h4>
+    <ul>
+      <li>只在每月21日操作（遇节假日顺延）</li>
+      <li>非操作日不看净值，不操作，不后悔</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则4：弱势区（价格&lt;MA250）不减仓</h4>
+    <ul>
+      <li>浮亏不是真亏，卖出才是</li>
+      <li>弱势区只做一件事：按表定投</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则5：深度回调（回撤&gt;15%）永不减仓</h4>
+    <ul>
+      <li>适用于纳指100</li>
+      <li>即使PE高估，深度回调时也只暂停定投，不卖出</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则6：冷却期内不重复操作</h4>
+    <ul>
+      <li>A股减仓后30天内不回补（回补时重新计时）</li>
+      <li>纳指减仓后60天内不回补（美股波动大，冷却期更长）</li>
+      <li>冷却期在网页"持仓记录"中自动计算，无需记忆</li>
+    </ul>
+  </div>
+
+  <div class="iron-rule">
+    <h4>⚡ 铁则7：不追涨，不抄底，按表操作</h4>
+    <ul>
+      <li>策略里没有"追涨"选项，也没有"抄底"选项</li>
+      <li>所有的买入/卖出都按RSI/PE分位的既定梯度执行</li>
+      <li>你的情绪是最大的敌人，策略是你的盾牌</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ========== 七、常见问题 ========== -->
+
+<div class="section">
+  <div class="section-title">七、常见问题</div>
+
+  <div class="card">
+    <h3>❓ 红利低波没有ETF，怎么参考512890？</h3>
+    <p>012708（东方红红利低波A）是指数基金，跟踪931446（东证红利低波指数）。512890（红利低波ETF）也跟踪同一指数，流动性更好，数据更及时。所以用512890的行情数据来<span class="highlight">替代参考</span>，实际操作中买入/卖出的是012708。</p>
+  </div>
+
+  <div class="card">
+    <h3>❓ 价值100ETF（159263）上市时间短，MA250准吗？</h3>
+    <p>159263于2025年7月上市，目前只有约205个交易日数据，不足250天。策略会自动检测：数据不足250天时，MA250标记为<span class="highlight">"参考值"</span>，同时用更短均线作为辅助判断，不会影响定投建议的准确性。</p>
+  </div>
+
+  <div class="card">
+    <h3>❓ 纳指100 PE分位用近7年够吗？</h3>
+    <p>近7年（约1650个交易日）覆盖了：2018年关税战、2020年疫情、2022年加息周期、2023年AI爆发。包含了多种市场环境下的PE分布，足够用于分位计算。数据太少会失真，太多会稀释近期状态。</p>
+  </div>
+
+  <div class="card">
+    <h3>❓ 如果三只标的都触发减仓，怎么办？</h3>
+    <p>按策略分别执行，互不影响。每只标的的<span class="highlight">冷却期独立计算</span>。减仓比例也是针对每只标的的动态仓（30%部分）分别操作，不是整体仓位一刀切。</p>
+  </div>
+
+  <div class="card">
+    <h3>❓ 数据是实时更新的吗？</h3>
+    <p>数据每30分钟自动更新一次（GitHub Actions定时任务）。A股数据更新时间为交易日9:30-15:00，纳指100数据更新时间为北京时间21:00-次日5:00。网页也每30分钟自动刷新数据。</p>
   </div>
 </div>
 
