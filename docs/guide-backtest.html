@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>策略简介 + 回测 · 慢慢变富</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+/* ========================================
+   CSS Variables & Theme
+   ======================================== */
+:root {
+  --bg: #0b0e14;
+  --bg-gradient: linear-gradient(180deg, #0b0e14 0%, #0d1117 50%, #0f1419 100%);
+  --card: #141a24;
+  --card-border: rgba(255,255,255,0.06);
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --text: #d1d5db;
+  --text-dim: #6b7280;
+  --text-bright: #f3f4f6;
+  --accent: #60a5fa;
+  --accent-glow: rgba(96,165,250,0.12);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.1);
+  --green-glow: rgba(52,211,153,0.15);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.1);
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,0.1);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.1);
+  --purple-glow: rgba(167,139,250,0.15);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --max-width: 520px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text);
+  line-height: 1.8;
+  padding: 16px 16px 32px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(96,165,250,0.1);
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  background: rgba(96,165,250,0.18);
+  border-color: rgba(96,165,250,0.25);
+  transform: translateX(-2px);
+}
+
+.hero {
+  text-align: center;
+  padding: 28px 16px 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+.hero .hero-emoji { font-size: 48px; margin-bottom: 12px; display: block; }
+.hero h1 {
+  font-size: 24px; font-weight: 800;
+  color: var(--text-bright); margin-bottom: 8px; letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle { font-size: 14px; color: var(--text-dim); letter-spacing: 0.3px; }
+.hero .subtitle strong { color: var(--text); }
+
+.section { margin-bottom: 24px; }
+.section-title {
+  font-size: 16px; font-weight: 700; color: var(--text-bright);
+  margin-bottom: 12px; padding: 8px 14px;
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--accent);
+  position: relative; overflow: hidden; letter-spacing: 0.3px;
+}
+.section-title::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+}
+.section-title.green { border-left-color: var(--green); }
+.section-title.green::before { background: linear-gradient(90deg, transparent, var(--green-glow), transparent); }
+.section-title.purple { border-left-color: var(--purple); }
+.section-title.purple::before { background: linear-gradient(90deg, transparent, var(--purple-glow), transparent); }
+
+.card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 14px;
+  margin-bottom: 10px; box-shadow: var(--card-shadow);
+  transition: all 0.25s ease; position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.card h3 {
+  font-size: 14px; font-weight: 600; color: var(--accent);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.card h3.green { color: var(--green); }
+.card h3.purple { color: var(--purple); }
+.card p, .card li {
+  font-size: 13px; color: var(--text); line-height: 2;
+}
+.card p strong, .card li strong { color: var(--text-bright); }
+.card .big-num {
+  font-size: 28px; font-weight: 800;
+  color: var(--green);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-strip {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.kpi-item {
+  flex: 1; min-width: 100px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  text-align: center;
+}
+.kpi-item .kpi-label {
+  font-size: 10px; color: var(--text-dim); letter-spacing: 0.3px;
+}
+.kpi-item .kpi-value {
+  font-size: 18px; font-weight: 700;
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  color: var(--text-bright);
+  margin-top: 2px;
+}
+.kpi-item .kpi-value.green { color: var(--green); }
+.kpi-item .kpi-value.accent { color: var(--accent); }
+
+.inspire-box {
+  background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(96,165,250,0.04));
+  border: 1px solid rgba(52,211,153,0.12);
+  border-radius: var(--radius); padding: 18px;
+  margin: 12px 0; position: relative; overflow: hidden;
+}
+.inspire-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--green), rgba(52,211,153,0.3));
+  border-radius: 3px 0 0 3px;
+}
+.inspire-box h3 {
+  color: var(--green); font-size: 15px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.inspire-box p { font-size: 13px; line-height: 2; color: var(--text); }
+
+.milestone {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.milestone .ms-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.milestone .ms-body { flex: 1; }
+.milestone .ms-body .ms-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+.milestone .ms-body .ms-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+.contact-box {
+  text-align: center;
+  padding: 24px 16px;
+  margin: 16px 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(96,165,250,0.06), rgba(167,139,250,0.04));
+  border: 1px solid rgba(96,165,250,0.12);
+}
+.contact-box .ct-icon { font-size: 36px; margin-bottom: 10px; }
+.contact-box .ct-title {
+  font-size: 16px; font-weight: 700; color: var(--text-bright); margin-bottom: 4px;
+}
+.contact-box .ct-desc {
+  font-size: 12px; color: var(--text-dim); margin-bottom: 12px;
+}
+.contact-box .ct-wechat {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 12px;
+  background: linear-gradient(135deg, rgba(52,211,153,0.1), rgba(52,211,153,0.05));
+  border: 1px solid rgba(52,211,153,0.15);
+  font-size: 16px; font-weight: 700; color: var(--green);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  letter-spacing: 0.5px; user-select: all;
+}
+.contact-box .ct-hint { font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+
+.footer-text {
+  text-align: center; color: var(--text-dim);
+  font-size: 12px; margin-top: 28px;
+  padding-top: 20px; border-top: 1px solid var(--card-border);
+  opacity: 0.7;
+}
+.footer-nav { text-align: center; margin-top: 20px; }
+
+.back-top {
+  position: fixed; bottom: 24px; right: 16px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--accent); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; transform: translateY(12px);
+  transition: all 0.3s ease; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3); pointer-events: none;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-top:hover {
+  border-color: var(--accent); background: var(--accent-glow);
+  box-shadow: 0 0 16px var(--accent-glow); transform: translateY(-2px);
+}
+@media (min-width: 600px) {
+  .back-top { right: calc((100vw - 520px) / 2 + 16px); }
+}
+.chart-card { padding: 10px; }
+.chart-card canvas { width: 100% !important; max-height: 260px; }
+.chart-card .chart-title {
+  font-size: 11px; color: var(--text-dim); text-align: center;
+  margin-bottom: 6px; letter-spacing: 0.3px;
+}
+.chart-card .chart-hint {
+  font-size: 10px; color: var(--text-dim); text-align: center;
+  margin-top: 4px; opacity: 0.6;
+}
+
+@media (hover: none) {
+  .card:hover, .inspire-box:hover, .contact-box:hover { transform: none; border-color: var(--card-border); box-shadow: var(--card-shadow); }
+  .back-link:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">← 返回控制台</a>
+
+<!-- ========== Hero ========== -->
+<div class="hero">
+  <span class="hero-emoji">🌱</span>
+  <h1>慢慢变富，才是最快的路</h1>
+  <div class="subtitle">一套普通人可执行的 <strong>三赛道定投策略</strong></div>
+  <div class="subtitle" style="margin-top:4px;font-size:12px;">红利低波 · 价值100 · 纳指100 · 每月21日 · 10分钟搞定</div>
+</div>
+
+<!-- ========== 一、核心理念 ========== -->
+<div class="section">
+  <div class="section-title green">💡 核心理念</div>
+
+  <div class="inspire-box">
+    <h3>📜 投资，不该是焦虑的来源</h3>
+    <p>大多数人在股市亏钱，不是因为选错了股票，而是因为<strong>拿不住</strong>。</p>
+    <p>涨了想追，跌了想跑——这是人性。我们不想跟人性对抗，我们用<strong>规则</strong>来绕开它。</p>
+    <p style="margin-top:8px;">这套策略的核心就三句话：</p>
+    <p style="padding-left:16px;margin-top:4px;">
+      ✅ <strong>选定好赛道</strong>——三只ETF，覆盖A股红利、A股价值、美股科技<br>
+      ✅ <strong>机械定投</strong>——每月21号，看数据，按表操作，10分钟搞定<br>
+      ✅ <strong>用纪律对抗恐惧</strong>——跌得越狠，买得越多；涨得过高，适当收网
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 class="green">🎯 为什么选这三只？</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="milestone">
+        <div class="ms-icon">🟢</div>
+        <div class="ms-body">
+          <div class="ms-title">红利低波 40%</div>
+          <div class="ms-desc">A股高股息+低波动精选，牛市不掉队，熊市扛得住，是组合的"压舱石"</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-icon">🔵</div>
+        <div class="ms-body">
+          <div class="ms-title">价值100 40%</div>
+          <div class="ms-desc">A股百大核心资产，ROE驱动，长期来看价值回归是确定性最强的事情</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-icon">🟣</div>
+        <div class="ms-body">
+          <div class="ms-title">纳指100 20%</div>
+          <div class="ms-desc">全球科技龙头集结号，人类创新的发动机，20%仓位刚刚好</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 二、历史回测核心结果（替换原收益展望） ========== -->
+<div class="section">
+  <div class="section-title purple">📈 种一棵树最好的时间是十年前，其次是现在</div>
+
+  <div class="card">
+    <h3 class="purple">💰 回测验证：历史数据告诉你答案</h3>
+    <p>从 <strong>2016年2月</strong> 到今天，每月定投 <strong>¥8,000</strong>，按 40/40/20 权重分配，看看这套策略的真实表现：</p>
+
+    <div class="kpi-strip">
+      <div class="kpi-item">
+        <div class="kpi-label">总投入</div>
+        <div class="kpi-value accent">984,000</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-label">当前市值</div>
+        <div class="kpi-value green">2,301,694</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-label">总收益率</div>
+        <div class="kpi-value green">+133.91%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-label">月数</div>
+        <div class="kpi-value">123</div>
+      </div>
+    </div>
+
+    <div class="inspire-box" style="margin-top:12px;">
+      <h3>💰 你的钱在为你工作</h3>
+      <p>
+        每月 <strong>¥8,000</strong>，坚持 <strong>10年3个月</strong>，累计只投入了 <span class="big-num" style="font-size:22px;">984,000</span> 元<br>
+        但根据历史数据，这笔钱变成了 <span class="big-num" style="font-size:22px;">2,301,694</span> 元 🎉<br><br>
+        多出来的 <span class="big-num" style="font-size:22px;">1,317,694</span> 元，是市场给你的 <strong>纪律奖金</strong>。<br>
+        加上每年底再平衡，小幅降低了回撤、提升了收益确定性。<br>
+        不是运气，不是天赋——只是 <strong>每月21号，按表操作，然后关掉 App</strong> 的回报。
+      </p>
+    </div>
+
+    <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">
+      ※ 回测使用全收益指数（含分红再投资），含每年底再平衡，未扣除管理费、申购费。<strong>历史表现不代表未来收益</strong>，仅用于验证策略逻辑。
+      <a href="guide-intro.html" style="color:var(--accent);text-decoration:none;">查看完整回测详情 →</a>
+    </p>
+  </div>
+</div>
+
+<!-- ========== 四、数据可视化 ========== -->
+<div class="section" id="charts">
+  <div class="section-title purple">📊 数据可视化</div>
+
+  <div class="card chart-card">
+    <div class="chart-title">📊 每年收益</div>
+    <canvas id="chartAnnual"></canvas>
+    <div class="chart-hint">每年12月21日定投日组合总收益率（含分红再投资）</div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="chart-title">📈 市值 vs 投入</div>
+    <canvas id="chartValue"></canvas>
+    <div class="chart-hint">绿色线 = 组合市值，灰色线 = 累计投入本金</div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="chart-title">📉 月度回撤</div>
+    <canvas id="chartDrawdown"></canvas>
+    <div class="chart-hint">红色区域 = 当月相对前期高点的回撤幅度，最深处为最大回撤</div>
+  </div>
+</div>
+
+<!-- ========== 五、核心优势 ========== -->
+<div class="section">
+  <div class="section-title green">🌟 为什么这套策略值得你信任</div>
+
+  <div class="card">
+    <div class="milestone">
+      <div class="ms-icon">🛡️</div>
+      <div class="ms-body">
+        <div class="ms-title">低回撤设计</div>
+        <div class="ms-desc">RSI21+MA250 双指标防守，弱势区"只定投不清仓"，极端行情也能扛过去</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">🤖</div>
+      <div class="ms-body">
+        <div class="ms-title">机械化执行</div>
+        <div class="ms-desc">看数据→按表投→关掉，每月只需10分钟，不盯盘、不焦虑、不追涨杀跌</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">🌍</div>
+      <div class="ms-body">
+        <div class="ms-title">跨国别配置</div>
+        <div class="ms-desc">A股打底 + 纳指增⻓，两个不同的经济引擎，降低单一市场风险</div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="ms-icon">📊</div>
+      <div class="ms-body">
+        <div class="ms-title">数据驱动</div>
+        <div class="ms-desc">每个操作建议背后都有实时数据支撑（RSI、PE分位、回撤幅度），不拍脑袋</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 六、联系我 ========== -->
+<div class="section">
+  <div class="section-title purple">💬 一起交流，一起变富</div>
+
+  <div class="contact-box">
+    <div class="ct-icon">🤝</div>
+    <div class="ct-title">欢迎添加我的微信</div>
+    <div class="ct-desc">
+      有任何疑问、想法，或者只是想找个人聊聊投资，都可以加我<br>
+      一个人的路很孤单，一群人的路走得更远 🌱
+    </div>
+    <div class="ct-wechat" id="wechatId">wei415489</div>
+    <div class="ct-hint">👆 点击复制微信号，去微信添加好友</div>
+  </div>
+</div>
+
+<div class="footer-nav">
+  <a class="back-link" href="index.html">← 返回控制台</a>
+</div>
+<div class="footer-text">数据不说谎，纪律不辜负 🏃</div>
+
+<!-- 返回顶部按钮 -->
+<div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+var bt = document.getElementById('backTop');
+window.addEventListener('scroll', function() {
+  bt.classList.toggle('visible', window.scrollY > 300);
+});
+
+document.getElementById('wechatId').addEventListener('click', function() {
+  var range = document.createRange();
+  range.selectNode(this);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  try {
+    document.execCommand('copy');
+    var orig = this.textContent;
+    this.textContent = '✅ 已复制！';
+    var self = this;
+    setTimeout(function() { self.textContent = orig; }, 1500);
+  } catch(e) {}
+  window.getSelection().removeAllRanges();
+});
+
+/* ========== Chart.js 图表 ========== */
+fetch('../data/backtest_result.json').then(function(r){ return r.json(); }).then(function(data) {
+  var s = data.summary;
+  var ph = s.portfolio_history;
+
+  /* --- 每年收益柱状图 --- */
+  var years = s.yearly.map(function(y){ return y.year; });
+  var rets = s.yearly.map(function(y){ return y.return_pct; });
+  var colors = rets.map(function(v){
+    return v >= 20 ? 'rgba(52,211,153,0.7)' : v >= 10 ? 'rgba(96,165,250,0.6)' : 'rgba(251,191,36,0.6)';
+  });
+  var borders = rets.map(function(v){
+    return v >= 20 ? '#34d399' : v >= 10 ? '#60a5fa' : '#fbbf24';
+  });
+
+  new Chart(document.getElementById('chartAnnual'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        label: '年收益率 (%)',
+        data: rets,
+        backgroundColor: colors,
+        borderColor: borders,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return '收益率: +' + ctx.parsed.y + '%'; } } }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v){ return v + '%'; }, font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { ticks: { font: { size: 9 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  /* --- 市值 vs 投入曲线（每3个月采一个标签） --- */
+  var labels = ph.map(function(p){ return p.ym; });
+  var values = ph.map(function(p){ return p.value; });
+  var invested = ph.map(function(p){ return p.invested; });
+  var ddData = ph.map(function(p){ return p.dd; });
+
+  new Chart(document.getElementById('chartValue'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '组合市值', data: values,
+        borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.08)',
+        fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2,
+      }, {
+        label: '累计投入', data: invested,
+        borderColor: '#6b7280', borderDash: [4, 3],
+        pointRadius: 0, borderWidth: 1.5, fill: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { position: 'top', labels: { boxWidth: 12, padding: 8, font: { size: 10 }, usePointStyle: true, pointStyle: 'line' } },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': \u00a5' + Math.round(ctx.parsed.y).toLocaleString(); } } }
+      },
+      scales: {
+        y: { ticks: { callback: function(v){ return '\u00a5' + (v/10000).toFixed(0) + '\u4e07'; }, font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { ticks: { font: { size: 8 }, maxTicksLimit: 14, callback: function(v, i){ return i % 10 === 0 ? this.getLabelForValue(v) : ''; } }, grid: { display: false } }
+      }
+    }
+  });
+
+  /* --- 月度回撤区域图（找最大回撤标注） --- */
+  var minDD = Math.min.apply(null, ddData);
+  var minIdx = ddData.indexOf(minDD);
+  var minLabel = labels[minIdx] || '';
+
+  new Chart(document.getElementById('chartDrawdown'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '\u56de\u64a4 (%)',
+        data: ddData,
+        borderColor: '#f87171',
+        backgroundColor: 'rgba(248,113,113,0.12)',
+        fill: true, tension: 0.3, pointRadius: 0, borderWidth: 1.5,
+        pointBackgroundColor: ddData.map(function(d, i){ return i === minIdx ? '#f87171' : 'transparent'; }),
+        pointRadius: ddData.map(function(d, i){ return i === minIdx ? 5 : 0; }),
+        pointBorderColor: ddData.map(function(d, i){ return i === minIdx ? '#f87171' : 'transparent'; }),
+        pointBorderWidth: ddData.map(function(d, i){ return i === minIdx ? 2 : 0; }),
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return '\u56de\u64a4: ' + ctx.parsed.y.toFixed(2) + '%'; } } }
+      },
+      scales: {
+        y: { reverse: true, beginAtZero: true, ticks: { callback: function(v){ return v + '%'; }, font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        x: { ticks: { font: { size: 8 }, maxTicksLimit: 14, callback: function(v, i){ return i % 10 === 0 ? this.getLabelForValue(v) : ''; } }, grid: { display: false } }
+      }
+    },
+    plugins: []
+  });
+
+  /* 最大回撤 SVG 标注（在 canvas 上方叠加） */
+  var ddCard = document.getElementById('chartDrawdown').parentNode;
+  var badge = document.createElement('div');
+  badge.style.cssText = 'position:absolute;top:32px;right:8px;background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:4px 8px;font-size:10px;color:#f87171;line-height:1.4;z-index:5;pointer-events:none;';
+  badge.innerHTML = '\u25bc \u6700\u5927\u56de\u64a4<br><strong>' + minDD.toFixed(2) + '%</strong> (' + minLabel + ')';
+  ddCard.style.position = 'relative';
+  ddCard.appendChild(badge);
+});
+</script>
+
+</body>
+</html>
