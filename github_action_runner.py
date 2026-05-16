@@ -745,9 +745,10 @@ def process_etf_rsi_ma(config):
                 index_change_pct = round((index_price - prev_idx) / prev_idx * 100, 2)
 
     # 5. 确定显示价格和涨跌幅
-    use_index_price = index_price is not None
+    # 关键：只有当指数K线成功获取时，才用指数价格显示（保证价格与MA250/RSI数据源一致）
+    use_index_price = use_index_kline and index_price is not None
     display_price = index_price if use_index_price else latest_price
-    display_change_pct = index_change_pct if index_change_pct is not None else etf_change_pct
+    display_change_pct = index_change_pct if use_index_price and index_change_pct is not None else (etf_change_pct if etf_change_pct is not None else 0)
 
     # 如果使用指数K线计算，etf_price需单独获取（仅作参考）
     if use_index_kline and etf_price is None:
