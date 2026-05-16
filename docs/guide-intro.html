@@ -154,14 +154,14 @@ tr:last-child td { border-bottom: none; }
 </head>
 <body>
 
-<a class="back-link" href="guide-backtest.html">← 返回策略概览</a>
+<a class="back-link" href="guide-backtest.html">&larr; 返回策略概览</a>
 
 <!-- ========== Backtest Hero ========== -->
 <div class="hero">
   <span class="hero-emoji">📊</span>
   <h1>10年回测验证</h1>
-  <div class="subtitle">从 <strong>2016年2月</strong> 到今天，每月定投 <strong>¥8,000</strong>，按40/40/20权重分配</div>
-  <div class="subtitle" style="margin-top:4px;font-size:12px;">数据源：全收益指数（921446+480081）· 新浪纳指100 · AKShare · 含每年底再平衡</div>
+  <div class="subtitle">从 <strong id="hero-start">2016年2月</strong> 到今天，每月定投 <strong id="hero-monthly">&yen;8,000</strong>，按 <strong id="hero-weights">40/40/20</strong> 权重分配</div>
+  <div class="subtitle" style="margin-top:4px;font-size:12px;" id="hero-data-source">数据源：全收益指数（921446+480081）&middot; 新浪纳指100 &middot; AKShare &middot; 含每年底再平衡</div>
 </div>
 
 <!-- ========== 一、各标的详情 ========== -->
@@ -181,27 +181,27 @@ tr:last-child td { border-bottom: none; }
         </tr>
         <tr>
           <td class="td-bright">红利低波</td>
-          <td>3,200</td>
-          <td>123</td>
-          <td>393,600</td>
-          <td class="td-green">863,991</td>
-          <td class="td-green">+119.51%</td>
+          <td id="item1-mthly"></td>
+          <td id="item1-trades"></td>
+          <td id="item1-invested"></td>
+          <td id="item1-value" class="td-green"></td>
+          <td id="item1-return" class="td-green"></td>
         </tr>
         <tr>
           <td class="td-bright">价值100</td>
-          <td>3,200</td>
-          <td>123</td>
-          <td>393,600</td>
-          <td class="td-green">938,459</td>
-          <td class="td-green">+138.43%</td>
+          <td id="item2-mthly"></td>
+          <td id="item2-trades"></td>
+          <td id="item2-invested"></td>
+          <td id="item2-value" class="td-green"></td>
+          <td id="item2-return" class="td-green"></td>
         </tr>
         <tr>
           <td class="td-bright">纳指100</td>
-          <td>1,600</td>
-          <td>123</td>
-          <td>196,800</td>
-          <td class="td-green">499,244</td>
-          <td class="td-green">+153.68%</td>
+          <td id="item3-mthly"></td>
+          <td id="item3-trades"></td>
+          <td id="item3-invested"></td>
+          <td id="item3-value" class="td-green"></td>
+          <td id="item3-return" class="td-green"></td>
         </tr>
       </table>
     </div>
@@ -211,18 +211,18 @@ tr:last-child td { border-bottom: none; }
     <h3 class="purple">📊 当前配置比例（漂移情况）</h3>
     <div class="data-row">
       <span class="dr-label">红利低波</span>
-      <span class="dr-value">37.5%（目标40%）</span>
+      <span class="dr-value" id="drift1"></span>
     </div>
     <div class="data-row">
       <span class="dr-label">价值100</span>
-      <span class="dr-value">40.8%（目标40%）</span>
+      <span class="dr-value" id="drift2"></span>
     </div>
     <div class="data-row">
       <span class="dr-label">纳指100</span>
-      <span class="dr-value green">21.7% ↑（目标20%）</span>
+      <span class="dr-value" id="drift3"></span>
     </div>
     <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-      ※ 每年底再平衡将纳指100卖回20%附近，红利低波和价值100买回40%附近，这是当前配置偏离较小的原因。
+      ※ 每年底再平衡将超配部分卖回目标比例，这是当前配置偏离较小的原因。
     </p>
   </div>
 </div>
@@ -235,41 +235,41 @@ tr:last-child td { border-bottom: none; }
     <div class="kpi-strip">
       <div class="kpi-item">
         <div class="kpi-label">最大回撤</div>
-        <div class="kpi-value red">-13.84%</div>
+        <div class="kpi-value red" id="kpi-maxdd"></div>
       </div>
       <div class="kpi-item">
         <div class="kpi-label">发生时间</div>
-        <div class="kpi-value" style="font-size:14px;">2020.02→03</div>
+        <div class="kpi-value" id="kpi-maxdd-date" style="font-size:14px;"></div>
       </div>
       <div class="kpi-item">
         <div class="kpi-label">谷底市值</div>
-        <div class="kpi-value accent">433,597</div>
+        <div class="kpi-value accent" id="kpi-valley-value"></div>
       </div>
     </div>
 
     <div class="data-row">
       <span class="dr-label">触发原因</span>
-      <span class="dr-value">新冠疫情全球恐慌</span>
+      <span class="dr-value" id="dd-trigger">新冠疫情全球恐慌</span>
     </div>
     <div class="data-row">
       <span class="dr-label">峰值总投入</span>
-      <span class="dr-value">400,000 元</span>
+      <span class="dr-value" id="dd-peak-invested"></span>
     </div>
     <div class="data-row">
       <span class="dr-label">谷底时收益</span>
-      <span class="dr-value green">+8.40%（仍是正收益！）</span>
+      <span class="dr-value green" id="dd-valley-pnl"></span>
     </div>
     <div class="data-row">
       <span class="dr-label">近3年最大回撤</span>
-      <span class="dr-value green">-3.43%（2023年10月）</span>
+      <span class="dr-value green" id="dd-recent3y"></span>
     </div>
 
     <div class="inspire-box" style="margin-top:12px;">
       <h3>🛡️ 定投的最大优势：回撤时仍在买入</h3>
-      <p>
-        2020年2-3月新冠暴跌期间，组合从峰值回撤了 <strong>-13.84%</strong>，<br>
+      <p id="dd-inspire-text">
+        2020年2-3月新冠暴跌期间，组合从峰值回撤了 <strong id="dd-inspire-pct">-13.84%</strong>，<br>
         但因为每月仍在定投，跌的时候用同样的钱买到了 <strong>更多份额</strong>。<br><br>
-        所以谷底时总收益 <strong>仍然是正的（+8.40%）</strong>——<br>
+        所以谷底时总收益 <strong>仍然是正的（<span id="dd-inspire-pnl">+8.40%</span>）</strong>——<br>
         这正是定投「<strong>摊薄成本</strong>」的魔力。
       </p>
     </div>
@@ -290,17 +290,7 @@ tr:last-child td { border-bottom: none; }
           <th>收益率</th>
           <th>年内最大回撤</th>
         </tr>
-        <tr><td class="td-bright">2016</td><td>88,000</td><td>96,051</td><td class="td-green">+9.15%</td><td>0.00%</td></tr>
-        <tr><td class="td-bright">2017</td><td>96,000</td><td>241,116</td><td class="td-green">+31.04%</td><td>0.00%</td></tr>
-        <tr><td class="td-bright">2018</td><td>96,000</td><td>296,180</td><td class="td-green">+5.78%</td><td>-3.56%</td></tr>
-        <tr><td class="td-bright">2019</td><td>96,000</td><td>477,832</td><td class="td-green">+27.08%</td><td>-5.63%</td></tr>
-        <tr><td class="td-bright">2020</td><td>96,000</td><td>681,521</td><td class="td-green">+44.39%</td><td class="td-red">-13.84%</td></tr>
-        <tr><td class="td-bright">2021</td><td>96,000</td><td>906,806</td><td class="td-green">+59.65%</td><td>-6.98%</td></tr>
-        <tr><td class="td-bright">2022</td><td>96,000</td><td>963,220</td><td class="td-green">+45.06%</td><td>-3.74%</td></tr>
-        <tr><td class="td-bright">2023</td><td>96,000</td><td>1,264,609</td><td class="td-green">+66.40%</td><td>-3.43%</td></tr>
-        <tr><td class="td-bright">2024</td><td>96,000</td><td>1,805,045</td><td class="td-green">+110.87%</td><td>-2.35%</td></tr>
-        <tr><td class="td-bright">2025</td><td>96,000</td><td>2,149,835</td><td class="td-green">+125.82%</td><td>-1.80%</td></tr>
-        <tr><td class="td-bright">2026</td><td>32,000</td><td>2,282,400</td><td class="td-green">+131.95%</td><td>-2.60%</td></tr>
+        <tbody id="yearly-tbody"></tbody>
       </table>
     </div>
     <p style="font-size:11px;color:var(--text-dim);margin-top:8px;">
@@ -320,18 +310,18 @@ tr:last-child td { border-bottom: none; }
 
   <div class="card">
     <h3 class="green">✅ 回撤可控，睡得着觉</h3>
-    <p>最大回撤仅 <strong>-13.84%</strong>（2020新冠疫情），近3年最大回撤更是只有 <strong>-3.43%</strong>。相比之下，沪深300同期最大回撤超过-30%。低回撤 = 不容易被震下车 = 长期拿得住。</p>
+    <p>最大回撤仅 <strong id="insight-maxdd">-13.84%</strong>（2020新冠疫情），近3年最大回撤更是只有 <strong id="insight-recent3y">-3.43%</strong>。相比之下，沪深300同期最大回撤超过-30%。低回撤 = 不容易被震下车 = 长期拿得住。</p>
   </div>
 
   <div class="card">
     <h3 class="green">✅ 纳指100是收益加速器</h3>
-    <p>只占20%仓位的纳指100，贡献了21.7%的市值占比，收益率 <strong>+153.68%</strong>。由于每年底再平衡卖出超配部分，纳指占比被控制在20%附近，避免了单一资产过度集中。A股打底（低回撤）+ 美股增⻓（高收益），这是组合设计的核心逻辑。</p>
+    <p>只占20%仓位的纳指100，市值占比已达 <strong id="insight-nq-weight">21.7%</strong>，收益率 <strong id="insight-nq-return">+153.68%</strong>。由于每年底再平衡卖出超配部分，纳指占比被控制在20%附近，避免了单一资产过度集中。A股打底（低回撤）+ 美股增长（高收益），这是组合设计的核心逻辑。</p>
   </div>
 
   <div class="card">
     <h3 class="green">✅ 时间越长，复利越惊人</h3>
-    <p>前5年（2016-2020）组合增长到68万，年化约15%+；<br>
-    后5年（2021-2026）从68万→229万，<strong>后5年的绝对收益是前5年的3倍</strong>。<br>
+    <p id="insight-compound">前5年（2016-2020）组合增长到68万，年化约15%+；<br>
+    后5年（2021-2026）从68万&rarr;229万，<strong>后5年的绝对收益是前5年的3倍</strong>。<br>
     复利不是线性的，它是指数的。</p>
   </div>
 </div>
@@ -339,22 +329,22 @@ tr:last-child td { border-bottom: none; }
 <!-- ========== 五、回测说明 ========== -->
 <div class="section">
   <div class="section-title">📝 回测说明</div>
-  <div class="card">
+  <div class="card" id="backtest-info">
     <div class="data-row">
       <span class="dr-label">起始日期</span>
-      <span class="dr-value">2016年2月</span>
+      <span class="dr-value" id="info-start-date">2016年2月</span>
     </div>
     <div class="data-row">
       <span class="dr-label">结束日期</span>
-      <span class="dr-value">2026年5月</span>
+      <span class="dr-value" id="info-end-date">2026年5月</span>
     </div>
     <div class="data-row">
       <span class="dr-label">每月总投入</span>
-      <span class="dr-value">8,000 元</span>
+      <span class="dr-value" id="info-monthly">&yen;8,000</span>
     </div>
     <div class="data-row">
       <span class="dr-label">权重分配</span>
-      <span class="dr-value">红利低波40% / 价值10040% / 纳指10020%</span>
+      <span class="dr-value" id="info-weights">红利低波40% / 价值10040% / 纳指10020%</span>
     </div>
     <div class="data-row">
       <span class="dr-label">买入时点</span>
@@ -374,7 +364,7 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div class="data-row">
       <span class="dr-label">再平衡</span>
-      <span class="dr-value">每年12月21日执行</span>
+      <span class="dr-value" id="info-rebalance">每年12月21日</span>
     </div>
     <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">
       ※ 回测使用全收益指数（含分红再投资），含每年底再平衡，更贴近真实策略。但未扣除管理费、申购费等成本。<strong>历史表现不代表未来收益</strong>，仅用于验证策略逻辑。
@@ -383,17 +373,176 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <div class="footer-nav">
-  <a class="back-link" href="guide-backtest.html">← 返回策略概览</a>
+  <a class="back-link" href="guide-backtest.html">&larr; 返回策略概览</a>
 </div>
 <div class="footer-text">数据不说谎，纪律不辜负 🏃</div>
 
 <div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 
 <script>
-var bt = document.getElementById('backTop');
-window.addEventListener('scroll', function() {
-  bt.classList.toggle('visible', window.scrollY > 300);
-});
+// ---- Format helpers ----
+function fmt(n) {
+  return Number(n).toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function fmtPct(n, digits) {
+  if (digits === undefined) digits = 2;
+  var s = (n >= 0 ? '+' : '') + Number(n).toFixed(digits) + '%';
+  return s;
+}
+function fmtMoney(n) {
+  return '\u00a5' + Number(n).toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function el(id) { return document.getElementById(id); }
+
+var data, backtestInfo;
+
+fetch('../data/backtest_result.json')
+  .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(json) {
+    data = json;
+    backtestInfo = data.summary;
+    renderAll();
+  })
+  .catch(function(err) {
+    console.warn('回测数据加载失败:', err);
+    document.querySelector('.hero h1').textContent = '⚠️ 数据加载失败';
+    document.querySelector('.hero .subtitle').textContent = '请刷新页面或检查 backtest_result.json 是否存在';
+  });
+
+function renderAll() {
+  var s = backtestInfo;
+  // ---- Hero ----
+  el('hero-start').textContent = (s.start_date || '2016-02').replace('-', '年') + '月';
+  el('hero-monthly').innerHTML = fmtMoney(s.monthly_total);
+  el('hero-weights').textContent = s.weights_desc || '40/40/20';
+
+  var rebalStr = s.rebalance_desc || '每年12月21日';
+  el('hero-data-source').textContent = '数据源：全收益指数（921446+480081）· 新浪纳指100 · AKShare · 含' + rebalStr + '再平衡';
+
+  // ---- 标的列表 ----
+  var items = s.items || [];
+  if (items.length >= 1) {
+    var i1 = items[0];
+    el('item1-mthly').textContent = fmtMoney(i1.monthly);
+    el('item1-trades').textContent = i1.trades;
+    el('item1-invested').textContent = fmtMoney(i1.invested);
+    el('item1-value').textContent = fmtMoney(i1.value);
+    el('item1-return').textContent = fmtPct(i1.return_pct);
+  }
+  if (items.length >= 2) {
+    var i2 = items[1];
+    el('item2-mthly').textContent = fmtMoney(i2.monthly);
+    el('item2-trades').textContent = i2.trades;
+    el('item2-invested').textContent = fmtMoney(i2.invested);
+    el('item2-value').textContent = fmtMoney(i2.value);
+    el('item2-return').textContent = fmtPct(i2.return_pct);
+  }
+  if (items.length >= 3) {
+    var i3 = items[2];
+    el('item3-mthly').textContent = fmtMoney(i3.monthly);
+    el('item3-trades').textContent = i3.trades;
+    el('item3-invested').textContent = fmtMoney(i3.invested);
+    el('item3-value').textContent = fmtMoney(i3.value);
+    el('item3-return').textContent = fmtPct(i3.return_pct);
+  }
+
+  // ---- 配置漂移 ----
+  var cw = s.current_weights || {};
+  var targets = (s.weights_desc || '40/40/20').split('/').map(Number);
+  var names = ['红利低波', '价值100', '纳指100'];
+  for (var i = 0; i < names.length; i++) {
+    var driftEl = el('drift' + (i + 1));
+    if (driftEl && cw[names[i]] !== undefined) {
+      var actual = cw[names[i]];
+      var target = targets[i] || 20;
+      var diff = actual - target;
+      var diffStr = '';
+      if (Math.abs(diff) >= 0.1) {
+        diffStr = diff > 0 ? ' \u2191' : ' \u2193';
+        driftEl.className = 'dr-value' + (diff > 0 ? ' green' : ' red');
+      } else {
+        driftEl.className = 'dr-value';
+      }
+      driftEl.textContent = actual.toFixed(1) + '%\uff08\u76ee\u6807' + target + '%\uff09' + diffStr;
+    }
+  }
+
+  // ---- 最大回撤 ----
+  var maxDD = s.max_drawdown;
+  var valley = s.max_dd_valley || {};
+  el('kpi-maxdd').textContent = fmtPct(maxDD);
+  if (s.max_dd_start && s.max_dd_end) {
+    el('kpi-maxdd-date').textContent = s.max_dd_start.slice(0,7).replace('-','.') + '\u2192' + s.max_dd_end.slice(5,7);
+  } else if (s.max_dd_end) {
+    el('kpi-maxdd-date').textContent = s.max_dd_end.slice(0,7).replace('-','.');
+  }
+  el('kpi-valley-value').textContent = valley.portfolio_value ? fmtMoney(valley.portfolio_value) : '';
+  el('dd-peak-invested').textContent = valley.total_invested ? fmtMoney(valley.total_invested) : '';
+  el('dd-valley-pnl').textContent = (valley.pnl_pct !== undefined ? '仍是正收益！' : '') + (valley.pnl_pct !== undefined ? '(' + fmtPct(valley.pnl_pct) + ')' : '');
+
+  var recent = s.recent_3y_max_dd || {};
+  var recentStr = fmtPct(recent.drawdown);
+  if (recent.date) {
+    recentStr += '\uff08' + recent.date.slice(0,7).replace('-', '\u5e74') + '\u6708\uff09';
+  }
+  el('dd-recent3y').textContent = recentStr;
+
+  // 回撤inspire动态
+  if (maxDD !== undefined) {
+    el('dd-inspire-pct').textContent = fmtPct(maxDD);
+  }
+  if (valley.pnl_pct !== undefined) {
+    el('dd-inspire-pnl').textContent = fmtPct(valley.pnl_pct);
+  }
+
+  // ---- 历年收益 ----
+  var yearly = s.yearly || [];
+  var tbody = el('yearly-tbody');
+  tbody.innerHTML = '';
+  yearly.forEach(function(y) {
+    var tr = document.createElement('tr');
+    var retCls = y.return_pct >= 0 ? 'td-green' : 'td-red';
+    var ddCls = y.max_dd < 0 ? 'td-red' : '';
+    tr.innerHTML =
+      '<td class="td-bright">' + y.year + '</td>' +
+      '<td>' + fmtMoney(y.invested) + '</td>' +
+      '<td>' + fmtMoney(y.value) + '</td>' +
+      '<td class="' + retCls + '">' + fmtPct(y.return_pct) + '</td>' +
+      '<td class="' + ddCls + '">' + (y.max_dd < 0 ? fmtPct(y.max_dd) : '0.00%') + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  // ---- 关键发现动态数据 ----
+  if (maxDD !== undefined) el('insight-maxdd').textContent = fmtPct(maxDD);
+  if (recent.drawdown !== undefined) el('insight-recent3y').textContent = fmtPct(recent.drawdown);
+  if (cw['纳指100'] !== undefined) el('insight-nq-weight').textContent = cw['纳指100'].toFixed(1) + '%';
+  if (items.length >= 3) el('insight-nq-return').textContent = fmtPct(items[2].return_pct);
+
+  // 复利叙述动态
+  if (yearly.length >= 10) {
+    var y2016 = yearly[0];
+    var y2020 = yearly[4];
+    var y2026 = yearly[yearly.length - 1];
+    if (y2016 && y2020 && y2026) {
+      var first5 = y2020.value;
+      var totalV = y2026.value;
+      el('insight-compound').innerHTML =
+        '\u524d5\u5e74\uff082016-2020\uff09\u7ec4\u5408\u589e\u957f\u5230' + fmtMoney(first5) + '\uff0c\u5e74\u5316\u7ea615%+<br>' +
+        '\u540e5\u5e74\uff082021-\u76f4\u81f3\u4eca\uff09\u4ece' + fmtMoney(first5) + '\u2192' + fmtMoney(totalV) + '\uff0c<strong>\u540e5\u5e74\u7684\u7edd\u5bf9\u6536\u76ca\u662f\u524d5\u5e74\u7684' + ((totalV - first5) / (first5 - 0) > 2.5 ? '3' : '2') + '\u500d</strong>\u3002<br>' +
+        '\u590d\u5229\u4e0d\u662f\u7ebf\u6027\u7684\uff0c\u5b83\u662f\u6307\u6570\u7684\u3002';
+    }
+  }
+
+  // ---- 回测说明 ----
+  if (s.start_date) el('info-start-date').textContent = s.start_date.replace('-', '\u5e74') + '\u6708';
+  var endDt = s.end_date ? s.end_date.replace('-', '\u5e74') + '\u6708' : (new Date().getFullYear() + '\u5e74' + (new Date().getMonth() + 1) + '\u6708');
+  el('info-end-date').textContent = endDt;
+  el('info-monthly').innerHTML = fmtMoney(s.monthly_total);
+  el('info-weights').textContent = s.weights_desc ? 
+    '红利低波' + targets[0] + '% / 价值100' + targets[1] + '% / 纳指100' + targets[2] + '%' : 
+    '40%/40%/20%';
+  el('info-rebalance').textContent = rebalStr;
+}
 </script>
 
 </body>
