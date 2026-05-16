@@ -500,11 +500,13 @@ function renderAll() {
   var yearly = s.yearly || [];
   var tbody = el('yearly-tbody');
   tbody.innerHTML = '';
+  var cumInvested = 0;
   yearly.forEach(function(y) {
+    cumInvested += y.invested;
     var tr = document.createElement('tr');
     var retCls = y.return_pct >= 0 ? 'td-green' : 'td-red';
     var ddCls = y.max_dd < 0 ? 'td-red' : '';
-    var profit = y.value - y.invested;
+    var profit = y.value - cumInvested;
     var profitCls = profit >= 0 ? 'td-green' : 'td-red';
     tr.innerHTML =
       '<td class="td-bright">' + y.year + '</td>' +
