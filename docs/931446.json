@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-16 13:17:14",
+  "update_time": "2026-05-16 13:18:45",
   "data_source": "腾讯ETF价格回退",
   "etf": {
     "type": "rsi_ma",
