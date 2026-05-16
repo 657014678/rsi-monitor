@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>策略详情 · 价值投资控制台</title>
+<title>核心策略 · 价值投资控制台</title>
 <style>
 /* ========================================
    CSS Variables & Theme (matching index.html)
@@ -771,56 +771,330 @@ tr:last-child td { border-bottom: none; }
   .back-link:hover { transform: none; }
 }
 </style>
+</style>
 </head>
 <body>
-
-<a class="back-link" href="index.html">← 返回控制台</a>
-
+<a class="back-link" href="guide.html">← 返回目录</a>
 <div class="page-header">
   <h1>策略详情</h1>
-  <div class="subtitle">三标的 · 双策略 · 月度执行 · 选择要查看的页面</div>
+  <div class="subtitle">三标的 · 双策略 · 月度执行</div>
 </div>
 
+<!-- ========== 快速导航 ========== -->
+<div class="section">
+  <div class="quick-nav">
+    <a href="#overview" class="qn-item"><span class="qn-icon">📊</span>策略总览</a>
+    <a href="#a-share" class="qn-item"><span class="qn-icon">📈</span>A股策略</a>
+    <a href="#us" class="qn-item"><span class="qn-icon">🇺🇸</span>美股策略</a>
+    <a href="#decision-tree" class="qn-item"><span class="qn-icon">🌳</span>决策树</a>
+  </div>
+</div>
+<div class="section" style="margin-bottom:16px;">
+  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+    <a href="guide-rules.html" class="qn-item"><span class="qn-icon">📋</span>执行规则</a>
+    <a href="guide-mindset.html" class="qn-item"><span class="qn-icon">🧘</span>心法补给</a>
+  </div>
+</div>
+<!-- ========== 一、策略总览 ========== -->
+
+<div class="section" id="overview">
+  <div class="section-title green"><span class="st-badge">01</span>📊 策略总览</div>
+  <div class="section-desc">投资目标 · 配置比例 · 核心逻辑</div>
+
+  <div class="card">
+    <h3 class="green">投资目标</h3>
+    <ul>
+      <li>长期持有，<span class="highlight-green">低回撤</span>，复利增长</li>
+      <li>年化目标：<span class="highlight-green">8-15%</span>（不追求暴利）</li>
+      <li>最大回撤控制：<span class="highlight-green">≤20%</span></li>
+      <li>操作频率：<span class="highlight">每月仅1次</span>（21日执行）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>三标的配置</h3>
+    <!-- 配置比例条 -->
+    <div style="display:flex; height:36px; border-radius:8px; overflow:hidden; margin:8px 0; box-shadow:0 2px 10px rgba(0,0,0,0.25);">
+      <div style="flex:2; background:linear-gradient(135deg,#34d399,#10b981); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#0b0e14; letter-spacing:0.5px;">40%</div>
+      <div style="flex:2; background:linear-gradient(135deg,#60a5fa,#3b82f6); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#0b0e14; letter-spacing:0.5px;">40%</div>
+      <div style="flex:1; background:linear-gradient(135deg,#a78bfa,#8b5cf6); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#0b0e14; letter-spacing:0.5px;">20%</div>
+    </div>
+    <!-- 颜色标签 -->
+    <div style="display:flex; gap:4px; margin:2px 0 6px; font-size:11px;">
+      <div style="flex:2; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);vertical-align:middle;margin-right:3px;"></span>红利低波 <span style="color:var(--text-dim);">012708</span></div>
+      <div style="flex:2; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);vertical-align:middle;margin-right:3px;"></span>价值100 <span style="color:var(--text-dim);">025497</span></div>
+      <div style="flex:1; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--purple);vertical-align:middle;margin-right:3px;"></span>纳指100 <span style="color:var(--text-dim);">159941</span></div>
+    </div>
+    <p style="font-size:12px;color:var(--text);">A股双价值打底，美股科技增强，低相关性分散风险。</p>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg, rgba(52,211,153,0.06), rgba(96,165,250,0.04)); border-color:rgba(52,211,153,0.15);">
+    <h3 class="green">🎯 核心逻辑（一句话）</h3>
+    <p style="font-size:15px; font-weight:600; color:var(--text-bright); text-align:center; padding:8px 0;">
+      <span class="highlight">低位多买，高位少买，强势区减仓，弱势区死扛</span>
+    </p>
+    <div class="key-note" style="border-left-color:var(--green);">用数学纪律代替情绪决策，用时间换空间。不预测市场，只应对市场。</div>
   </div>
 </div>
 
-<!-- ========== 子页入口 ========== -->
-<div class="section" style="margin-top:8px;">
+<div class="divider"></div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-core.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--green-dim),var(--green-glow));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📈</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">核心策略</div>
-        <div style="font-size:11px;color:var(--text-dim);">策略总览 · A股RSI策略 · 美股PE策略 · 决策树</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
+
+<div class="divider"></div>
+<!-- ========== 二、A股策略：RSI21+MA250 ========== -->
+
+<div class="section" id="a-share">
+  <div class="section-title"><span class="st-badge">02</span>📈 A股策略：RSI21 + MA250</div>
+  <div class="section-desc">适用：红利低波 · 价值100 · 本月定投份数由此决定</div>
+
+  <div class="card">
+    <h3>指标说明</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>指标</th><th>含义</th><th>作用</th></tr>
+        <tr><td><strong>RSI21</strong></td><td>21日相对强弱指数</td><td>判断"超买/超卖"</td></tr>
+        <tr><td><strong>MA250</strong></td><td>250日均线（≈年线）</td><td>判断"强势/弱势区"</td></tr>
+      </table>
+    </div>
+    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">为什么是RSI21？与月度定投节奏匹配，过滤短期噪音。</p>
+  </div>
+
+  <div class="card">
+    <h3>市场分区规则</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>分区</th><th>条件</th><th>可执行操作</th></tr>
+        <tr><td class="td-green"><strong>强势区</strong></td><td>价格 ≥ MA250</td><td class="td-green">定投 + 减仓 + 回补</td></tr>
+        <tr><td class="td-red"><strong>弱势区</strong></td><td>价格 &lt; MA250</td><td class="td-red">只定投，不减仓，不回补</td></tr>
+      </table>
+    </div>
+    <div class="iron-rule">
+      <h4>铁则：弱势区不减仓</h4>
+      <ul>
+        <li>浮亏卖出 = 真亏 + 确认亏损</li>
+        <li>红利/价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
+        <li>弱势区只做一件事：<span class="highlight-green">按表定投，收集便宜筹码</span></li>
+      </ul>
     </div>
   </div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-rules.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--yellow-dim),rgba(251,191,36,0.25));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📋</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">执行规则</div>
-        <div style="font-size:11px;color:var(--text-dim);">月度执行方法 · 七条铁则 · 常见问题</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
+  <div class="card">
+    <h3 class="green">A股定投梯度表</h3>
+    <!-- 份数色阶条：颜色越绿买越多，越红越少 -->
+    <div style="display:flex; border-radius:6px; overflow:hidden; margin-bottom:10px; font-size:10px; font-weight:600; text-align:center; height:22px; line-height:22px; letter-spacing:0.3px;">
+      <div style="flex:1; background:rgba(52,211,153,0.35); color:var(--green);">2.0</div>
+      <div style="flex:1; background:rgba(52,211,153,0.22); color:var(--green);">1.5</div>
+      <div style="flex:1; background:rgba(52,211,153,0.10); color:var(--text);">1.0</div>
+      <div style="flex:1; background:rgba(251,191,36,0.10); color:var(--yellow);">0.8</div>
+      <div style="flex:1; background:rgba(251,191,36,0.20); color:var(--yellow);">0.5</div>
+      <div style="flex:1; background:rgba(248,113,113,0.12); color:var(--red);">0.3</div>
+      <div style="flex:1; background:rgba(248,113,113,0.35); color:var(--red);">暂停</div>
     </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>RSI21</th><th>强势区</th><th>弱势区</th></tr>
+        <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong></td><td class="td-green"><strong>1.5份</strong></td></tr>
+        <tr><td>40–47</td><td class="td-green"><strong>1.5份</strong></td><td class="td-green"><strong>1.2份</strong></td></tr>
+        <tr><td>48–52</td><td>1.0份</td><td>1.0份</td></tr>
+        <tr><td>53–60</td><td>0.8份</td><td>0.8份</td></tr>
+        <tr><td>61–65</td><td>0.5份</td><td>0.5份</td></tr>
+        <tr><td>66–71</td><td>0.3份</td><td>0.3份</td></tr>
+        <tr><td>≥72</td><td class="td-red">暂停</td><td class="td-red">暂停</td></tr>
+      </table>
+    </div>
+    <p style="margin-top:6px; font-size:11px; color:var(--text-dim);">1份 = 基准定投额（你设定的每月基础金额）。强势区+低位 = 双倍加码。</p>
   </div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-mindset.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent-glow),rgba(96,165,250,0.25));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🧘</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">心法补给</div>
-        <div style="font-size:11px;color:var(--text-dim);">心理按摩 · 极端行情应对 · 大师语录 · 承诺</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
+  <div class="card">
+    <h3 class="yellow">A股减仓规则</h3>
+    <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足才可以减）：</div>
+    <ol>
+      <li>处于<span class="highlight-green">强势区</span>（价格 ≥ MA250）</li>
+      <li>RSI21 ≥ <span class="highlight-red">65</span>（市场偏热）</li>
+      <li>不在<span class="highlight">30天冷却期</span>内</li>
+    </ol>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>RSI21</th><th>减仓比例</th></tr>
+        <tr><td>65–71</td><td>减仓 <span class="td-yellow">15%</span>（动态仓部分）</td></tr>
+        <tr><td>≥72</td><td>减仓 <span class="td-red">30%</span>（动态仓部分）</td></tr>
+      </table>
     </div>
+    <p style="margin-top:8px; font-size:12px;">减仓对象：<span class="highlight">仅动态仓（30%部分）</span>，核心仓（70%）永不卖出。</p>
   </div>
 
+  <div class="card">
+    <h3 class="green">A股回补规则</h3>
+    <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足才可以回补）：</div>
+    <ol>
+      <li>处于<span class="highlight-green">强势区</span></li>
+      <li>之前有减仓操作 + 减仓日期在<span class="highlight">30天冷却期外</span></li>
+    </ol>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>RSI21</th><th>回补比例</th></tr>
+        <tr><td>59–63</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+        <tr><td>&lt;50</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+      </table>
+    </div>
+    <p style="margin-top:8px; font-size:12px;">回补后重新计算30天冷却期。</p>
+  </div>
 </div>
+
+<div class="divider"></div>
+
+
+<div class="divider"></div>
+<!-- ========== 三、美股策略：PE分位+回撤 ========== -->
+
+<div class="section" id="us">
+  <div class="section-title purple"><span class="st-badge">03</span>🇺🇸 美股策略：PE分位 + 回撤</div>
+  <div class="section-desc">适用：纳指100（159941）· 估值+回调双维度判断</div>
+
+  <div class="card">
+    <h3 class="purple">为什么纳指100不用RSI+MA250？</h3>
+    <ul>
+      <li>纳指100长期牛市，MA250几乎永远在价格下方 → <span class="highlight">弱势区信号极少</span></li>
+      <li>美股科技股波动大，RSI频繁超买超卖 → <span class="highlight">信号噪声太大</span></li>
+      <li>PE分位直接看"贵不贵"，回撤直接看"打折没" → <span class="highlight-green">更直观，更适合纳指</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">指标说明</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>指标</th><th>含义</th><th>数据来源</th></tr>
+        <tr><td><strong>PE分位</strong></td><td>当前PE(TTM)在近7年中的排名百分位</td><td>乐咕乐股</td></tr>
+        <tr><td><strong>高点回撤</strong></td><td>(当前价-阶段最高价)/阶段最高价</td><td>新浪财经</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">PE分位分区</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>PE分位</th><th>估值状态</th><th>定投动作</th></tr>
+        <tr><td class="td-green">&lt;30%</td><td>极度低估</td><td class="td-green"><strong>2.5份封顶</strong></td></tr>
+        <tr><td class="td-green">30–49%</td><td>低估</td><td class="td-green"><strong>1.8份</strong></td></tr>
+        <tr><td>50–69%</td><td>合理</td><td>1.0份（基准）</td></tr>
+        <tr><td class="td-yellow">70–84%</td><td>高估</td><td class="td-yellow">0.5份</td></tr>
+        <tr><td class="td-red">≥85%</td><td>极度高估</td><td class="td-red"><strong>暂停定投</strong></td></tr>
+      </table>
+    </div>
+    <!-- PE估值连续色条 -->
+    <div style="display:flex; height:28px; border-radius:6px; overflow:hidden; margin-top:10px; font-size:10px; font-weight:600; text-align:center; line-height:28px; letter-spacing:0.3px;">
+      <div style="flex:3; background:linear-gradient(90deg,rgba(52,211,153,0.35),rgba(52,211,153,0.20)); color:var(--green);">&lt;30% 极度低估</div>
+      <div style="flex:2; background:rgba(52,211,153,0.20); color:var(--green);">30-49% 低估</div>
+      <div style="flex:2; background:rgba(255,255,255,0.04); color:var(--text);">50-69% 合理</div>
+      <div style="flex:1.5; background:rgba(251,191,36,0.15); color:var(--yellow);">70-84% 高估</div>
+      <div style="flex:1.5; background:rgba(248,113,113,0.25); color:var(--red);">≥85% 极度高估</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">回撤分区</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>回撤幅度</th><th>分区</th><th>对操作的影响</th></tr>
+        <tr><td>&lt;8%</td><td>正常波动</td><td>按PE分位正常执行</td></tr>
+        <tr><td>8–15%</td><td>中级回调</td><td>可适度加码</td></tr>
+        <tr><td class="td-red">&gt;15%</td><td><strong>深度回调</strong></td><td class="td-red">永不减仓！可大幅加码</td></tr>
+      </table>
+    </div>
+    <!-- 回撤分区色条 -->
+    <div style="display:flex; height:28px; border-radius:6px; overflow:hidden; margin-top:10px; font-size:10px; font-weight:600; text-align:center; line-height:28px; letter-spacing:0.3px;">
+      <div style="flex:1; background:rgba(52,211,153,0.20); color:var(--green); border-right:1px solid rgba(0,0,0,0.2);">&lt;8% 正常波动</div>
+      <div style="flex:1; background:rgba(251,191,36,0.15); color:var(--yellow); border-right:1px solid rgba(0,0,0,0.2);">8-15% 中级回调</div>
+      <div style="flex:1; background:rgba(248,113,113,0.25); color:var(--red);">&gt;15% 深度回调 ⚠️</div>
+    </div>
+    <div class="iron-rule">
+      <h4>铁则：深度回调（回撤&gt;15%）永不减仓</h4>
+      <ul>
+        <li>深度回调时即使PE高估，也只暂停定投，<span class="highlight-red">绝不卖出</span></li>
+        <li>历史数据：纳指100深度回调后6-12个月内多能收复失地</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">纳指减仓规则</h3>
+    <div class="highlight-red" style="margin-bottom:8px;">触发条件（全部满足）：</div>
+    <ol>
+      <li>PE分位 ≥ <span class="highlight-red">70%</span></li>
+      <li>回撤 &lt; <span class="highlight-green">8%</span>（正常波动，非深度回调）</li>
+      <li>不在<span class="highlight">60天冷却期</span>内</li>
+    </ol>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>PE分位</th><th>减仓比例</th></tr>
+        <tr><td>70–84%</td><td>减仓 <span class="td-yellow">15%</span></td></tr>
+        <tr><td>≥85%</td><td>减仓 <span class="td-red">30%</span></td></tr>
+      </table>
+    </div>
+    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">纳指冷却期60天（比A股长），因为美股波动大，避免频繁操作。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">纳指回补规则</h3>
+    <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足）：</div>
+    <ol>
+      <li>PE分位 &lt; <span class="highlight-green">70%</span>（退出高估区）</li>
+      <li>回撤 &lt; <span class="highlight-green">15%</span>（不在深度回调中）</li>
+      <li>之前有减仓 + 减仓日期在<span class="highlight">60天冷却期外</span></li>
+    </ol>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <tr><th>PE分位</th><th>回补比例</th></tr>
+        <tr><td>40–50%</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+        <tr><td>&lt;40%</td><td>接回<span class="td-green">全部剩余</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="divider"></div>
+<!-- ========== 五、操作逻辑决策树 ========== -->
+
+<div class="section" id="decision-tree">
+  <div class="section-title"><span class="st-badge">05</span>🌳 操作逻辑决策树</div>
+  <div class="section-desc">快速查看如何根据指标做出操作决策</div>
+
+  <div class="card">
+    <h3 class="green">A股标的决策树</h3>
+    <div class="decision-tree">
+      <div class="dt-root"><span class="dt-icon">🎯</span><span class="dt-text">判断：价格 vs MA250 → 强势区 / 弱势区</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">弱势区 → 只定投，不减仓，不回补</span></div>
+      <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">强势区 → 三个方向：</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">RSI21 → 按表定投几份</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">RSI≥65 + 冷却外 → 减仓15-30%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">之前减过 + RSI回落 + 冷却过 → 回补</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="purple">纳指100决策树</h3>
+    <div class="decision-tree purple-tree">
+      <div class="dt-root"><span class="dt-icon">📊</span><span class="dt-text">第一步：看 PE分位 → 判断估值</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">≥85% → 暂停定投，减仓30%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">70-84% → 0.5份，减仓15%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--text-dim);"></span><span class="dt-text">50-69% → 1份基准</span></div>
+      <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">&lt;50% → 加码定投</span></div>
+      <div class="dt-root" style="margin-top:8px;"><span class="dt-icon">📉</span><span class="dt-text">第二步：看 回撤幅度 → 是否深度回调</span></div>
+      <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">回撤&gt;15% → 永不减仓！可加码</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">减仓后 → PE分位回落 + 冷却期过 → 回补</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="divider"></div>
 <div class="footer-nav">
   <a class="back-link" href="index.html">← 返回控制台</a>
 </div>

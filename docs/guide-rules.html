@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>策略详情 · 价值投资控制台</title>
+<title>执行规则 · 价值投资控制台</title>
 <style>
 /* ========================================
    CSS Variables & Theme (matching index.html)
@@ -771,56 +771,154 @@ tr:last-child td { border-bottom: none; }
   .back-link:hover { transform: none; }
 }
 </style>
+</style>
 </head>
 <body>
-
-<a class="back-link" href="index.html">← 返回控制台</a>
-
+<a class="back-link" href="guide.html">← 返回目录</a>
 <div class="page-header">
   <h1>策略详情</h1>
-  <div class="subtitle">三标的 · 双策略 · 月度执行 · 选择要查看的页面</div>
+  <div class="subtitle">三标的 · 双策略 · 月度执行</div>
 </div>
 
+<!-- ========== 快速导航 ========== -->
+<div class="section">
+  <div class="quick-nav">
+    <a href="#execute" class="qn-item"><span class="qn-icon">📅</span>执行方法</a>
+    <a href="#rules" class="qn-item qn-red"><span class="qn-icon">⚠️</span>铁则</a>
+    <a href="#faq" class="qn-item"><span class="qn-icon">❓</span>FAQ</a>
+  </div>
+</div>
+<div class="section" style="margin-bottom:16px;">
+  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+    <a href="guide-core.html" class="qn-item"><span class="qn-icon">📈</span>核心策略</a>
+    <a href="guide-mindset.html" class="qn-item"><span class="qn-icon">🧘</span>心法补给</a>
+  </div>
+</div>
+<!-- ========== 四、执行方法 ========== -->
+
+<div class="section" id="execute">
+  <div class="section-title yellow"><span class="st-badge">04</span>📅 执行方法</div>
+  <div class="section-desc">每月21日操作 · 遇节假日顺延</div>
+
+  <div class="flow-box">
+    <div class="step"><div class="step-num">1</div><div>打开 <strong>价值投资控制台</strong>（本网页）</div></div>
+    <div class="step"><div class="step-num">2</div><div>查看 <strong>三标的估值横条</strong>，了解当前市场状态</div></div>
+    <div class="step"><div class="step-num">3</div><div>展开每个标的卡片，查看 <strong>定投建议</strong>（几份）</div></div>
+    <div class="step"><div class="step-num">4</div><div>如有 <strong>减仓/回补建议</strong>，确认不在冷却期内再执行</div></div>
+    <div class="step"><div class="step-num">5</div><div>按建议金额执行申购/赎回（在券商APP操作）</div></div>
+    <div class="step"><div class="step-num">6</div><div>如有减仓操作，在网页 <strong>持仓记录</strong> 中登记日期和比例</div></div>
+  </div>
+
+  <div class="card">
+    <h3 class="yellow">为什么是21日？</h3>
+    <ul>
+      <li>避开月初（资金面紧张）和月末（机构结算）</li>
+      <li>与工资现金流匹配（多数人到账时间在15-20日）</li>
+      <li>遇节假日顺延到下一个工作日</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>"一份"是多少钱？</h3>
+    <p>由你自己决定。建议：</p>
+    <ul>
+      <li>先计算每月可用于定投的<span class="highlight-green">闲钱总额</span></li>
+      <li>三标的各40%/40%/20%，算出每个标的的基准月投额</li>
+      <li>这个基准月投额 = <span class="highlight">1份</span></li>
+      <li>例如：月投总额6000元 → 红利低波2400元(1份) → RSI40时投入2份=4800元</li>
+    </ul>
   </div>
 </div>
 
-<!-- ========== 子页入口 ========== -->
-<div class="section" style="margin-top:8px;">
+<div class="divider"></div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-core.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--green-dim),var(--green-glow));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📈</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">核心策略</div>
-        <div style="font-size:11px;color:var(--text-dim);">策略总览 · A股RSI策略 · 美股PE策略 · 决策树</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
-    </div>
+
+<div class="divider"></div>
+<!-- ========== 六、铁则汇总 ========== -->
+
+<div class="section" id="rules">
+  <div class="section-title red"><span class="st-badge">06</span>⚠️ 铁则汇总</div>
+  <div class="section-desc">以下7条铁则是策略的底线，任何时候都不能打破。</div>
+
+  <div class="rules-grid">
+
+  <div class="rule-card">
+    <h4>① 3年以上闲钱</h4>
+    <p>短期要用的钱不进市场。定投的本质是用时间换空间，需要足够长的时间维度。</p>
   </div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-rules.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--yellow-dim),rgba(251,191,36,0.25));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📋</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">执行规则</div>
-        <div style="font-size:11px;color:var(--text-dim);">月度执行方法 · 七条铁则 · 常见问题</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
-    </div>
+  <div class="rule-card">
+    <h4>② 无杠杆，不融资</h4>
+    <p>融资融券和杠杆ETF会放大波动。复利的前提是"还在场上"，杠杆会让你被迫离场。</p>
   </div>
 
-  <div class="card" style="cursor:pointer;" onclick="location.href='guide-mindset.html'">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent-glow),rgba(96,165,250,0.25));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🧘</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:2px;">心法补给</div>
-        <div style="font-size:11px;color:var(--text-dim);">心理按摩 · 极端行情应对 · 大师语录 · 承诺</div>
-      </div>
-      <div style="font-size:18px;color:var(--text-dim);">→</div>
-    </div>
+  <div class="rule-card">
+    <h4>③ 每月只操作1次</h4>
+    <p>只在每月21日操作（遇节假日顺延）。非操作日不看净值，不操作，不后悔。</p>
   </div>
 
+  <div class="rule-card">
+    <h4>④ 弱势区不减仓</h4>
+    <p>价格&lt;MA250时不减仓。浮亏不是真亏，卖出才是。弱势区只做一件事：按表定投。</p>
+  </div>
+
+  <div class="rule-card">
+    <h4>⑤ 深度回调永不减仓</h4>
+    <p>纳指100回撤&gt;15%时，即使PE高估也只暂停定投，绝不卖出。等待收复失地。</p>
+  </div>
+
+  <div class="rule-card">
+    <h4>⑥ 冷却期内不重复操作</h4>
+    <p>A股减仓后30天不回补，纳指60天。冷却期在"持仓记录"中自动计算，无需记忆。</p>
+  </div>
+
+  <div class="rule-card">
+    <h4>⑦ 不追涨，不抄底</h4>
+    <p>所有买卖按RSI/PE分位的既定梯度执行。情绪是最大的敌人，策略是你的盾牌。</p>
+  </div>
+
+  </div>
 </div>
+
+<div class="divider"></div>
+
+
+<div class="divider"></div>
+<!-- ========== 七、常见问题 ========== -->
+
+<div class="section" id="faq">
+  <div class="section-title"><span class="st-badge">07</span>❓ 常见问题</div>
+
+  <div class="card">
+    <h3>🔹 红利低波没有ETF，怎么参考512890？</h3>
+    <p>012708（东方红红利低波A）是指数基金，跟踪931446（东证红利低波指数）。512890（红利低波ETF）也跟踪同一指数，流动性更好，数据更及时。所以用512890的行情数据来<span class="highlight">替代参考</span>，实际操作中买入/卖出的是012708。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔹 价值100ETF（159263）上市时间短，MA250准吗？</h3>
+    <p>159263于2025年7月上市，目前只有约205个交易日数据，不足250天。策略会自动检测：数据不足250天时，MA250标记为<span class="highlight">"参考值"</span>，同时用更短均线作为辅助判断，不会影响定投建议的准确性。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔹 纳指100 PE分位用近7年够吗？</h3>
+    <p>近7年（约1650个交易日）覆盖了：2018年关税战、2020年疫情、2022年加息周期、2023年AI爆发。包含了多种市场环境下的PE分布，足够用于分位计算。数据太少会失真，太多会稀释近期状态。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔹 如果三只标的都触发减仓，怎么办？</h3>
+    <p>按策略分别执行，互不影响。每只标的的<span class="highlight">冷却期独立计算</span>。减仓比例也是针对每只标的的动态仓（30%部分）分别操作，不是整体仓位一刀切。</p>
+  </div>
+
+  <div class="card">
+    <h3>🔹 数据是实时更新的吗？</h3>
+    <p>A股数据在交易日9:30-15:00更新，纳指100数据在北京时间21:00-次日5:00更新。网页每30分钟自动刷新数据。如果数据超过2小时未更新，可能是行情非交易时段或数据源暂时不可用。</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+
+<div class="divider"></div>
 <div class="footer-nav">
   <a class="back-link" href="index.html">← 返回控制台</a>
 </div>
