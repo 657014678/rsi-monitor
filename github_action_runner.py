@@ -11,7 +11,8 @@ import math
 import akshare as ak
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil import relativedelta
 
 # ============ 三标的配置 ============
 ETFS = [
@@ -529,6 +530,7 @@ def process_etf_rsi_ma(config):
         "days_above_ma250": int(days_above),
         "price_vs_ma250_pct": round((latest_price / latest_ma250 - 1) * 100, 2),
         "market_date": current['date'].strftime('%Y-%m-%d'),
+        "history_advice": _calc_rsi_ma_history(df, ma250, rsi21),
     }
 
     # K线+指标历史
@@ -629,6 +631,7 @@ def process_nasdaq(config):
         "risk_signal": risk_signal,
         "risk_label": risk_label,
         "market_date": pe_df['date'].iloc[-1].strftime('%Y-%m-%d'),
+        "history_advice": _calc_pe_drawdown_history(pe_df, idx_df),
     }
 
     # PE历史数据（用于前端图表）
@@ -704,6 +707,128 @@ def make_error_result(config):
         history.update({"pe_history": [], "price_history": []})
 
     return result, history
+
+# ============ 近6个月历史操作建议 ============
+def _get_monthly_dates(n_months=6):
+    """获取近n个月每月21日日期列表（从旧到新）"""
+    dates = []
+    today = datetime.now().date()
+    for i in range(n_months, 0, -1):
+        # 每月21日
+        target = today - relativedelta.relativedelta(months=i)
+        try:
+            d = target.replace(day=21)
+        except ValueError:
+            # 2月没有21日不可能，但防御一下
+            continue
+        # 如果21日在今天之后，跳过
+        if d > today:
+            continue
+        dates.append(d)
+    return dates
+
+def _find_nearest_trading_day(df, target_date):
+    """在DataFrame中找到离target_date最近的交易日（优先当天，其次之后，最后之前）"""
+    td = pd.Timestamp(target_date)
+    # 优先找当天
+    mask = df['date'].dt.date == target_date
+    if mask.any():
+        return df[mask].index[-1]
+    # 找之后的
+    after = df[df['date'].dt.date > target_date]
+    if len(after) > 0:
+        return after.index[0]
+    # 找之前的
+    before = df[df['date'].dt.date < target_date]
+    if len(before) > 0:
+        return before.index[-1]
+    return None
+
+def _calc_rsi_ma_history(df, ma250, rsi21, n_months=6):
+    """计算RSI+MA250标的近n个月每月21日的操作建议"""
+    dates = _get_monthly_dates(n_months)
+    history = []
+    for d in dates:
+        idx = _find_nearest_trading_day(df, d)
+        if idx is None:
+            continue
+        price = float(df.iloc[idx]['close'])
+        ma_val = float(ma250.iloc[idx]) if not pd.isna(ma250.iloc[idx]) else None
+        rsi_val = float(rsi21.iloc[idx]) if not pd.isna(rsi21.iloc[idx]) else None
+
+        if ma_val is None or rsi_val is None:
+            continue
+
+        zone = get_zone(price, ma_val)
+        invest = get_invest_advice(rsi_val, zone)
+        reduce_adv = get_reduce_advice(rsi_val, zone)
+        rebuy_adv = get_rebuy_advice(rsi_val, zone)
+
+        entry = {
+            "date": d.strftime('%Y-%m-%d'),
+            "price": round(price, 4),
+            "rsi21": round(rsi_val, 1),
+            "ma250": round(ma_val, 4),
+            "zone": zone,
+            "invest": invest['amount'],
+        }
+        if reduce_adv:
+            entry["reduce"] = reduce_adv['action'] + ' ' + reduce_adv['pct']
+        if rebuy_adv:
+            entry["rebuy"] = rebuy_adv['action']
+        history.append(entry)
+    return history
+
+def _calc_pe_drawdown_history(pe_df, idx_df, n_months=6):
+    """计算PE+回撤标的近n个月每月21日的操作建议"""
+    dates = _get_monthly_dates(n_months)
+    history = []
+    for d in dates:
+        # 找最近的PE数据
+        pe_idx = _find_nearest_trading_day(pe_df, d)
+        if pe_idx is None:
+            continue
+        pe_val = float(pe_df.iloc[pe_idx]['pe_ttm'])
+
+        # 找最近的价格数据
+        price_idx = _find_nearest_trading_day(idx_df, d)
+        if price_idx is None:
+            continue
+        price = float(idx_df.iloc[price_idx]['close'])
+
+        # PE分位：用目标日期之前的PE数据计算
+        pe_before = pe_df[pe_df['date'].dt.date <= d]['pe_ttm'].dropna()
+        if len(pe_before) < 50:
+            continue
+        pe_pct = round((pe_before < pe_val).sum() / len(pe_before) * 100, 1)
+
+        # 回撤：用目标日期之前的价格计算阶段高点
+        prices_before = idx_df[idx_df['date'].dt.date <= d]['close'].astype(float)
+        if len(prices_before) < 20:
+            continue
+        high = float(prices_before.max())
+        dd = round((price - high) / high * 100, 2) if high != 0 else 0.0
+
+        invest = get_nasdaq_invest_advice(pe_pct, dd)
+        reduce_adv = get_nasdaq_reduce_advice(pe_pct, dd)
+        rebuy_adv = get_nasdaq_rebuy_advice(pe_pct, dd)
+        pe_zone = get_pe_zone(pe_pct)
+
+        entry = {
+            "date": d.strftime('%Y-%m-%d'),
+            "price": round(price, 2),
+            "pe_ttm": round(pe_val, 1),
+            "pe_percentile": pe_pct,
+            "pe_zone": pe_zone,
+            "drawdown": dd,
+            "invest": invest['amount'],
+        }
+        if reduce_adv:
+            entry["reduce"] = reduce_adv['action'] + ' ' + reduce_adv['pct']
+        if rebuy_adv:
+            entry["rebuy"] = rebuy_adv['action']
+        history.append(entry)
+    return history
 
 # ============ NaN 清理工具 ============
 def clean_nan(obj):

@@ -80,17 +80,6 @@ body {
 .loading { text-align:center; padding:40px 0; color:var(--text-dim); }
 .error-msg { background:rgba(248,81,73,0.1); border:1px solid rgba(248,81,73,0.3); border-radius:6px; padding:12px; text-align:center; color:var(--red); font-size:13px; }
 .xueqiu-btn { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 8px; border-radius:4px; background:rgba(88,166,255,0.15); color:var(--accent); text-decoration:none; border:1px solid rgba(88,166,255,0.25); }
-.position-section { margin-top:8px; }
-.position-toggle { font-size:11px; color:var(--accent); cursor:pointer; padding:4px 0; border:none; background:none; text-decoration:underline; }
-.position-panel { display:none; margin-top:6px; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid var(--border); }
-.position-panel.show { display:block; }
-.position-panel label { font-size:11px; color:var(--text-dim); display:block; margin-bottom:4px; }
-.position-panel input { width:100%; padding:4px 8px; font-size:12px; border:1px solid var(--border); border-radius:4px; background:var(--bg); color:var(--text); margin-bottom:6px; }
-.position-panel button { font-size:11px; padding:4px 12px; border-radius:4px; border:1px solid var(--accent); background:rgba(88,166,255,0.15); color:var(--accent); cursor:pointer; }
-.cooldown-active { background:rgba(210,153,34,0.15); color:var(--yellow); font-size:11px; margin-top:6px; padding:4px 8px; border-radius:4px; }
-.cooldown-clear { background:rgba(63,185,80,0.15); color:var(--green); font-size:11px; margin-top:6px; padding:4px 8px; border-radius:4px; }
-.position-record { font-size:11px; color:var(--text-dim); margin-top:4px; }
-.del-btn { color:var(--red); cursor:pointer; margin-left:6px; font-size:10px; }
   .update-time { font-size:11px; color:var(--text-dim); margin-top:6px; }
   .val-bar { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; }
   .val-card { flex:1; min-width:0; padding:8px 10px; border-radius:8px; background:var(--card); border:1px solid var(--border); text-align:center; }
@@ -101,6 +90,18 @@ body {
   .vc-yellow { color:var(--yellow); }
   .vc-red { color:var(--red); }
   .vc-purple { color:var(--purple); }
+  .hist-title { font-size:11px; color:var(--text-dim); margin-top:10px; margin-bottom:6px; padding-top:8px; border-top:1px solid var(--border); }
+  .hist-row { display:flex; align-items:center; gap:8px; padding:5px 0; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.03); }
+  .hist-date { color:var(--text-dim); min-width:72px; }
+  .hist-zone { font-size:10px; padding:1px 5px; border-radius:3px; font-weight:600; }
+  .hz-green { background:rgba(63,185,80,0.15); color:var(--green); }
+  .hz-yellow { background:rgba(210,153,34,0.15); color:var(--yellow); }
+  .hz-red { background:rgba(248,81,73,0.15); color:var(--red); }
+  .hz-purple { background:rgba(188,140,255,0.15); color:var(--purple); }
+  .hist-invest { color:var(--text-bright); font-weight:600; }
+  .hist-action { font-size:10px; margin-left:auto; }
+  .ha-reduce { color:var(--red); }
+  .ha-rebuy { color:var(--yellow); }
 </style>
 </head>
 <body>
@@ -152,17 +153,6 @@ body {
   <div class="card">
     <div class="card-label">操作建议</div>
     <div id="adv0"><div class="loading">加载中...</div></div>
-    <div class="position-section">
-      <button class="position-toggle" onclick="togglePos(0)">持仓记录</button>
-      <div class="position-panel" id="pp0">
-        <label>减仓日期</label>
-        <input type="date" id="rd0">
-        <label>减仓比例(%)</label>
-        <input type="number" id="rp0" placeholder="15或30" min="1" max="100">
-        <button onclick="savePos(0)">保存</button>
-        <div id="pi0"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -196,17 +186,6 @@ body {
   <div class="card">
     <div class="card-label">操作建议</div>
     <div id="adv1"><div class="loading">加载中...</div></div>
-    <div class="position-section">
-      <button class="position-toggle" onclick="togglePos(1)">持仓记录</button>
-      <div class="position-panel" id="pp1">
-        <label>减仓日期</label>
-        <input type="date" id="rd1">
-        <label>减仓比例(%)</label>
-        <input type="number" id="rp1" placeholder="15或30" min="1" max="100">
-        <button onclick="savePos(1)">保存</button>
-        <div id="pi1"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -240,17 +219,6 @@ body {
   <div class="card">
     <div class="card-label">操作建议</div>
     <div id="adv2"><div class="loading">加载中...</div></div>
-    <div class="position-section">
-      <button class="position-toggle" onclick="togglePos(2)">持仓记录</button>
-      <div class="position-panel" id="pp2">
-        <label>减仓日期</label>
-        <input type="date" id="rd2">
-        <label>减仓比例(%)</label>
-        <input type="number" id="rp2" placeholder="15或30" min="1" max="100">
-        <button onclick="savePos(2)">保存</button>
-        <div id="pi2"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -271,59 +239,6 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
-
-/* 持仓记录 */
-function pk(i) { return 'pos_' + i; }
-function loadPos(i) {
-  var r = localStorage.getItem(pk(i));
-  return r ? JSON.parse(r) : [];
-}
-function savePos(i) {
-  var d = document.getElementById('rd' + i).value;
-  var p = parseInt(document.getElementById('rp' + i).value);
-  if (!d || !p) { alert('请填写减仓日期和比例'); return; }
-  var arr = loadPos(i);
-  arr.push({ date: d, pct: p });
-  localStorage.setItem(pk(i), JSON.stringify(arr));
-  document.getElementById('rd' + i).value = '';
-  document.getElementById('rp' + i).value = '';
-  renderPos(i);
-}
-function deletePos(i, j) {
-  var arr = loadPos(i);
-  arr.splice(j, 1);
-  localStorage.setItem(pk(i), JSON.stringify(arr));
-  renderPos(i);
-}
-function togglePos(i) {
-  document.getElementById('pp' + i).classList.toggle('show');
-  if (document.getElementById('pp' + i).classList.contains('show')) renderPos(i);
-}
-function renderPos(i) {
-  var arr = loadPos(i);
-  var el = document.getElementById('pi' + i);
-  if (!arr.length) { el.innerHTML = '<div style="font-size:11px;color:#8b949e;">暂无记录</div>'; return; }
-  var cd = (i === 2) ? 60 : 30;
-  var html = '';
-  for (var j = 0; j < arr.length; j++) {
-    var pos = arr[j];
-    var end = new Date(pos.date);
-    end = new Date(end.getTime() + cd * 86400000);
-    var now = new Date();
-    var active = (now < end);
-    var days = active ? Math.ceil((end - now) / 86400000) : 0;
-    html += '<div style="font-size:11px;color:#8b949e;margin-top:4px;">';
-    html += '减仓' + pos.pct + '% (' + pos.date + ') ';
-    if (active) {
-      html += '<span style="background:rgba(210,153,34,0.15);color:#d29922;padding:2px 6px;border-radius:3px;font-size:10px;">冷却中·剩' + days + '天</span>';
-    } else {
-      html += '<span style="background:rgba(63,185,80,0.15);color:#3fb950;padding:2px 6px;border-radius:3px;font-size:10px;">冷却已结束</span>';
-    }
-    html += ' <span style="color:#f85149;cursor:pointer;font-size:10px;" onclick="deletePos(' + i + ',' + j + ')">删除</span>';
-    html += '</div>';
-  }
-  el.innerHTML = html;
-}
 
 /* 渲染卡片 */
 function updateCard(etf, idx) {
@@ -385,6 +300,32 @@ function updateCard(etf, idx) {
 
   if (etf.rebuy_advice && etf.rebuy_advice.action) {
     html += '<div class="advice-item"><span class="advice-icon">📈</span><div><div class="advice-text"><span style="color:#d29922;font-weight:600;">' + etf.rebuy_advice.action + '</span></div><div class="advice-detail">' + (etf.rebuy_advice.detail || '') + '</div></div></div>';
+  }
+
+  /* 历史操作建议 */
+  if (etf.history_advice && etf.history_advice.length > 0) {
+    html += '<div class="hist-title">近6个月操作建议（每月21日）</div>';
+    for (var h = etf.history_advice.length - 1; h >= 0; h--) {
+      var ha = etf.history_advice[h];
+      var zLabel = ha.zone || (ha.pe_zone || '--');
+      var zClass = 'hz-green';
+      if (isPE) {
+        if (ha.pe_percentile >= 85) zClass = 'hz-red';
+        else if (ha.pe_percentile >= 70) zClass = 'hz-yellow';
+        else zClass = 'hz-purple';
+      } else {
+        if (zLabel === '弱势区') zClass = 'hz-yellow';
+      }
+      html += '<div class="hist-row">';
+      html += '<span class="hist-date">' + ha.date + '</span>';
+      html += '<span class="hist-zone ' + zClass + '">' + zLabel + '</span>';
+      html += '<span class="hist-invest">' + ha.invest + '</span>';
+      var actHtml = '';
+      if (ha.reduce) actHtml += '<span class="ha-reduce">📉' + ha.reduce + '</span>';
+      if (ha.rebuy) actHtml += '<span class="ha-rebuy">📈' + ha.rebuy + '</span>';
+      if (actHtml) html += '<span class="hist-action">' + actHtml + '</span>';
+      html += '</div>';
+    }
   }
 
   document.getElementById('adv' + id).innerHTML = html;

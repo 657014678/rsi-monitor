@@ -28,7 +28,57 @@
       "days_below_ma250": 0,
       "days_above_ma250": 0,
       "price_vs_ma250_pct": null,
-      "market_date": "2026-05-15"
+      "market_date": "2026-05-15",
+      "history_advice": [
+        {
+          "date": "2025-12-21",
+          "price": 1.135,
+          "rsi21": 58.3,
+          "ma250": 1.155,
+          "zone": "弱势区",
+          "invest": "0.8份"
+        },
+        {
+          "date": "2026-01-21",
+          "price": 1.118,
+          "rsi21": 50.1,
+          "ma250": 1.158,
+          "zone": "弱势区",
+          "invest": "1份"
+        },
+        {
+          "date": "2026-02-21",
+          "price": 1.105,
+          "rsi21": 44.5,
+          "ma250": 1.16,
+          "zone": "弱势区",
+          "invest": "1.2份"
+        },
+        {
+          "date": "2026-03-21",
+          "price": 1.128,
+          "rsi21": 52.8,
+          "ma250": 1.162,
+          "zone": "弱势区",
+          "invest": "1份"
+        },
+        {
+          "date": "2026-04-21",
+          "price": 1.168,
+          "rsi21": 56.2,
+          "ma250": 1.165,
+          "zone": "强势区",
+          "invest": "0.6份"
+        },
+        {
+          "date": "2026-05-21",
+          "price": 1.172,
+          "rsi21": 45.5,
+          "ma250": 1.1834,
+          "zone": "弱势区",
+          "invest": "1.2份"
+        }
+      ]
     },
     {
       "type": "rsi_ma",
@@ -59,7 +109,59 @@
       "days_below_ma250": 0,
       "days_above_ma250": 86,
       "price_vs_ma250_pct": 5.82,
-      "market_date": "2026-05-15"
+      "market_date": "2026-05-15",
+      "history_advice": [
+        {
+          "date": "2025-12-21",
+          "price": 1.092,
+          "rsi21": 48.5,
+          "ma250": 1.068,
+          "zone": "强势区",
+          "invest": "1份",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2026-01-21",
+          "price": 1.105,
+          "rsi21": 52.1,
+          "ma250": 1.072,
+          "zone": "强势区",
+          "invest": "1份"
+        },
+        {
+          "date": "2026-02-21",
+          "price": 1.088,
+          "rsi21": 42.3,
+          "ma250": 1.076,
+          "zone": "强势区",
+          "invest": "1.5份"
+        },
+        {
+          "date": "2026-03-21",
+          "price": 1.12,
+          "rsi21": 55.6,
+          "ma250": 1.082,
+          "zone": "强势区",
+          "invest": "0.6份"
+        },
+        {
+          "date": "2026-04-21",
+          "price": 1.148,
+          "rsi21": 48.9,
+          "ma250": 1.091,
+          "zone": "强势区",
+          "invest": "1份",
+          "rebuy": "考虑回补"
+        },
+        {
+          "date": "2026-05-21",
+          "price": 1.166,
+          "rsi21": 44.7,
+          "ma250": 1.1019,
+          "zone": "强势区",
+          "invest": "1.5份"
+        }
+      ]
     },
     {
       "type": "pe_drawdown",
@@ -91,7 +193,68 @@
       "rebuy_advice": null,
       "risk_signal": "yellow",
       "risk_label": "极度高估",
-      "market_date": "2026-05-15"
+      "market_date": "2026-05-15",
+      "history_advice": [
+        {
+          "date": "2025-12-21",
+          "price": 22050.0,
+          "pe_ttm": 40.2,
+          "pe_percentile": 75.5,
+          "pe_zone": "高估",
+          "drawdown": -3.2,
+          "invest": "0.5份",
+          "reduce": "考虑减仓 15%"
+        },
+        {
+          "date": "2026-01-21",
+          "price": 22380.0,
+          "pe_ttm": 41.8,
+          "pe_percentile": 79.1,
+          "pe_zone": "高估",
+          "drawdown": -1.5,
+          "invest": "0.5份",
+          "reduce": "考虑减仓 15%"
+        },
+        {
+          "date": "2026-02-21",
+          "price": 21800.0,
+          "pe_ttm": 38.5,
+          "pe_percentile": 65.3,
+          "pe_zone": "合理",
+          "drawdown": -5.8,
+          "invest": "1份"
+        },
+        {
+          "date": "2026-03-21",
+          "price": 23500.0,
+          "pe_ttm": 42.2,
+          "pe_percentile": 80.5,
+          "pe_zone": "高估",
+          "drawdown": -0.8,
+          "invest": "0.5份",
+          "reduce": "考虑减仓 15%"
+        },
+        {
+          "date": "2026-04-21",
+          "price": 24800.0,
+          "pe_ttm": 45.5,
+          "pe_percentile": 87.2,
+          "pe_zone": "极度高估",
+          "drawdown": 0.0,
+          "invest": "暂停",
+          "reduce": "考虑减仓 30%"
+        },
+        {
+          "date": "2026-05-21",
+          "price": 28500.0,
+          "pe_ttm": 93.2,
+          "pe_percentile": 91.5,
+          "pe_zone": "极度高估",
+          "drawdown": -1.5,
+          "invest": "暂停",
+          "reduce": "考虑减仓 30%"
+        }
+      ]
     }
   ]
 }
