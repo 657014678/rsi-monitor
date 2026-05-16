@@ -698,11 +698,28 @@ body {
   font-size: 10px;
   color: var(--text-dim);
   margin-top: 12px;
-  margin-bottom: 6px;
-  padding-top: 10px;
+  margin-bottom: 0;
+  padding: 8px 0;
   border-top: 1px solid var(--card-border);
   letter-spacing: 0.5px;
   font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+  user-select: none;
+}
+.hist-title:hover { color: var(--text); }
+.hist-arrow {
+  font-size: 8px;
+  transition: transform 0.25s ease;
+  color: var(--text-dim);
+}
+.hist-arrow.open { transform: rotate(90deg); }
+.hist-body {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }
 .hist-table {
   width: 100%;
@@ -1095,7 +1112,7 @@ function updateCard(etf, idx) {
   }
   html += '</div></div>';
 
-  /* ---- 减仓区块 ---- */
+  /* ---- 减仓区块（有操作才显示）---- */
   if (etf.reduce_advice && etf.reduce_advice.action) {
     html += '<div class="advice-block reduce">';
     html += '<div class="ab-icon">📉</div>';
@@ -1104,19 +1121,9 @@ function updateCard(etf, idx) {
     html += '<div class="ab-value">' + etf.reduce_advice.action + ' ' + (etf.reduce_advice.pct || '') + '</div>';
     html += '<div class="ab-detail">' + (etf.reduce_advice.detail || '') + '</div>';
     html += '</div></div>';
-  } else {
-    /* 显示条件说明，帮助用户理解为什么没有减仓 */
-    var reduceHint = isPE ? '需PE≥70%+回撤<8%+冷却外' : '需RSI≥65+强势区+冷却外';
-    html += '<div class="advice-block none">';
-    html += '<div class="ab-icon">📉</div>';
-    html += '<div class="ab-content">';
-    html += '<div class="ab-title">减仓</div>';
-    html += '<div class="ab-value">暂无操作</div>';
-    html += '<div class="ab-detail">' + reduceHint + '</div>';
-    html += '</div></div>';
   }
 
-  /* ---- 回补区块 ---- */
+  /* ---- 回补区块（有操作才显示）---- */
   if (etf.rebuy_advice && etf.rebuy_advice.action) {
     html += '<div class="advice-block rebuy">';
     html += '<div class="ab-icon">📈</div>';
@@ -1125,22 +1132,15 @@ function updateCard(etf, idx) {
     html += '<div class="ab-value">' + etf.rebuy_advice.action + '</div>';
     html += '<div class="ab-detail">' + (etf.rebuy_advice.detail || '') + '</div>';
     html += '</div></div>';
-  } else {
-    var rebuyHint = isPE ? '需PE<70%+冷却外' : '需强势区+冷却期外';
-    html += '<div class="advice-block none">';
-    html += '<div class="ab-icon">📈</div>';
-    html += '<div class="ab-content">';
-    html += '<div class="ab-title">回补</div>';
-    html += '<div class="ab-value">暂无操作</div>';
-    html += '<div class="ab-detail">' + rebuyHint + '</div>';
-    html += '</div></div>';
   }
 
   html += '</div>'; /* advice-blocks */
 
-  /* ---- 历史记录 ---- */
+  /* ---- 历史记录（默认折叠）---- */
   if (etf.history_advice && etf.history_advice.length > 0) {
-    html += '<div class="hist-title">近12个月操作建议（每月21日）</div>';
+    html += '<div class="hist-wrap">';
+    html += '<div class="hist-title" onclick="toggleHist(this)">📋 近12个月操作建议 <span class="hist-arrow">▶</span></div>';
+    html += '<div class="hist-body" style="display:none;">';
     html += '<table class="hist-table">';
     html += '<tr><th>日期</th><th>建议</th><th>操作</th></tr>';
     for (var h = etf.history_advice.length - 1; h >= 0; h--) {
@@ -1162,9 +1162,21 @@ function updateCard(etf, idx) {
       html += '</tr>';
     }
     html += '</table>';
+    html += '</div>'; /* hist-body */
+    html += '</div>'; /* hist-wrap */
   }
 
   document.getElementById('adv' + id).innerHTML = html;
+}
+
+/* ========== 历史折叠切换 ========== */
+function toggleHist(el) {
+  var body = el.parentNode.querySelector('.hist-body');
+  var arrow = el.querySelector('.hist-arrow');
+  if (!body) return;
+  var isHidden = body.style.display === 'none';
+  body.style.display = isHidden ? '' : 'none';
+  if (arrow) arrow.classList.toggle('open', isHidden);
 }
 
 /* ========== 加载数据 ========== */
