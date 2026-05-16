@@ -3,8 +3,8 @@ daily_update.py - 本地每日数据更新脚本
 收盘后运行，用AKShare获取指数数据，计算指标，输出JSON，git push到GitHub
 
 数据源：
-  - 931446 东证红利低波：AKShare index_zh_a_hist（东方财富）
-  - 980081 国证价值100：AKShare index_zh_a_hist（东方财富）
+  - 931446 东证红利低波：AKShare → 腾讯财经API（ETF价格512890）
+  - 980081 国证价值100：AKShare → 腾讯财经API（ETF价格159263）
   - NDX 纳斯达克100：AKShare stock_market_pe_lg + index_us_stock_sina
 
 用法：
@@ -16,10 +16,11 @@ import os
 import sys
 import math
 import subprocess
+import urllib.request
 import akshare as ak
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil import relativedelta
 
 # ============ 三标的配置 ============
@@ -33,7 +34,8 @@ ETFS = [
         "fund_code": "012708",
         "fund_name": "东方红红利低波A",
         "weight": "40%",
-        "market": "sh",  # AKShare指数代码前缀
+        "tencent_prefix": "sh",   # 腾讯API前缀
+        "is_index_price": False,  # ETF价格而非指数价格
     },
     {
         "type": "rsi_ma",
@@ -44,7 +46,8 @@ ETFS = [
         "fund_code": "025497",
         "fund_name": "易方达价值100A",
         "weight": "40%",
-        "market": "sz",
+        "tencent_prefix": "sz",
+        "is_index_price": False,
     },
     {
         "type": "pe_drawdown",
@@ -55,7 +58,8 @@ ETFS = [
         "fund_code": "159941",
         "fund_name": "广发纳指100ETF联接A",
         "weight": "20%",
-        "market": None,  # 纳指不用A股API
+        "tencent_prefix": None,  # 纳指不用A股API
+        "is_index_price": True,
     },
 ]
 
@@ -68,46 +72,129 @@ DOCS_DIR = os.path.join(SCRIPT_DIR, 'docs')
 
 
 # ============ 数据获取 ============
-def fetch_index_kline(index_code, index_name, start_date='20180101'):
-    """获取A股指数日K线 - AKShare index_zh_a_hist"""
-    print(f"  获取指数K线: {index_name}({index_code})")
+def _build_no_proxy_opener():
+    """创建无代理的urllib opener，绕过沙箱/系统代理"""
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    urllib.request.install_opener(opener)
+    return opener
+
+
+def fetch_etf_tencent_klines(etf_code, prefix):
+    """使用腾讯财经API获取ETF日K线
+    格式: [date, open, close, high, low, volume]
+    支持分批获取，合并超过800条的早期数据
+    """
+    _build_no_proxy_opener()
+    full_code = f"{prefix}{etf_code}"
+    print(f"  获取ETF K线: {full_code}（腾讯财经）")
+
     try:
+        # 第一批：最近数据
+        url = f'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={full_code},day,,,800,qfq'
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        resp = urllib.request.urlopen(req, timeout=15)
+        data = json.loads(resp.read().decode('utf-8'))
+
+        stock_data = data.get('data', {}).get(full_code, {})
+        field = 'qfqday' if 'qfqday' in stock_data else 'day'
+        klines = stock_data.get(field, [])
+        if not klines:
+            raise Exception("腾讯API返回空数据")
+
+        all_klines = list(klines)
+
+        # 第二批：如果第一批满了800条，尝试拿更早的数据
+        if len(klines) >= 800:
+            earliest_date = klines[0][0]
+            prev_date = (datetime.strptime(earliest_date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')
+            url2 = f'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={full_code},day,,{prev_date},800,qfq'
+            req2 = urllib.request.Request(url2, headers={'User-Agent': 'Mozilla/5.0'})
+            resp2 = urllib.request.urlopen(req2, timeout=15)
+            data2 = json.loads(resp2.read().decode('utf-8'))
+            stock_data2 = data2.get('data', {}).get(full_code, {})
+            field2 = 'qfqday' if 'qfqday' in stock_data2 else 'day'
+            klines2 = stock_data2.get(field2, [])
+            if klines2 and klines2[0][0] < earliest_date:
+                all_klines = list(klines2) + all_klines
+
+        print(f"  ✓ 腾讯 {full_code}: {len(all_klines)}条, {all_klines[0][0]} → {all_klines[-1][0]}")
+
+        # 转为DataFrame
+        rows = []
+        for k in all_klines:
+            rows.append({
+                'date': k[0], 'open': float(k[1]), 'close': float(k[2]),
+                'high': float(k[3]), 'low': float(k[4]), 'volume': float(k[5]),
+            })
+
+        df = pd.DataFrame(rows)
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.sort_values('date').reset_index(drop=True)
+
+        # 去重（分批可能有重叠）
+        df = df.drop_duplicates(subset=['date']).reset_index(drop=True)
+
+        return df, False  # df, is_index_price=False（ETF价格）
+
+    except Exception as e:
+        print(f"  ✗ 腾讯 {full_code} 失败: {str(e)[:80]}")
+        return None, False
+
+
+def fetch_index_kline(config):
+    """获取A股指数/ETF日K线 - 多重数据源自动回退
+    1. AKShare index_zh_a_hist（东方财富，指数原始数据）
+    2. 腾讯财经API（ETF价格，作为回退）
+    """
+    index_code = config['index_code']
+    index_name = config['index_name']
+    etf_code = config['etf_code']
+    prefix = config.get('tencent_prefix')
+
+    # ---- 方案A: AKShare 东方财富指数 ----
+    print(f"  尝试获取指数K线: {index_name}({index_code})")
+    try:
+        _build_no_proxy_opener()
         df = ak.index_zh_a_hist(
             symbol=index_code,
             period="daily",
-            start_date=start_date,
+            start_date="20180101",
             end_date="20991231"
         )
-        if df is None or len(df) == 0:
-            raise Exception(f"AKShare返回空数据")
-
-        # 统一列名
-        col_map = {
-            '日期': 'date', '开盘': 'open', '收盘': 'close',
-            '最高': 'high', '最低': 'low', '成交量': 'volume',
-            '涨跌幅': 'change_pct',
-        }
-        df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
-        df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
-        df = df.sort_values('date').reset_index(drop=True)
-
-        # 确保必要列
-        for col in ['open', 'high', 'low']:
-            if col not in df.columns:
-                df[col] = df['close']
-        if 'volume' not in df.columns:
-            df['volume'] = 0
-
-        # 价格列转float
-        for col in ['open', 'high', 'low', 'close', 'volume']:
-            if col in df.columns:
-                df[col] = pd.to_numeric(df[col], errors='coerce')
-
-        print(f"  ✓ {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
-        return df
+        if df is not None and len(df) > 30:
+            col_map = {
+                '日期': 'date', '开盘': 'open', '收盘': 'close',
+                '最高': 'high', '最低': 'low', '成交量': 'volume',
+                '涨跌幅': 'change_pct',
+            }
+            df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+            df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
+            df = df.sort_values('date').reset_index(drop=True)
+            for col in ['open', 'high', 'low']:
+                if col not in df.columns:
+                    df[col] = df['close']
+            if 'volume' not in df.columns:
+                df['volume'] = 0
+            for col in ['open', 'high', 'low', 'close', 'volume']:
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+            print(f"  ✓ 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+            return df, True  # is_index_price=True
+        else:
+            print(f"  ✗ 东方财富 {index_name}: 数据为空或不足")
     except Exception as e:
-        print(f"  ✗ {index_name} K线获取失败: {str(e)[:80]}")
-        return None
+        print(f"  ✗ 东方财富 {index_name} 失败: {str(e)[:80]}")
+
+    # ---- 方案B: 腾讯财经API（ETF价格回退）----
+    if prefix:
+        print(f"  → 回退到腾讯ETF数据: {prefix}{etf_code}")
+        df, _ = fetch_etf_tencent_klines(etf_code, prefix)
+        if df is not None and len(df) > 30:
+            return df, False  # is_index_price=False
+        else:
+            print(f"  ✗ 腾讯回退也失败")
+    
+    return None, False
 
 
 def fetch_nasdaq_pe():
@@ -425,8 +512,8 @@ def process_rsi_ma(config):
     print(f"处理: {index_name}({index_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
-    # 获取指数K线
-    df = fetch_index_kline(index_code, index_name)
+    # 获取指数K线（支持多数据源回退）
+    df, is_index_price = fetch_index_kline(config)
     if df is None or len(df) < 30:
         raise Exception(f"{index_name} 指数K线获取失败或数据不足")
 
@@ -513,6 +600,7 @@ def process_rsi_ma(config):
         "days_below_ma250": int(days_below),
         "days_above_ma250": int(days_above),
         "price_vs_ma250_pct": round((latest_price / latest_ma250 - 1) * 100, 2) if latest_ma250 and latest_ma250 != 0 else None,
+        "is_index_price": is_index_price,
         "market_date": current['date'].strftime('%Y-%m-%d'),
         "history_advice": calc_rsi_ma_history(df, ma250, rsi21),
     }
@@ -729,6 +817,7 @@ def main():
                 "fund_name": config['fund_name'],
                 "weight": config['weight'],
                 "error": True,
+                "is_index_price": config.get('is_index_price', True),
                 "current_price": 0,
                 "price_change_pct": 0,
                 "zone": "数据异常",
@@ -745,9 +834,10 @@ def main():
     for i, config in enumerate(ETFS):
         fn = index_file_map.get(config['index_code'], f"{config['index_code']}.json")
         fp = os.path.join(DOCS_DIR, fn)
+        ds_label = "AKShare 指数" if results[i].get('is_index_price', True) else "腾讯ETF"
         n_data = {
             "update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            "data_source": "AKShare 本地",
+            "data_source": ds_label,
             "etf": results[i],
             "chart": chart_data_list[i],
         }
