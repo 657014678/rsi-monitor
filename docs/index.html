@@ -91,7 +91,16 @@ body {
 .cooldown-clear { background:rgba(63,185,80,0.15); color:var(--green); font-size:11px; margin-top:6px; padding:4px 8px; border-radius:4px; }
 .position-record { font-size:11px; color:var(--text-dim); margin-top:4px; }
 .del-btn { color:var(--red); cursor:pointer; margin-left:6px; font-size:10px; }
-.update-time { font-size:11px; color:var(--text-dim); margin-top:6px; }
+  .update-time { font-size:11px; color:var(--text-dim); margin-top:6px; }
+  .val-bar { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; }
+  .val-card { flex:1; min-width:0; padding:8px 10px; border-radius:8px; background:var(--card); border:1px solid var(--border); text-align:center; }
+  .val-card .vc-name { font-size:11px; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .val-card .vc-zone { font-size:12px; font-weight:700; margin-top:3px; }
+  .val-card .vc-sub { font-size:10px; color:var(--text-dim); margin-top:2px; }
+  .vc-green { color:var(--green); }
+  .vc-yellow { color:var(--yellow); }
+  .vc-red { color:var(--red); }
+  .vc-purple { color:var(--purple); }
 </style>
 </head>
 <body>
@@ -101,9 +110,13 @@ body {
   <div class="subtitle">RSI21+MA250 / PE+回撤 · 三标的策略</div>
   <div class="live-clock" id="liveClock">--:--:--</div>
   <div class="header-row">
-    <a class="guide-btn" href="guide.html">策略科普 · 心理按摩</a>
+    <a class="guide-btn" href="guide.html">策略详情</a>
   </div>
   <div class="update-time" id="updateTime">加载中...</div>
+</div>
+
+<div class="val-bar" id="valBar">
+  <div class="val-card"><div class="vc-name">加载中...</div></div>
 </div>
 
 <div class="weight-bar">
@@ -386,6 +399,34 @@ function loadData() {
     .then(function(data) {
       CACHE = data;
       document.getElementById('updateTime').textContent = '更新: ' + (data.update_time || '--');
+
+      /* 渲染估值横条 */
+      var bar = document.getElementById('valBar');
+      if (data.etfs && data.etfs.length >= 3) {
+        var html = '';
+        for (var i = 0; i < data.etfs.length; i++) {
+          var etf = data.etfs[i];
+          var isPE = (etf.type === 'pe_drawdown');
+          var zone = etf.zone || '--';
+          var colorCls = 'vc-green';
+          if (etf.risk_signal === 'yellow') colorCls = 'vc-yellow';
+          else if (etf.risk_signal === 'red') colorCls = 'vc-red';
+          if (isPE && colorCls === 'vc-green') colorCls = 'vc-purple';
+          html += '<div class="val-card">';
+          html += '<div class="vc-name">' + (etf.fund_name || etf.index_name || '--') + '</div>';
+          html += '<div class="vc-zone ' + colorCls + '">' + zone + '</div>';
+          if (isPE) {
+            var pePct = (etf.pe_percentile != null) ? etf.pe_percentile.toFixed(1) + '%' : '--';
+            html += '<div class="vc-sub">PE分位 ' + pePct + '</div>';
+          } else {
+            var rsi = (etf.rsi21 != null) ? etf.rsi21.toFixed(1) : '--';
+            html += '<div class="vc-sub">RSI ' + rsi + '</div>';
+          }
+          html += '</div>';
+        }
+        bar.innerHTML = html;
+      }
+
       if (data.etfs && data.etfs.length >= 3) {
         updateCard(data.etfs[0], 0);
         updateCard(data.etfs[1], 1);
