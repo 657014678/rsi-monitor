@@ -105,6 +105,10 @@ body {
   .hist-action { font-size:10px; margin-left:auto; }
   .ha-reduce { color:var(--red); }
   .ha-rebuy { color:var(--yellow); }
+  .rule-box { font-size:10px; color:var(--text-dim); margin-top:8px; padding:6px 8px; background:rgba(255,255,255,0.03); border-radius:4px; line-height:1.7; }
+  .rule-title { color:var(--text-bright); font-weight:600; font-size:10px; }
+  .rule-line { margin:2px 0; }
+  .rule-key { color:var(--accent); }
   .ma-status { display:flex; gap:12px; flex-wrap:wrap; padding:6px 0 2px; font-size:11px; }
   .ma-pos { font-weight:600; }
   .ma-pos.up { color:var(--red); }
@@ -153,17 +157,18 @@ body {
       <div class="metric-box"><div class="metric-label">RSI21</div><div class="metric-value" id="rsi0">--</div></div>
     </div>
     <div class="ma-status" id="maStat0"></div>
-  </div>
- <div class="card">
-    <div class="signal-bar">
+  <    </div>
+    <div class="ma-status" id="maStat0"></div>
+    <div class="signal-bar" id="sigBar0">
       <div class="signal-dot green" id="dot0"></div>
       <span class="signal-label" id="sl0">--</span>
       <span class="signal-detail" id="sd0">--</span>
     </div>
   </div>
-  <div class="card">
-    <div class="card-label">操作建议</div>
+ <div class="card">
+    <div class="card-label">操作建议 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">（规则见下方）</span></div>
     <div id="adv0"><div class="loading">加载中...</div></div>
+    <div class="rule-box" id="rule0"></div>
   </div>
 </div>
 
@@ -187,17 +192,18 @@ body {
       <div class="metric-box"><div class="metric-label">RSI21</div><div class="metric-value" id="rsi1">--</div></div>
     </div>
     <div class="ma-status" id="maStat1"></div>
-  </div>
- <div class="card">
-    <div class="signal-bar">
+  <    </div>
+    <div class="ma-status" id="maStat1"></div>
+    <div class="signal-bar" id="sigBar1">
       <div class="signal-dot green" id="dot1"></div>
       <span class="signal-label" id="sl1">--</span>
       <span class="signal-detail" id="sd1">--</span>
     </div>
   </div>
-  <div class="card">
-    <div class="card-label">操作建议</div>
+ <div class="card">
+    <div class="card-label">操作建议 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">（规则见下方）</span></div>
     <div id="adv1"><div class="loading">加载中...</div></div>
+    <div class="rule-box" id="rule1"></div>
   </div>
 </div>
 
@@ -222,15 +228,17 @@ body {
     </div>
   </div>
   <div class="card">
-    <div class="signal-bar">
+    <div class="signal    </div>
+    <div class="signal-bar" id="sigBar2">
       <div class="signal-dot green" id="dot2"></div>
       <span class="signal-label" id="sl2">--</span>
       <span class="signal-detail" id="sd2">--</span>
     </div>
   </div>
-  <div class="card">
-    <div class="card-label">操作建议</div>
+ <div class="card">
+    <div class="card-label">操作建议 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">（规则见下方）</span></div>
     <div id="adv2"><div class="loading">加载中...</div></div>
+    <div class="rule-box" id="rule2"></div>
   </div>
 </div>
 
@@ -342,8 +350,9 @@ function updateCard(etf, idx) {
 
   /* 历史操作建议 */
   if (etf.history_advice && etf.history_advice.length > 0) {
-    html += '<div class="hist-title">近12个月操作建议（每月21日）</div>';
-    for (var h = etf.history_advice.length - 1; h >= 0; h--) {
+      html += '<div class="hist-title">近12个月操作建议（每月21日）</div>';
+      html += '<div style="font-size:10px;color:var(--accent);margin-bottom:6px;">📐 定投规则：RSI/PE分位→对应份数；减仓/回补见各期标注</div>';
+      for (var h = etf.history_advice.length - 1; h >= 0; h--) {
       var ha = etf.history_advice[h];
       var zLabel = ha.zone || (ha.pe_zone || '--');
       var zClass = 'hz-green';
@@ -357,6 +366,11 @@ function updateCard(etf, idx) {
       html += '<div class="hist-row">';
       html += '<span class="hist-date">' + ha.date + '</span>';
       html += '<span class="hist-zone ' + zClass + '">' + zLabel + '</span>';
+      if (!isPE) {
+        html += '<span style="font-size:10px;color:var(--text-dim);">RSI ' + (ha.rsi21 != null ? ha.rsi21 : '--') + '</span>';
+      } else {
+        html += '<span style="font-size:10px;color:var(--text-dim);">PE分位' + (ha.pe_percentile != null ? ha.pe_percentile + '%' : '--') + '</span>';
+      }
       html += '<span class="hist-invest">' + ha.invest + '</span>';
       var actHtml = '';
       if (ha.reduce) actHtml += '<span class="ha-reduce">📉' + ha.reduce + '</span>';
@@ -367,6 +381,38 @@ function updateCard(etf, idx) {
   }
 
   document.getElementById('adv' + id).innerHTML = html;
+
+  /* 渲染规则说明 */
+  var ruleEl = document.getElementById('rule' + id);
+  if (ruleEl) {
+    var ruleHtml = '<div class="rule-title">📐 操作规则</div>';
+    if (!isPE) {
+      var rsi = etf.rsi21 != null ? etf.rsi21.toFixed(1) : '--';
+      ruleHtml += '<div class="rule-line"><span class="rule-key">定投规则：</span>RSI ' + rsi + ' · ' + (etf.invest_detail || etf.zone || '') + ' → ' + (etf.invest_amount || '--') + '</div>';
+      var rAdv = etf.reduce_advice;
+      if (rAdv && rAdv.action) {
+        ruleHtml += '<div class="rule-line"><span class="rule-key">减仓规则：</span>RSI≥65 · 强势区 → ' + rAdv.action + ' ' + (rAdv.pct || '') + '（冷却30天）</div>';
+      }
+      var rbAdv = etf.rebuy_advice;
+      if (rbAdv && rbAdv.action) {
+        ruleHtml += '<div class="rule-line"><span class="rule-key">回补规则：</span>RSI 59-63·强势区 → 回补2/3；RSI<50 → 回补全部（冷却30天）</div>';
+      }
+    } else {
+      var pePct = etf.pe_percentile != null ? etf.pe_percentile.toFixed(1) + '%' : '--';
+      var dd = etf.drawdown != null ? etf.drawdown + '%' : '--';
+      ruleHtml += '<div class="rule-line"><span class="rule-key">定投规则：</span>PE分位 ' + pePct + ' · 回撤' + dd + ' → ' + (etf.invest_amount || '--') + '</div>';
+      var rAdv2 = etf.reduce_advice;
+      if (rAdv2 && rAdv2.action) {
+        ruleHtml += '<div class="rule-line"><span class="rule-key">减仓规则：</span>PE≥70% · 回撤<8% → ' + rAdv2.action + ' ' + (rAdv2.pct || '') + '（冷却60天）</div>';
+      }
+      var rbAdv2 = etf.rebuy_advice;
+      if (rbAdv2 && rbAdv2.action) {
+        ruleHtml += '<div class="rule-line"><span class="rule-key">回补规则：</span>PE 40-50% → 回补2/3；PE<40% → 回补全部（冷却120天）</div>';
+      }
+    }
+    ruleEl.innerHTML = ruleHtml;
+  }
+
 }
 
 /* 加载数据 */

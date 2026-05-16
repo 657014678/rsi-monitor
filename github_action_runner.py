@@ -473,9 +473,8 @@ def process_etf_rsi_ma(config):
     print(f"处理标的: {etf_name}({etf_code}) [RSI+MA250]")
     print(f"{'='*50}")
 
-    # 获取数据（使用指数数据）
-    df = fetch_index_data(config)
-    source_used = "AKShare指数"
+    # 获取数据（ETF价格紧贴指数，用于指标计算）
+    df, source_used = fetch_etf_data(config)
 
     # 计算指标
     data_count = len(df)
