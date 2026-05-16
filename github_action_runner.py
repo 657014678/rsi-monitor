@@ -7,6 +7,7 @@ import json
 import os
 import sys
 import time
+import math
 import akshare as ak
 import pandas as pd
 import numpy as np
@@ -704,6 +705,17 @@ def make_error_result(config):
 
     return result, history
 
+# ============ NaN 清理工具 ============
+def clean_nan(obj):
+    """递归清理字典/列表中的 NaN/Infinity，替换为 None（JSON null）"""
+    if isinstance(obj, dict):
+        return {k: clean_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan(item) for item in obj]
+    elif isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
+
 # ============ 主程序 ============
 def main():
     print(f"[{datetime.now()}] ============ 价值投资控制台 ============")
@@ -746,10 +758,10 @@ def main():
     os.makedirs('docs', exist_ok=True)
 
     with open('docs/data.json', 'w', encoding='utf-8') as f:
-        json.dump(data_output, f, ensure_ascii=False, indent=2)
+        json.dump(clean_nan(data_output), f, ensure_ascii=False, indent=2)
 
     with open('docs/history.json', 'w', encoding='utf-8') as f:
-        json.dump(history_output, f, ensure_ascii=False)
+        json.dump(clean_nan(history_output), f, ensure_ascii=False)
 
     print(f"\n[{datetime.now()}] ============ 数据更新完成! ============")
     for r in results:

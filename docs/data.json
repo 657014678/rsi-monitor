@@ -11,8 +11,8 @@
       "fund_code": "012708",
       "fund_name": "东方红红利低波A",
       "weight": "40%",
-      "current_price": NaN,
-      "price_change_pct": NaN,
+      "current_price": null,
+      "price_change_pct": null,
       "ma250": 1.1834,
       "ma250_is_reference": false,
       "ma250_data_days": 400,
@@ -27,7 +27,7 @@
       "ma250_trend": "上升",
       "days_below_ma250": 0,
       "days_above_ma250": 0,
-      "price_vs_ma250_pct": NaN,
+      "price_vs_ma250_pct": null,
       "market_date": "2026-05-15"
     },
     {
