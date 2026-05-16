@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import math
+import time
 import subprocess
 import urllib.request
 import akshare as ak
@@ -880,9 +881,20 @@ def git_push():
             cwd=SCRIPT_DIR, check=True
         )
 
-        # git push
-        subprocess.run(['git', 'push'], cwd=SCRIPT_DIR, check=True)
-        print(f"  ✓ Push成功!")
+        # git push（自动重试最多3次）
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                subprocess.run(['git', 'push'], cwd=SCRIPT_DIR, check=True, timeout=60)
+                print(f"  ✓ Push成功!")
+                break
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+                if attempt < max_retries - 1:
+                    wait = 10 * (attempt + 1)
+                    print(f"  ⚠ Push第{attempt+1}次失败({type(e).__name__})，{wait}秒后重试...")
+                    time.sleep(wait)
+                else:
+                    raise
     except subprocess.CalledProcessError as e:
         print(f"  ✗ Git操作失败: {e}")
         print(f"  请手动执行: cd {SCRIPT_DIR} && git add docs/ && git commit -m '数据更新' && git push")
