@@ -287,6 +287,7 @@ tr:last-child td { border-bottom: none; }
           <th>年份</th>
           <th>投入</th>
           <th>市值</th>
+          <th>收益额</th>
           <th>收益率</th>
           <th>年内最大回撤</th>
         </tr>
@@ -503,10 +504,13 @@ function renderAll() {
     var tr = document.createElement('tr');
     var retCls = y.return_pct >= 0 ? 'td-green' : 'td-red';
     var ddCls = y.max_dd < 0 ? 'td-red' : '';
+    var profit = y.value - y.invested;
+    var profitCls = profit >= 0 ? 'td-green' : 'td-red';
     tr.innerHTML =
       '<td class="td-bright">' + y.year + '</td>' +
       '<td>' + fmtMoney(y.invested) + '</td>' +
       '<td>' + fmtMoney(y.value) + '</td>' +
+      '<td class="' + profitCls + '">' + fmtMoney(profit) + '</td>' +
       '<td class="' + retCls + '">' + fmtPct(y.return_pct) + '</td>' +
       '<td class="' + ddCls + '">' + (y.max_dd < 0 ? fmtPct(y.max_dd) : '0.00%') + '</td>';
     tbody.appendChild(tr);
