@@ -1,14 +1,14 @@
 {
-  "update_time": "2026-05-16 20:45:56",
+  "update_time": "2026-05-17 22:35:35",
   "data_source": "乐咕PE+新浪指数",
   "etf": {
     "type": "pe_drawdown",
-    "etf_code": "159941",
-    "etf_name": "纳指100ETF联接A",
+    "etf_code": "159696",
+    "etf_name": "纳指ETF",
     "index_code": "NDX",
     "index_name": "纳斯达克100",
-    "fund_code": "159941",
-    "fund_name": "广发纳指100ETF联接A",
+    "fund_code": "159696",
+    "fund_name": "易方达纳斯达克100ETF",
     "weight": "20%",
     "current_price": 29125.2,
     "price_change_pct": -1.54,
@@ -175,7 +175,7 @@
     ]
   },
   "chart": {
-    "etf_code": "159941",
+    "etf_code": "159696",
     "index_name": "纳斯达克100",
     "pe_history": [
       {

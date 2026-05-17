@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-16 20:45:56",
+  "update_time": "2026-05-17 22:35:35",
   "data_source": "国证指数官网(全收益)",
   "etf": {
     "type": "rsi_ma",
@@ -7,8 +7,8 @@
     "etf_name": "价值100ETF",
     "index_code": "980081",
     "index_name": "国证价值100",
-    "fund_code": "025497",
-    "fund_name": "易方达价值100A",
+    "fund_code": "159263",
+    "fund_name": "国证价值100ETF",
     "weight": "40%",
     "current_price": 8334.44,
     "price_change_pct": -0.04,

@@ -3,7 +3,7 @@ daily_update.py - 本地每日数据更新脚本
 收盘后运行，用AKShare获取指数数据，计算指标，输出JSON，git push到GitHub
 
 数据源：
-  - 921446 东证红利低波全收益（显示用931446价格指数）：中证指数官网 stock_zh_index_hist_csindex
+  - H30269 中证红利低波动指数：中证指数官网 stock_zh_index_hist_csindex
   - 480081 国证价值100全收益（显示用980081价格指数）：国证指数官网 index_hist_cni
   - NDX 纳斯达克100：AKShare stock_market_pe_lg + index_us_stock_sina
 
@@ -28,16 +28,16 @@ from dateutil import relativedelta
 ETFS = [
     {
         "type": "rsi_ma",
-        "etf_code": "512890",
+        "etf_code": "563020",
         "etf_name": "红利低波ETF",
-        "index_code": "931446",    # 显示用（价格指数）
-        "data_code": "921446",     # 数据源（全收益指数）
-        "index_name": "东证红利低波",
-        "fund_code": "012708",
-        "fund_name": "东方红红利低波A",
+        "index_code": "H30269",    # 中证红利低波动指数
+        "data_code": "H30269",     # 中证指数官网直接支持
+        "index_name": "中证红利低波动",
+        "fund_code": "563020",
+        "fund_name": "中证红利低波动ETF",
         "weight": "40%",
         "tencent_prefix": "sh",
-        "is_index_price": True,
+        "is_index_price": True,    # H30269为指数价格（~11100点）
     },
     {
         "type": "rsi_ma",
@@ -46,22 +46,22 @@ ETFS = [
         "index_code": "980081",    # 显示用（价格指数）
         "data_code": "480081",     # 数据源（全收益指数）
         "index_name": "国证价值100",
-        "fund_code": "025497",
-        "fund_name": "易方达价值100A",
+        "fund_code": "159263",
+        "fund_name": "国证价值100ETF",
         "weight": "40%",
         "tencent_prefix": "sz",
         "is_index_price": True,
     },
     {
         "type": "pe_drawdown",
-        "etf_code": "159941",
-        "etf_name": "纳指100ETF联接A",
+        "etf_code": "159696",
+        "etf_name": "纳指ETF",
         "index_code": "NDX",
         "index_name": "纳斯达克100",
-        "fund_code": "159941",
-        "fund_name": "广发纳指100ETF联接A",
+        "fund_code": "159696",
+        "fund_name": "易方达纳斯达克100ETF",
         "weight": "20%",
-        "tencent_prefix": None,  # 纳指不用A股API
+        "tencent_prefix": None,  # QDII不用A股API，用乐咕PE+新浪指数
         "is_index_price": True,
     },
 ]
@@ -162,10 +162,10 @@ def fetch_index_kline(config):
     # 方案A: 中证/国证官网 - 直接指数数据（最高优先级）
     # ================================================================
 
-    # ---- A1: 中证指数官网 东证红利低波全收益(921446) ----
-    if index_code == '931446':
+    # ---- A1: 中证指数官网 中证红利低波动(H30269) ----
+    if index_code == 'H30269':
         data_code = config.get('data_code', index_code)
-        print(f"  [A1] 尝试中证指数官网: {index_name}(全收益{data_code})")
+        print(f"  [A1] 尝试中证指数官网: {index_name}({data_code})")
         try:
             _build_no_proxy_opener()
             today_str = datetime.now().strftime('%Y%m%d')
@@ -188,12 +188,12 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ A1 中证官网 {index_name}(全收益): {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
-                return df, True, "中证指数官网(全收益)"
+                print(f"  ✓ A1 中证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                return df, True, "中证指数官网"
             else:
-                print(f"  ✗ A1 中证官网 {index_name}(全收益): 数据为空或不足")
+                print(f"  ✗ A1 中证官网 {index_name}: 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ A1 中证官网 {index_name}(全收益) 失败: {str(e)[:80]}")
+            print(f"  ✗ A1 中证官网 {index_name} 失败: {str(e)[:80]}")
 
     # ---- A2: 国证指数官网 国证价值100全收益(480081) ----
     if index_code == '980081':
@@ -616,7 +616,7 @@ def calc_pe_drawdown_history(pe_df, idx_df, n_months=12):
 
 # ============ 处理RSI+MA250标的 ============
 def process_rsi_ma(config):
-    """处理RSI+MA250标的：931446 或 980081"""
+    """处理RSI+MA250标的：H30269 或 980081"""
     index_code = config['index_code']
     index_name = config['index_name']
     print(f"\n{'='*50}")
@@ -956,7 +956,7 @@ def main():
             chart_data_list.append({"etf_code": config['etf_code'], "index_name": config['index_name']})
 
     # 输出各标的独立JSON（每个标的单独文件，互不影响）
-    index_file_map = {"931446": "931446.json", "980081": "980081.json", "NDX": "nd100.json"}
+    index_file_map = {"H30269": "h30269.json", "980081": "980081.json", "NDX": "nd100.json"}
     for i, config in enumerate(ETFS):
         fn = index_file_map.get(config['index_code'], f"{config['index_code']}.json")
         fp = os.path.join(DOCS_DIR, fn)

@@ -1,10 +1,10 @@
 """
 回测脚本：三标的按权重每月定投收益
-  - 红利低波 40%: 3200元/月
-  - 价值100 40%: 3200元/月
+  - 中证红利低波动 40%: 3200元/月
+  - 国证价值100 40%: 3200元/月
   - 纳指100 20%: 1600元/月
 
-统一从 2016-02 月开始定投（国证价值100 2016-01-04 成立的次月）
+统一起始月 2016-02（国证价值100 2016-01-04 成立的次月）
 每月21日按当日收盘价买入，计算累计投入、当前市值、最大回撤、总收益率
 """
 import sys
@@ -39,12 +39,14 @@ def _build_no_proxy_opener():
 # ============ 获取指数全部历史价格 ============
 def fetch_hongli_all():
     _build_no_proxy_opener()
-    print("获取 东证红利低波(全收益921446) 全部历史...")
+    print("获取 中证红利低波动(指数H30269) 全部历史...")
     today_str = datetime.now().strftime('%Y%m%d')
     df = ak.stock_zh_index_hist_csindex(
-        symbol='921446', start_date='20160101', end_date=today_str
+        symbol='H30269', start_date='20160101', end_date=today_str
     )
-    df = df.rename(columns={'日期': 'date', '收盘': 'close'})
+    col_map = {'日期': 'date', '收盘': 'close', '开盘': 'open',
+               '最高': 'high', '最低': 'low', '成交量': 'volume'}
+    df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
     df['date'] = pd.to_datetime(df['date']).dt.tz_localize(None)
     df = df.sort_values('date').reset_index(drop=True)
     df['close'] = pd.to_numeric(df['close'], errors='coerce')
@@ -594,7 +596,7 @@ def main():
     df_jiazhi = fetch_jiazhi_all()
     df_nasdaq = fetch_nasdaq_price_all()
     dfs = [df_hongli, df_jiazhi, df_nasdaq]
-    names = ["红利低波", "价值100", "纳指100"]
+    names = ["中证红利低波", "价值100", "纳指100"]
     start_dt = datetime(START_YEAR, START_MONTH, 1)
     
     if args.sensitivity:

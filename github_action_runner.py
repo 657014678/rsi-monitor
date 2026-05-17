@@ -1,6 +1,6 @@
 """
 GitHub Actions Runner - 价值投资控制台
-三标的策略：012708(RSI21+MA250) + 025497(RSI21+MA250) + 159941(PE分位+回撤)
+三标的策略：563020(RSI21+MA250) + 159263(RSI21+MA250) + 159696(PE分位+回撤)
 定时获取ETF/指数数据并更新docs目录下的JSON文件
 """
 import json
@@ -18,15 +18,15 @@ from dateutil import relativedelta
 ETFS = [
     {
         "type": "rsi_ma",            # 策略类型：RSI+MA250
-        "etf_code": "512890",
+        "etf_code": "563020",
         "etf_name": "红利低波ETF",
-        "index_code": "931446",
-        "index_name": "东证红利低波",
-        "fund_code": "012708",
-        "fund_name": "东方红红利低波A",
+        "index_code": "H30269",
+        "index_name": "中证红利低波动",
+        "fund_code": "563020",
+        "fund_name": "中证红利低波动ETF",
         "weight": "40%",
         "yahoo_suffix": ".SS",
-        "em_secid": "2.931446",      # 东方财富指数secid
+        "em_secid": "2.H30269",      # 东方财富指数secid
     },
     {
         "type": "rsi_ma",
@@ -42,12 +42,12 @@ ETFS = [
     },
     {
         "type": "pe_drawdown",       # 策略类型：PE分位+回撤
-        "etf_code": "159941",
-        "etf_name": "纳指100ETF联接A",
+        "etf_code": "159696",
+        "etf_name": "纳指ETF",
         "index_code": "NDX",
         "index_name": "纳斯达克100",
-        "fund_code": "159941",
-        "fund_name": "广发纳指100ETF联接A",
+        "fund_code": "159696",
+        "fund_name": "易方达纳斯达克100ETF",
         "weight": "20%",
         "yahoo_suffix": None,        # 纳指不用Yahoo
         "em_secid": None,            # 纳指用新浪，不用东方财富
@@ -102,7 +102,7 @@ def fetch_etf_data(config, days=400):
     etf_code = config['etf_code']
     etf_name = config['etf_name']
     yahoo_code = f"{etf_code}{config['yahoo_suffix']}" if config.get('yahoo_suffix') else None
-    # 腾讯财经代码格式: sh512890 / sz159263
+    # 腾讯财经代码格式: sh563020 / sz159263
     tencent_code = None
     if config.get('yahoo_suffix'):
         tencent_prefix = 'sh' if config['yahoo_suffix'] == '.SS' else 'sz'
@@ -535,7 +535,7 @@ def calculate_drawdown(prices):
         return 0.0
     return round((current - high) / high * 100, 2)
 
-# ============ RSI+MA250 策略逻辑（012708/025497共用）============
+# ============ RSI+MA250 策略逻辑（563020/159263共用）============
 def get_zone(price, ma250):
     """判断市场分区：强势区/弱势区"""
     return "强势区" if price >= ma250 else "弱势区"
