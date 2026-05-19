@@ -1175,7 +1175,8 @@ function updateCard(etf, idx) {
 
   /* 行情信息 — 统一使用指数价格（与MA250/RSI同源） */
   var infoLabel = isPE ? '纳指100' : (etf.index_name || '--');
-  document.getElementById('info' + id).textContent = '指数行情 · ' + infoLabel;
+  var md = etf.market_date || '';
+  document.getElementById('info' + id).textContent = md ? (infoLabel + ' · ' + md) : ('指数行情 · ' + infoLabel);
 
   /* 价格 — 使用指数价格，与MA250/RSI保持同源 */
   var priceToShow = etf.current_price;
@@ -1495,7 +1496,7 @@ function onRealtimeClick() {
 
       /* 更新行情标签 */
       var infoLabels = ['红利低波ETF', '价值100ETF', '纳指ETF'];
-      document.getElementById('info' + id).textContent = '📡 实时 ' + infoLabels[id];
+      document.getElementById('info' + id).textContent = '📡 ' + infoLabels[id] + ' · ' + r.date;
 
       /* 价格 */
       var dec = isPE ? 2 : 4;
