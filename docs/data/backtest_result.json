@@ -11,146 +11,146 @@
     ],
     "rebalance_desc": "每年6、12月21日",
     "total_invested": 984000.0,
-    "current_value": 2293751.49,
-    "total_return_pct": 133.1,
-    "max_drawdown": -13.84,
-    "max_dd_start": "",
+    "current_value": 1925697.59,
+    "total_return_pct": 95.7,
+    "max_drawdown": -13.46,
+    "max_dd_start": "2020-02-21",
     "max_dd_end": "2020-03-23",
     "latest_prices": {
-      "红利低波": 6101.08,
-      "价值100": 8334.44,
-      "纳指100": 29125.2
+      "中证红利低波": 11121.79,
+      "价值100": 8285.23,
+      "纳指100": 28994.37
     },
     "items": [
       {
-        "name": "红利低波",
+        "name": "中证红利低波",
         "monthly": 3200,
         "trades": 123,
         "invested": 393600.0,
-        "value": 861010.67,
-        "return_pct": 118.75
+        "value": 725816.66,
+        "return_pct": 84.4
       },
       {
         "name": "价值100",
         "monthly": 3200,
         "trades": 123,
         "invested": 393600.0,
-        "value": 935218.4,
-        "return_pct": 137.61
+        "value": 782771.12,
+        "return_pct": 98.87
       },
       {
         "name": "纳指100",
         "monthly": 1600,
         "trades": 123,
         "invested": 196800.0,
-        "value": 497522.42,
-        "return_pct": 152.81
+        "value": 417109.81,
+        "return_pct": 111.95
       }
     ],
     "current_weights": {
-      "红利低波": 37.5,
-      "价值100": 40.8,
+      "中证红利低波": 37.7,
+      "价值100": 40.6,
       "纳指100": 21.7
     },
     "max_dd_valley": {
-      "portfolio_value": 433720.12,
+      "portfolio_value": 402949.29,
       "total_invested": 400000.0,
-      "pnl_pct": 8.43,
+      "pnl_pct": 0.74,
       "date": "2020-03-23"
     },
     "recent_3y_max_dd": {
-      "drawdown": -3.53,
-      "date": "2023-10-23",
-      "pnl_pct": 62.54
+      "drawdown": -5.9,
+      "date": "2024-09-23",
+      "pnl_pct": 57.23
     },
     "yearly": [
       {
         "year": "2016",
         "invested": 88000.0,
-        "value": 96046.0,
-        "return_pct": 9.14,
-        "year_return_pct": 9.14,
+        "value": 95798.0,
+        "return_pct": 8.86,
+        "year_return_pct": 8.86,
         "max_dd": 0.0
       },
       {
         "year": "2017",
         "invested": 96000.0,
-        "value": 241081.0,
-        "return_pct": 31.02,
-        "year_return_pct": 51.05,
-        "max_dd": 0.0
+        "value": 232013.0,
+        "return_pct": 26.09,
+        "year_return_pct": 41.98,
+        "max_dd": -0.0
       },
       {
         "year": "2018",
         "invested": 96000.0,
-        "value": 296596.0,
-        "return_pct": 5.93,
-        "year_return_pct": -16.79,
-        "max_dd": -3.29
+        "value": 283146.0,
+        "return_pct": 1.12,
+        "year_return_pct": -19.34,
+        "max_dd": -2.75
       },
       {
         "year": "2019",
         "invested": 96000.0,
-        "value": 477974.0,
-        "return_pct": 27.12,
-        "year_return_pct": 28.79,
-        "max_dd": -5.64
+        "value": 447123.0,
+        "return_pct": 18.92,
+        "year_return_pct": 24.01,
+        "max_dd": -5.89
       },
       {
         "year": "2020",
         "invested": 96000.0,
-        "value": 680503.0,
-        "return_pct": 44.17,
-        "year_return_pct": 22.29,
-        "max_dd": -13.84
+        "value": 622981.0,
+        "return_pct": 31.99,
+        "year_return_pct": 17.86,
+        "max_dd": -13.46
       },
       {
         "year": "2021",
         "invested": 96000.0,
-        "value": 905903.0,
-        "return_pct": 59.49,
-        "year_return_pct": 19.02,
-        "max_dd": -7.27
+        "value": 817254.0,
+        "return_pct": 43.88,
+        "year_return_pct": 15.77,
+        "max_dd": -8.63
       },
       {
         "year": "2022",
         "invested": 96000.0,
-        "value": 961578.0,
-        "return_pct": 44.82,
-        "year_return_pct": -4.45,
-        "max_dd": -3.74
+        "value": 859619.0,
+        "return_pct": 29.46,
+        "year_return_pct": -6.56,
+        "max_dd": -4.4
       },
       {
         "year": "2023",
         "invested": 96000.0,
-        "value": 1258895.0,
-        "return_pct": 65.64,
-        "year_return_pct": 20.94,
-        "max_dd": -3.53
+        "value": 1107267.0,
+        "return_pct": 45.69,
+        "year_return_pct": 17.64,
+        "max_dd": -3.31
       },
       {
         "year": "2024",
         "invested": 96000.0,
-        "value": 1797345.0,
-        "return_pct": 109.97,
-        "year_return_pct": 35.15,
-        "max_dd": -2.33
+        "value": 1519031.0,
+        "return_pct": 77.46,
+        "year_return_pct": 28.52,
+        "max_dd": -5.9
       },
       {
         "year": "2025",
         "invested": 96000.0,
-        "value": 2142309.0,
-        "return_pct": 125.03,
-        "year_return_pct": 13.85,
-        "max_dd": -1.79
+        "value": 1799046.0,
+        "return_pct": 88.98,
+        "year_return_pct": 12.11,
+        "max_dd": -1.57
       },
       {
         "year": "2026",
         "invested": 32000.0,
-        "value": 2274524.0,
-        "return_pct": 131.15,
-        "year_return_pct": 4.68,
-        "max_dd": -2.6
+        "value": 1924339.0,
+        "return_pct": 95.56,
+        "year_return_pct": 5.19,
+        "max_dd": -1.82
       }
     ],
     "rebalance_log": [
@@ -158,27 +158,27 @@
         "date": "2016-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 16149.54,
-            "target_value": 16182.05,
-            "diff": -32.5,
-            "delta_shares": 0.018,
+            "name": "中证红利低波",
+            "before_value": 16069.75,
+            "target_value": 16150.13,
+            "diff": -80.38,
+            "delta_shares": 0.0117,
             "action": "买入"
           },
           {
             "name": "价值100",
             "before_value": 16265.09,
-            "target_value": 16182.05,
-            "diff": 83.04,
-            "delta_shares": -0.0479,
+            "target_value": 16150.13,
+            "diff": 114.96,
+            "delta_shares": -0.0663,
             "action": "卖出"
           },
           {
             "name": "纳指100",
             "before_value": 8040.49,
-            "target_value": 8091.02,
-            "diff": -50.53,
-            "delta_shares": 0.0115,
+            "target_value": 8075.07,
+            "diff": -34.58,
+            "delta_shares": 0.0078,
             "action": "买入"
           }
         ]
@@ -187,27 +187,27 @@
         "date": "2016-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 37699.33,
-            "target_value": 38418.29,
-            "diff": -718.96,
-            "delta_shares": 0.3531,
+            "name": "中证红利低波",
+            "before_value": 37507.95,
+            "target_value": 38319.38,
+            "diff": -811.42,
+            "delta_shares": 0.1064,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 39430.05,
-            "target_value": 38418.29,
-            "diff": 1011.75,
-            "delta_shares": -0.4896,
+            "before_value": 39392.03,
+            "target_value": 38319.38,
+            "diff": 1072.65,
+            "delta_shares": -0.5191,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 18916.35,
-            "target_value": 19209.15,
-            "diff": -292.79,
-            "delta_shares": 0.0592,
+            "before_value": 18898.46,
+            "target_value": 19159.69,
+            "diff": -261.23,
+            "delta_shares": 0.0528,
             "action": "买入"
           }
         ]
@@ -216,27 +216,27 @@
         "date": "2017-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 64277.89,
-            "target_value": 66320.34,
-            "diff": -2042.45,
-            "delta_shares": 0.878,
+            "name": "中证红利低波",
+            "before_value": 63263.14,
+            "target_value": 65842.33,
+            "diff": -2579.19,
+            "delta_shares": 0.3011,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 68864.84,
-            "target_value": 66320.34,
-            "diff": 2544.5,
-            "delta_shares": -0.9943,
+            "before_value": 68742.35,
+            "target_value": 65842.33,
+            "diff": 2900.02,
+            "delta_shares": -1.1332,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 32658.12,
-            "target_value": 33160.17,
-            "diff": -502.05,
-            "delta_shares": 0.0868,
+            "before_value": 32600.33,
+            "target_value": 32921.16,
+            "diff": -320.83,
+            "delta_shares": 0.0555,
             "action": "买入"
           }
         ]
@@ -245,28 +245,28 @@
         "date": "2017-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 96655.23,
-            "target_value": 96432.33,
-            "diff": 222.9,
-            "delta_shares": -0.0828,
-            "action": "卖出"
+            "name": "中证红利低波",
+            "before_value": 88409.67,
+            "target_value": 92805.29,
+            "diff": -4395.62,
+            "delta_shares": 0.4891,
+            "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 97092.79,
-            "target_value": 96432.33,
-            "diff": 660.46,
-            "delta_shares": -0.2225,
+            "before_value": 96538.3,
+            "target_value": 92805.29,
+            "diff": 3733.01,
+            "delta_shares": -1.2575,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 47332.8,
-            "target_value": 48216.17,
-            "diff": -883.37,
-            "delta_shares": 0.1365,
-            "action": "买入"
+            "before_value": 47065.26,
+            "target_value": 46402.65,
+            "diff": 662.62,
+            "delta_shares": -0.1024,
+            "action": "卖出"
           }
         ]
       },
@@ -274,27 +274,27 @@
         "date": "2018-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 109175.04,
-            "target_value": 115666.33,
-            "diff": -6491.29,
-            "delta_shares": 2.5552,
+            "name": "中证红利低波",
+            "before_value": 102939.47,
+            "target_value": 110895.08,
+            "diff": -7955.61,
+            "delta_shares": 0.9649,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 116151.78,
-            "target_value": 115666.33,
-            "diff": 485.45,
-            "delta_shares": -0.1616,
+            "before_value": 112481.44,
+            "target_value": 110895.08,
+            "diff": 1586.35,
+            "delta_shares": -0.5281,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 63839.0,
-            "target_value": 57833.16,
-            "diff": 6005.84,
-            "delta_shares": -0.8321,
+            "before_value": 61816.8,
+            "target_value": 55447.54,
+            "diff": 6369.26,
+            "delta_shares": -0.8825,
             "action": "卖出"
           }
         ]
@@ -303,27 +303,27 @@
         "date": "2018-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 123294.15,
-            "target_value": 118638.35,
-            "diff": 4655.79,
-            "delta_shares": -2.0192,
+            "name": "中证红利低波",
+            "before_value": 115907.64,
+            "target_value": 113258.53,
+            "diff": 2649.11,
+            "delta_shares": -0.3659,
             "action": "卖出"
           },
           {
             "name": "价值100",
-            "before_value": 116520.05,
-            "target_value": 118638.35,
-            "diff": -2118.31,
-            "delta_shares": 0.8278,
+            "before_value": 112455.59,
+            "target_value": 113258.53,
+            "diff": -802.94,
+            "delta_shares": 0.3138,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 56781.69,
-            "target_value": 59319.18,
-            "diff": -2537.49,
-            "delta_shares": 0.4197,
+            "before_value": 54783.1,
+            "target_value": 56629.27,
+            "diff": -1846.17,
+            "delta_shares": 0.3053,
             "action": "买入"
           }
         ]
@@ -332,27 +332,27 @@
         "date": "2019-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 164254.53,
-            "target_value": 164069.75,
-            "diff": 184.78,
-            "delta_shares": -0.0659,
-            "action": "卖出"
+            "name": "中证红利低波",
+            "before_value": 149070.68,
+            "target_value": 154074.98,
+            "diff": -5004.3,
+            "delta_shares": 0.604,
+            "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 159966.12,
-            "target_value": 164069.75,
-            "diff": -4103.63,
-            "delta_shares": 1.3555,
+            "before_value": 153601.32,
+            "target_value": 154074.98,
+            "diff": -473.66,
+            "delta_shares": 0.1565,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 85953.73,
-            "target_value": 82034.88,
-            "diff": 3918.85,
-            "delta_shares": -0.507,
+            "before_value": 82515.45,
+            "target_value": 77037.49,
+            "diff": 5477.96,
+            "delta_shares": -0.7088,
             "action": "卖出"
           }
         ]
@@ -361,27 +361,27 @@
         "date": "2019-12-23",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 186865.86,
-            "target_value": 191189.67,
-            "diff": -4323.81,
-            "delta_shares": 1.5136,
+            "name": "中证红利低波",
+            "before_value": 171895.91,
+            "target_value": 178849.01,
+            "diff": -6953.1,
+            "delta_shares": 0.8491,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 188432.65,
-            "target_value": 191189.67,
-            "diff": -2757.02,
-            "delta_shares": 0.8872,
+            "before_value": 178173.73,
+            "target_value": 178849.01,
+            "diff": -675.28,
+            "delta_shares": 0.2173,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 102675.67,
-            "target_value": 95594.84,
-            "diff": 7080.83,
-            "delta_shares": -0.8143,
+            "before_value": 97052.88,
+            "target_value": 89424.5,
+            "diff": 7628.37,
+            "delta_shares": -0.8772,
             "action": "卖出"
           }
         ]
@@ -390,27 +390,27 @@
         "date": "2020-06-22",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 205615.05,
-            "target_value": 211844.52,
-            "diff": -6229.47,
-            "delta_shares": 2.2401,
+            "name": "中证红利低波",
+            "before_value": 183182.25,
+            "target_value": 195290.54,
+            "diff": -12108.29,
+            "delta_shares": 1.6107,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 201579.89,
-            "target_value": 211844.52,
-            "diff": -10264.63,
-            "delta_shares": 3.4651,
+            "before_value": 189815.77,
+            "target_value": 195290.54,
+            "diff": -5474.76,
+            "delta_shares": 1.8481,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 122416.36,
-            "target_value": 105922.26,
-            "diff": 16494.1,
-            "delta_shares": -1.6282,
+            "before_value": 115228.32,
+            "target_value": 97645.27,
+            "diff": 17583.05,
+            "delta_shares": -1.7357,
             "action": "卖出"
           }
         ]
@@ -419,27 +419,27 @@
         "date": "2020-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 265245.12,
-            "target_value": 272201.33,
-            "diff": -6956.21,
-            "delta_shares": 2.1549,
+            "name": "中证红利低波",
+            "before_value": 237835.89,
+            "target_value": 249192.38,
+            "diff": -11356.5,
+            "delta_shares": 1.3486,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 272042.44,
-            "target_value": 272201.33,
-            "diff": -158.88,
-            "delta_shares": 0.045,
-            "action": "买入"
+            "before_value": 252297.93,
+            "target_value": 249192.38,
+            "diff": 3105.55,
+            "delta_shares": -0.8789,
+            "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 143215.75,
-            "target_value": 136100.66,
-            "diff": 7115.09,
-            "delta_shares": -0.5607,
+            "before_value": 132847.14,
+            "target_value": 124596.19,
+            "diff": 8250.95,
+            "delta_shares": -0.6502,
             "action": "卖出"
           }
         ]
@@ -448,27 +448,27 @@
         "date": "2021-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 310326.32,
-            "target_value": 306279.16,
-            "diff": 4047.16,
-            "delta_shares": -1.1734,
+            "name": "中证红利低波",
+            "before_value": 285165.09,
+            "target_value": 281793.85,
+            "diff": 3371.24,
+            "delta_shares": -0.3759,
             "action": "卖出"
           },
           {
             "name": "价值100",
-            "before_value": 293716.26,
-            "target_value": 306279.16,
-            "diff": -12562.9,
-            "delta_shares": 3.5209,
+            "before_value": 270480.46,
+            "target_value": 281793.85,
+            "diff": -11313.4,
+            "delta_shares": 3.1707,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 161655.32,
-            "target_value": 153139.58,
-            "diff": 8515.74,
-            "delta_shares": -0.6024,
+            "before_value": 148839.08,
+            "target_value": 140896.93,
+            "diff": 7942.16,
+            "delta_shares": -0.5618,
             "action": "卖出"
           }
         ]
@@ -477,27 +477,27 @@
         "date": "2021-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 353533.64,
-            "target_value": 362361.18,
-            "diff": -8827.53,
-            "delta_shares": 2.3493,
+            "name": "中证红利低波",
+            "before_value": 306667.4,
+            "target_value": 326901.7,
+            "diff": -20234.3,
+            "delta_shares": 2.2143,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 369291.71,
-            "target_value": 362361.18,
-            "diff": 6930.53,
-            "delta_shares": -1.7023,
+            "before_value": 341353.16,
+            "target_value": 326901.7,
+            "diff": 14451.46,
+            "delta_shares": -3.5496,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 183077.59,
-            "target_value": 181180.59,
-            "diff": 1897.0,
-            "delta_shares": -0.1187,
+            "before_value": 169233.68,
+            "target_value": 163450.85,
+            "diff": 5782.84,
+            "delta_shares": -0.3617,
             "action": "卖出"
           }
         ]
@@ -506,27 +506,27 @@
         "date": "2022-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 393333.78,
-            "target_value": 370504.15,
-            "diff": 22829.62,
-            "delta_shares": -5.8884,
+            "name": "中证红利低波",
+            "before_value": 355464.24,
+            "target_value": 335580.51,
+            "diff": 19883.73,
+            "delta_shares": -2.1153,
             "action": "卖出"
           },
           {
             "name": "价值100",
-            "before_value": 393683.03,
-            "target_value": 370504.15,
-            "diff": 23178.88,
-            "delta_shares": -5.5108,
+            "before_value": 357049.51,
+            "target_value": 335580.51,
+            "diff": 21469.0,
+            "delta_shares": -5.1042,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 139243.58,
-            "target_value": 185252.08,
-            "diff": -46008.5,
-            "delta_shares": 3.9845,
+            "before_value": 126437.53,
+            "target_value": 167790.26,
+            "diff": -41352.73,
+            "delta_shares": 3.5813,
             "action": "买入"
           }
         ]
@@ -535,28 +535,28 @@
         "date": "2022-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 387803.84,
-            "target_value": 384631.35,
-            "diff": 3172.49,
-            "delta_shares": -0.823,
-            "action": "卖出"
+            "name": "中证红利低波",
+            "before_value": 337259.27,
+            "target_value": 343847.6,
+            "diff": -6588.33,
+            "delta_shares": 0.7391,
+            "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 384400.64,
-            "target_value": 384631.35,
-            "diff": -230.71,
-            "delta_shares": 0.0556,
-            "action": "买入"
+            "before_value": 349977.51,
+            "target_value": 343847.6,
+            "diff": 6129.92,
+            "delta_shares": -1.4786,
+            "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 189373.9,
-            "target_value": 192315.68,
-            "diff": -2941.78,
-            "delta_shares": 0.2618,
-            "action": "买入"
+            "before_value": 172382.21,
+            "target_value": 171923.8,
+            "diff": 458.41,
+            "delta_shares": -0.0408,
+            "action": "卖出"
           }
         ]
       },
@@ -564,27 +564,27 @@
         "date": "2023-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 457886.38,
-            "target_value": 472526.55,
-            "diff": -14640.17,
-            "delta_shares": 3.3346,
+            "name": "中证红利低波",
+            "before_value": 392402.26,
+            "target_value": 416938.01,
+            "diff": -24535.75,
+            "delta_shares": 2.5351,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 457965.3,
-            "target_value": 472526.55,
-            "diff": -14561.25,
-            "delta_shares": 3.0802,
+            "before_value": 411460.85,
+            "target_value": 416938.01,
+            "diff": -5477.16,
+            "delta_shares": 1.1586,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 265464.69,
-            "target_value": 236263.28,
-            "diff": 29201.42,
-            "delta_shares": -1.9641,
+            "before_value": 238481.92,
+            "target_value": 208469.01,
+            "diff": 30012.91,
+            "delta_shares": -2.0187,
             "action": "卖出"
           }
         ]
@@ -593,27 +593,27 @@
         "date": "2023-12-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 488784.3,
-            "target_value": 503557.9,
-            "diff": -14773.6,
-            "delta_shares": 3.383,
+            "name": "中证红利低波",
+            "before_value": 424305.82,
+            "target_value": 442906.6,
+            "diff": -18600.78,
+            "delta_shares": 1.9761,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 493336.91,
-            "target_value": 503557.9,
-            "diff": -10220.99,
-            "delta_shares": 2.153,
+            "before_value": 437514.64,
+            "target_value": 442906.6,
+            "diff": -5391.97,
+            "delta_shares": 1.1358,
             "action": "买入"
           },
           {
             "name": "纳指100",
-            "before_value": 276773.54,
-            "target_value": 251778.95,
-            "diff": 24994.59,
-            "delta_shares": -1.4916,
+            "before_value": 245446.05,
+            "target_value": 221453.3,
+            "diff": 23992.75,
+            "delta_shares": -1.4318,
             "action": "卖出"
           }
         ]
@@ -622,27 +622,27 @@
         "date": "2024-06-21",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 604185.43,
-            "target_value": 616401.69,
-            "diff": -12216.26,
-            "delta_shares": 2.4114,
+            "name": "中证红利低波",
+            "before_value": 526484.83,
+            "target_value": 541656.64,
+            "diff": -15171.81,
+            "delta_shares": 1.4085,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 630362.62,
-            "target_value": 616401.69,
-            "diff": 13960.93,
-            "delta_shares": -2.4264,
+            "before_value": 556852.2,
+            "target_value": 541656.64,
+            "diff": 15195.56,
+            "delta_shares": -2.641,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 306456.17,
-            "target_value": 308200.84,
-            "diff": -1744.67,
-            "delta_shares": 0.0886,
+            "before_value": 270804.57,
+            "target_value": 270828.32,
+            "diff": -23.75,
+            "delta_shares": 0.0012,
             "action": "买入"
           }
         ]
@@ -651,28 +651,28 @@
         "date": "2024-12-23",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 726559.25,
-            "target_value": 718937.83,
-            "diff": 7621.42,
-            "delta_shares": -1.3138,
-            "action": "卖出"
+            "name": "中证红利低波",
+            "before_value": 574319.95,
+            "target_value": 607612.49,
+            "diff": -33292.55,
+            "delta_shares": 3.0215,
+            "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 724229.11,
-            "target_value": 718937.83,
-            "diff": 5291.28,
-            "delta_shares": -0.806,
+            "before_value": 638947.46,
+            "target_value": 607612.49,
+            "diff": 31334.97,
+            "delta_shares": -4.7732,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 346556.22,
-            "target_value": 359468.91,
-            "diff": -12912.7,
-            "delta_shares": 0.6005,
-            "action": "买入"
+            "before_value": 305763.83,
+            "target_value": 303806.25,
+            "diff": 1957.58,
+            "delta_shares": -0.091,
+            "action": "卖出"
           }
         ]
       },
@@ -680,27 +680,27 @@
         "date": "2025-06-23",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 779564.05,
-            "target_value": 773540.45,
-            "diff": 6023.59,
-            "delta_shares": -0.9831,
+            "name": "中证红利低波",
+            "before_value": 662048.97,
+            "target_value": 656906.35,
+            "diff": 5142.62,
+            "delta_shares": -0.4418,
             "action": "卖出"
           },
           {
             "name": "价值100",
-            "before_value": 778682.07,
-            "target_value": 773540.45,
-            "diff": 5141.62,
-            "delta_shares": -0.7421,
+            "before_value": 661188.75,
+            "target_value": 656906.35,
+            "diff": 4282.4,
+            "delta_shares": -0.6181,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 375605.01,
-            "target_value": 386770.23,
-            "diff": -11165.21,
-            "delta_shares": 0.5108,
+            "before_value": 319028.16,
+            "target_value": 328453.18,
+            "diff": -9425.01,
+            "delta_shares": 0.4312,
             "action": "买入"
           }
         ]
@@ -709,27 +709,27 @@
         "date": "2025-12-22",
         "details": [
           {
-            "name": "红利低波",
-            "before_value": 797205.03,
-            "target_value": 856923.65,
-            "diff": -59718.62,
-            "delta_shares": 9.6897,
+            "name": "中证红利低波",
+            "before_value": 652218.93,
+            "target_value": 719618.49,
+            "diff": -67399.56,
+            "delta_shares": 6.0052,
             "action": "买入"
           },
           {
             "name": "价值100",
-            "before_value": 884468.05,
-            "target_value": 856923.65,
-            "diff": 27544.4,
-            "delta_shares": -3.5575,
+            "before_value": 754128.15,
+            "target_value": 719618.49,
+            "diff": 34509.66,
+            "delta_shares": -4.457,
             "action": "卖出"
           },
           {
             "name": "纳指100",
-            "before_value": 460636.05,
-            "target_value": 428461.83,
-            "diff": 32174.22,
-            "delta_shares": -1.2636,
+            "before_value": 392699.15,
+            "target_value": 359809.24,
+            "diff": 32889.9,
+            "delta_shares": -1.2917,
             "action": "卖出"
           }
         ]
@@ -749,978 +749,978 @@
     {
       "ym": "2016-03",
       "date": "2016-03-21",
-      "value": 16398.59,
+      "value": 16386.35,
       "invested": 16000.0,
-      "pnl_pct": 2.49,
+      "pnl_pct": 2.41,
       "dd": 0.0
     },
     {
       "ym": "2016-04",
       "date": "2016-04-21",
-      "value": 24221.96,
+      "value": 24231.89,
       "invested": 24000.0,
-      "pnl_pct": 0.92,
+      "pnl_pct": 0.97,
       "dd": 0.0
     },
     {
       "ym": "2016-05",
       "date": "2016-05-23",
-      "value": 31857.82,
+      "value": 31847.74,
       "invested": 32000.0,
-      "pnl_pct": -0.44,
+      "pnl_pct": -0.48,
       "dd": 0.0
     },
     {
       "ym": "2016-06",
       "date": "2016-06-21",
-      "value": 40455.12,
+      "value": 40375.33,
       "invested": 40000.0,
-      "pnl_pct": 1.14,
-      "dd": 0.0
+      "pnl_pct": 0.94,
+      "dd": -0.0
     },
     {
       "ym": "2016-07",
       "date": "2016-07-21",
-      "value": 51098.98,
+      "value": 50305.84,
       "invested": 48000.0,
-      "pnl_pct": 6.46,
+      "pnl_pct": 4.8,
       "dd": 0.0
     },
     {
       "ym": "2016-08",
       "date": "2016-08-22",
-      "value": 61169.79,
+      "value": 60692.95,
       "invested": 56000.0,
-      "pnl_pct": 9.23,
-      "dd": 0.0
+      "pnl_pct": 8.38,
+      "dd": -0.0
     },
     {
       "ym": "2016-09",
       "date": "2016-09-21",
-      "value": 68620.82,
+      "value": 68102.99,
       "invested": 64000.0,
-      "pnl_pct": 7.22,
-      "dd": 0.0
+      "pnl_pct": 6.41,
+      "dd": -0.0
     },
     {
       "ym": "2016-10",
       "date": "2016-10-21",
-      "value": 78396.06,
+      "value": 78037.72,
       "invested": 72000.0,
-      "pnl_pct": 8.88,
-      "dd": 0.0
+      "pnl_pct": 8.39,
+      "dd": -0.0
     },
     {
       "ym": "2016-11",
       "date": "2016-11-21",
-      "value": 88481.15,
+      "value": 88142.44,
       "invested": 80000.0,
-      "pnl_pct": 10.6,
+      "pnl_pct": 10.18,
       "dd": 0.0
     },
     {
       "ym": "2016-12",
       "date": "2016-12-21",
-      "value": 96045.73,
+      "value": 95798.44,
       "invested": 88000.0,
-      "pnl_pct": 9.14,
+      "pnl_pct": 8.86,
       "dd": 0.0
     },
     {
       "ym": "2017-01",
       "date": "2017-01-23",
-      "value": 106307.25,
+      "value": 105876.0,
       "invested": 96000.0,
-      "pnl_pct": 10.74,
-      "dd": 0.0
+      "pnl_pct": 10.29,
+      "dd": -0.0
     },
     {
       "ym": "2017-02",
       "date": "2017-02-21",
-      "value": 119438.64,
+      "value": 118610.5,
       "invested": 104000.0,
-      "pnl_pct": 14.84,
+      "pnl_pct": 14.05,
       "dd": 0.0
     },
     {
       "ym": "2017-03",
       "date": "2017-03-21",
-      "value": 128773.44,
+      "value": 127705.2,
       "invested": 112000.0,
-      "pnl_pct": 14.98,
+      "pnl_pct": 14.02,
       "dd": 0.0
     },
     {
       "ym": "2017-04",
       "date": "2017-04-21",
-      "value": 139770.07,
+      "value": 139642.65,
       "invested": 120000.0,
-      "pnl_pct": 16.48,
+      "pnl_pct": 16.37,
       "dd": 0.0
     },
     {
       "ym": "2017-05",
       "date": "2017-05-22",
-      "value": 148780.27,
+      "value": 148877.62,
       "invested": 128000.0,
-      "pnl_pct": 16.23,
+      "pnl_pct": 16.31,
       "dd": 0.0
     },
     {
       "ym": "2017-06",
       "date": "2017-06-21",
-      "value": 165800.85,
+      "value": 164605.82,
       "invested": 136000.0,
-      "pnl_pct": 21.91,
+      "pnl_pct": 21.03,
       "dd": 0.0
     },
     {
       "ym": "2017-07",
       "date": "2017-07-21",
-      "value": 182553.6,
+      "value": 179084.46,
       "invested": 144000.0,
-      "pnl_pct": 26.77,
-      "dd": 0.0
+      "pnl_pct": 24.36,
+      "dd": -0.0
     },
     {
       "ym": "2017-08",
       "date": "2017-08-21",
-      "value": 188927.44,
+      "value": 184287.01,
       "invested": 152000.0,
-      "pnl_pct": 24.29,
+      "pnl_pct": 21.24,
       "dd": 0.0
     },
     {
       "ym": "2017-09",
       "date": "2017-09-21",
-      "value": 202220.94,
+      "value": 196030.4,
       "invested": 160000.0,
-      "pnl_pct": 26.39,
-      "dd": 0.0
+      "pnl_pct": 22.52,
+      "dd": -0.0
     },
     {
       "ym": "2017-10",
       "date": "2017-10-23",
-      "value": 215841.17,
+      "value": 209774.97,
       "invested": 168000.0,
-      "pnl_pct": 28.48,
+      "pnl_pct": 24.87,
       "dd": 0.0
     },
     {
       "ym": "2017-11",
       "date": "2017-11-21",
-      "value": 238579.51,
+      "value": 229774.68,
       "invested": 176000.0,
-      "pnl_pct": 35.56,
-      "dd": 0.0
+      "pnl_pct": 30.55,
+      "dd": -0.0
     },
     {
       "ym": "2017-12",
       "date": "2017-12-21",
-      "value": 241080.83,
+      "value": 232013.23,
       "invested": 184000.0,
-      "pnl_pct": 31.02,
+      "pnl_pct": 26.09,
       "dd": 0.0
     },
     {
       "ym": "2018-01",
       "date": "2018-01-22",
-      "value": 272010.44,
+      "value": 263222.91,
       "invested": 192000.0,
-      "pnl_pct": 41.67,
-      "dd": 0.0
+      "pnl_pct": 37.1,
+      "dd": -0.0
     },
     {
       "ym": "2018-02",
       "date": "2018-02-22",
-      "value": 268758.25,
+      "value": 258358.12,
       "invested": 200000.0,
-      "pnl_pct": 34.38,
-      "dd": -1.2
+      "pnl_pct": 29.18,
+      "dd": -1.85
     },
     {
       "ym": "2018-03",
       "date": "2018-03-21",
-      "value": 273763.18,
+      "value": 263595.94,
       "invested": 208000.0,
-      "pnl_pct": 31.62,
+      "pnl_pct": 26.73,
       "dd": 0.0
     },
     {
       "ym": "2018-04",
       "date": "2018-04-23",
-      "value": 266730.69,
+      "value": 256431.25,
       "invested": 216000.0,
-      "pnl_pct": 23.49,
-      "dd": -2.57
+      "pnl_pct": 18.72,
+      "dd": -2.72
     },
     {
       "ym": "2018-05",
       "date": "2018-05-21",
-      "value": 287279.87,
+      "value": 276805.95,
       "invested": 224000.0,
-      "pnl_pct": 28.25,
+      "pnl_pct": 23.57,
       "dd": 0.0
     },
     {
       "ym": "2018-06",
       "date": "2018-06-21",
-      "value": 289165.82,
+      "value": 277237.7,
       "invested": 232000.0,
-      "pnl_pct": 24.64,
+      "pnl_pct": 19.5,
       "dd": 0.0
     },
     {
       "ym": "2018-07",
       "date": "2018-07-23",
-      "value": 293829.23,
+      "value": 277108.61,
       "invested": 240000.0,
-      "pnl_pct": 22.43,
-      "dd": 0.0
+      "pnl_pct": 15.46,
+      "dd": -0.05
     },
     {
       "ym": "2018-08",
       "date": "2018-08-21",
-      "value": 292100.83,
+      "value": 275251.62,
       "invested": 248000.0,
-      "pnl_pct": 17.78,
-      "dd": -0.59
+      "pnl_pct": 10.99,
+      "dd": -0.72
     },
     {
       "ym": "2018-09",
       "date": "2018-09-21",
-      "value": 306674.19,
+      "value": 291143.99,
       "invested": 256000.0,
-      "pnl_pct": 19.79,
-      "dd": 0.0
+      "pnl_pct": 13.73,
+      "dd": -0.0
     },
     {
       "ym": "2018-10",
       "date": "2018-10-22",
-      "value": 301437.95,
+      "value": 284460.92,
       "invested": 264000.0,
-      "pnl_pct": 14.18,
-      "dd": -1.71
+      "pnl_pct": 7.75,
+      "dd": -2.3
     },
     {
       "ym": "2018-11",
       "date": "2018-11-21",
-      "value": 301159.32,
+      "value": 285655.36,
       "invested": 272000.0,
-      "pnl_pct": 10.72,
-      "dd": -1.8
+      "pnl_pct": 5.02,
+      "dd": -1.89
     },
     {
       "ym": "2018-12",
       "date": "2018-12-21",
-      "value": 296595.88,
+      "value": 283146.33,
       "invested": 280000.0,
-      "pnl_pct": 5.93,
-      "dd": -3.29
+      "pnl_pct": 1.12,
+      "dd": -2.75
     },
     {
       "ym": "2019-01",
       "date": "2019-01-21",
-      "value": 319599.48,
+      "value": 304840.18,
       "invested": 288000.0,
-      "pnl_pct": 10.97,
-      "dd": 0.0
+      "pnl_pct": 5.85,
+      "dd": -0.0
     },
     {
       "ym": "2019-02",
       "date": "2019-02-21",
-      "value": 347315.32,
+      "value": 329956.51,
       "invested": 296000.0,
-      "pnl_pct": 17.34,
-      "dd": 0.0
+      "pnl_pct": 11.47,
+      "dd": -0.0
     },
     {
       "ym": "2019-03",
       "date": "2019-03-21",
-      "value": 388753.34,
+      "value": 369925.15,
       "invested": 304000.0,
-      "pnl_pct": 27.88,
-      "dd": 0.0
+      "pnl_pct": 21.69,
+      "dd": -0.0
     },
     {
       "ym": "2019-04",
       "date": "2019-04-22",
-      "value": 413989.8,
+      "value": 390847.3,
       "invested": 312000.0,
-      "pnl_pct": 32.69,
+      "pnl_pct": 25.27,
       "dd": 0.0
     },
     {
       "ym": "2019-05",
       "date": "2019-05-21",
-      "value": 390657.77,
+      "value": 367839.37,
       "invested": 320000.0,
-      "pnl_pct": 22.08,
-      "dd": -5.64
+      "pnl_pct": 14.95,
+      "dd": -5.89
     },
     {
       "ym": "2019-06",
       "date": "2019-06-21",
-      "value": 410174.38,
+      "value": 385187.45,
       "invested": 328000.0,
-      "pnl_pct": 25.05,
-      "dd": -0.92
+      "pnl_pct": 17.44,
+      "dd": -1.45
     },
     {
       "ym": "2019-07",
       "date": "2019-07-22",
-      "value": 416005.32,
+      "value": 389601.28,
       "invested": 336000.0,
-      "pnl_pct": 23.81,
-      "dd": 0.0
+      "pnl_pct": 15.95,
+      "dd": -0.32
     },
     {
       "ym": "2019-08",
       "date": "2019-08-21",
-      "value": 416614.91,
+      "value": 388178.68,
       "invested": 344000.0,
-      "pnl_pct": 21.11,
-      "dd": 0.0
+      "pnl_pct": 12.84,
+      "dd": -0.68
     },
     {
       "ym": "2019-09",
       "date": "2019-09-23",
-      "value": 431601.37,
+      "value": 401013.36,
       "invested": 352000.0,
-      "pnl_pct": 22.61,
-      "dd": 0.0
+      "pnl_pct": 13.92,
+      "dd": -0.0
     },
     {
       "ym": "2019-10",
       "date": "2019-10-21",
-      "value": 439819.0,
+      "value": 410961.61,
       "invested": 360000.0,
-      "pnl_pct": 22.17,
+      "pnl_pct": 14.16,
       "dd": 0.0
     },
     {
       "ym": "2019-11",
       "date": "2019-11-21",
-      "value": 450822.88,
+      "value": 420249.45,
       "invested": 368000.0,
-      "pnl_pct": 22.51,
-      "dd": 0.0
+      "pnl_pct": 14.2,
+      "dd": -0.0
     },
     {
       "ym": "2019-12",
       "date": "2019-12-23",
-      "value": 477974.18,
+      "value": 447122.51,
       "invested": 376000.0,
-      "pnl_pct": 27.12,
+      "pnl_pct": 18.92,
       "dd": 0.0
     },
     {
       "ym": "2020-01",
       "date": "2020-01-21",
-      "value": 499828.58,
+      "value": 464433.74,
       "invested": 384000.0,
-      "pnl_pct": 30.16,
+      "pnl_pct": 20.95,
       "dd": 0.0
     },
     {
       "ym": "2020-02",
       "date": "2020-02-21",
-      "value": 503413.86,
+      "value": 465615.57,
       "invested": 392000.0,
-      "pnl_pct": 28.42,
+      "pnl_pct": 18.78,
       "dd": 0.0
     },
     {
       "ym": "2020-03",
       "date": "2020-03-23",
-      "value": 433720.12,
+      "value": 402949.29,
       "invested": 400000.0,
-      "pnl_pct": 8.43,
-      "dd": -13.84
+      "pnl_pct": 0.74,
+      "dd": -13.46
     },
     {
       "ym": "2020-04",
       "date": "2020-04-21",
-      "value": 478761.17,
+      "value": 445310.18,
       "invested": 408000.0,
-      "pnl_pct": 17.34,
-      "dd": -4.9
+      "pnl_pct": 9.14,
+      "dd": -4.36
     },
     {
       "ym": "2020-05",
       "date": "2020-05-21",
-      "value": 502417.78,
+      "value": 467455.98,
       "invested": 416000.0,
-      "pnl_pct": 20.77,
-      "dd": -0.2
+      "pnl_pct": 12.37,
+      "dd": -0.0
     },
     {
       "ym": "2020-06",
       "date": "2020-06-22",
-      "value": 529611.3,
+      "value": 488226.34,
       "invested": 424000.0,
-      "pnl_pct": 24.91,
-      "dd": 0.0
+      "pnl_pct": 15.15,
+      "dd": -0.0
     },
     {
       "ym": "2020-07",
       "date": "2020-07-21",
-      "value": 605893.11,
+      "value": 555640.02,
       "invested": 432000.0,
-      "pnl_pct": 40.25,
+      "pnl_pct": 28.62,
       "dd": 0.0
     },
     {
       "ym": "2020-08",
       "date": "2020-08-21",
-      "value": 625879.47,
+      "value": 577895.22,
       "invested": 440000.0,
-      "pnl_pct": 42.25,
-      "dd": 0.0
+      "pnl_pct": 31.34,
+      "dd": -0.0
     },
     {
       "ym": "2020-09",
       "date": "2020-09-21",
-      "value": 628291.86,
+      "value": 576378.0,
       "invested": 448000.0,
-      "pnl_pct": 40.24,
-      "dd": 0.0
+      "pnl_pct": 28.66,
+      "dd": -0.26
     },
     {
       "ym": "2020-10",
       "date": "2020-10-21",
-      "value": 641246.5,
+      "value": 584061.81,
       "invested": 456000.0,
-      "pnl_pct": 40.62,
+      "pnl_pct": 28.08,
       "dd": 0.0
     },
     {
       "ym": "2020-11",
       "date": "2020-11-23",
-      "value": 687399.66,
+      "value": 634357.17,
       "invested": 464000.0,
-      "pnl_pct": 48.15,
-      "dd": 0.0
+      "pnl_pct": 36.71,
+      "dd": -0.0
     },
     {
       "ym": "2020-12",
       "date": "2020-12-21",
-      "value": 680503.31,
+      "value": 622980.95,
       "invested": 472000.0,
-      "pnl_pct": 44.17,
-      "dd": -1.0
+      "pnl_pct": 31.99,
+      "dd": -1.79
     },
     {
       "ym": "2021-01",
       "date": "2021-01-21",
-      "value": 700197.61,
+      "value": 633776.49,
       "invested": 480000.0,
-      "pnl_pct": 45.87,
-      "dd": 0.0
+      "pnl_pct": 32.04,
+      "dd": -0.09
     },
     {
       "ym": "2021-02",
       "date": "2021-02-22",
-      "value": 727294.89,
+      "value": 657445.28,
       "invested": 488000.0,
-      "pnl_pct": 49.04,
+      "pnl_pct": 34.72,
       "dd": 0.0
     },
     {
       "ym": "2021-03",
       "date": "2021-03-22",
-      "value": 740092.26,
+      "value": 673750.59,
       "invested": 496000.0,
-      "pnl_pct": 49.21,
+      "pnl_pct": 35.84,
       "dd": 0.0
     },
     {
       "ym": "2021-04",
       "date": "2021-04-21",
-      "value": 754873.11,
+      "value": 692830.68,
       "invested": 504000.0,
-      "pnl_pct": 49.78,
+      "pnl_pct": 37.47,
       "dd": 0.0
     },
     {
       "ym": "2021-05",
       "date": "2021-05-21",
-      "value": 754923.49,
+      "value": 695994.38,
       "invested": 512000.0,
-      "pnl_pct": 47.45,
-      "dd": 0.0
+      "pnl_pct": 35.94,
+      "dd": -0.0
     },
     {
       "ym": "2021-06",
       "date": "2021-06-21",
-      "value": 765697.9,
+      "value": 704484.63,
       "invested": 520000.0,
-      "pnl_pct": 47.25,
-      "dd": 0.0
+      "pnl_pct": 35.48,
+      "dd": -0.0
     },
     {
       "ym": "2021-07",
       "date": "2021-07-21",
-      "value": 785109.97,
+      "value": 714754.47,
       "invested": 528000.0,
-      "pnl_pct": 48.7,
-      "dd": 0.0
+      "pnl_pct": 35.37,
+      "dd": -0.0
     },
     {
       "ym": "2021-08",
       "date": "2021-08-23",
-      "value": 810573.04,
+      "value": 732323.87,
       "invested": 536000.0,
-      "pnl_pct": 51.23,
-      "dd": 0.0
+      "pnl_pct": 36.63,
+      "dd": -0.0
     },
     {
       "ym": "2021-09",
       "date": "2021-09-22",
-      "value": 921905.06,
+      "value": 838815.01,
       "invested": 544000.0,
-      "pnl_pct": 69.47,
+      "pnl_pct": 54.19,
       "dd": 0.0
     },
     {
       "ym": "2021-10",
       "date": "2021-10-21",
-      "value": 883119.75,
+      "value": 802279.67,
       "invested": 552000.0,
-      "pnl_pct": 59.99,
-      "dd": -4.21
+      "pnl_pct": 45.34,
+      "dd": -4.36
     },
     {
       "ym": "2021-11",
       "date": "2021-11-22",
-      "value": 854845.04,
+      "value": 766449.22,
       "invested": 560000.0,
-      "pnl_pct": 52.65,
-      "dd": -7.27
+      "pnl_pct": 36.87,
+      "dd": -8.63
     },
     {
       "ym": "2021-12",
       "date": "2021-12-21",
-      "value": 905902.94,
+      "value": 817254.25,
       "invested": 568000.0,
-      "pnl_pct": 59.49,
-      "dd": -1.74
+      "pnl_pct": 43.88,
+      "dd": -2.57
     },
     {
       "ym": "2022-01",
       "date": "2022-01-21",
-      "value": 917842.78,
+      "value": 830134.47,
       "invested": 576000.0,
-      "pnl_pct": 59.35,
-      "dd": -0.44
+      "pnl_pct": 44.12,
+      "dd": -1.03
     },
     {
       "ym": "2022-02",
       "date": "2022-02-21",
-      "value": 940314.54,
+      "value": 855010.76,
       "invested": 584000.0,
-      "pnl_pct": 61.01,
+      "pnl_pct": 46.41,
       "dd": 0.0
     },
     {
       "ym": "2022-03",
       "date": "2022-03-21",
-      "value": 905159.38,
+      "value": 817365.45,
       "invested": 592000.0,
-      "pnl_pct": 52.9,
-      "dd": -3.74
+      "pnl_pct": 38.07,
+      "dd": -4.4
     },
     {
       "ym": "2022-04",
       "date": "2022-04-21",
-      "value": 913312.4,
+      "value": 836804.95,
       "invested": 600000.0,
-      "pnl_pct": 52.22,
-      "dd": -2.87
+      "pnl_pct": 39.47,
+      "dd": -2.13
     },
     {
       "ym": "2022-05",
       "date": "2022-05-23",
-      "value": 917608.62,
+      "value": 838847.99,
       "invested": 608000.0,
-      "pnl_pct": 50.92,
-      "dd": -2.41
+      "pnl_pct": 37.97,
+      "dd": -1.89
     },
     {
       "ym": "2022-06",
       "date": "2022-06-21",
-      "value": 926260.38,
+      "value": 838951.28,
       "invested": 616000.0,
-      "pnl_pct": 50.37,
-      "dd": -1.49
+      "pnl_pct": 36.19,
+      "dd": -1.88
     },
     {
       "ym": "2022-07",
       "date": "2022-07-21",
-      "value": 938619.06,
+      "value": 836423.78,
       "invested": 624000.0,
-      "pnl_pct": 50.42,
-      "dd": -0.18
+      "pnl_pct": 34.04,
+      "dd": -2.17
     },
     {
       "ym": "2022-08",
       "date": "2022-08-22",
-      "value": 957517.38,
+      "value": 862890.0,
       "invested": 632000.0,
-      "pnl_pct": 51.51,
-      "dd": 0.0
+      "pnl_pct": 36.53,
+      "dd": -0.0
     },
     {
       "ym": "2022-09",
       "date": "2022-09-21",
-      "value": 949868.8,
+      "value": 865355.58,
       "invested": 640000.0,
-      "pnl_pct": 48.42,
-      "dd": -0.8
+      "pnl_pct": 35.21,
+      "dd": 0.0
     },
     {
       "ym": "2022-10",
       "date": "2022-10-21",
-      "value": 934641.48,
+      "value": 845981.37,
       "invested": 648000.0,
-      "pnl_pct": 44.23,
-      "dd": -2.39
+      "pnl_pct": 30.55,
+      "dd": -2.24
     },
     {
       "ym": "2022-11",
       "date": "2022-11-21",
-      "value": 944441.54,
+      "value": 844217.73,
       "invested": 656000.0,
-      "pnl_pct": 43.97,
-      "dd": -1.37
+      "pnl_pct": 28.69,
+      "dd": -2.44
     },
     {
       "ym": "2022-12",
       "date": "2022-12-21",
-      "value": 961578.38,
+      "value": 859618.99,
       "invested": 664000.0,
-      "pnl_pct": 44.82,
-      "dd": 0.0
+      "pnl_pct": 29.46,
+      "dd": -0.66
     },
     {
       "ym": "2023-01",
       "date": "2023-01-30",
-      "value": 1022330.22,
+      "value": 912647.88,
       "invested": 672000.0,
-      "pnl_pct": 52.13,
-      "dd": 0.0
+      "pnl_pct": 35.81,
+      "dd": -0.0
     },
     {
       "ym": "2023-02",
       "date": "2023-02-21",
-      "value": 1056187.38,
+      "value": 951839.84,
       "invested": 680000.0,
-      "pnl_pct": 55.32,
+      "pnl_pct": 39.98,
       "dd": 0.0
     },
     {
       "ym": "2023-03",
       "date": "2023-03-21",
-      "value": 1085963.92,
+      "value": 975057.03,
       "invested": 688000.0,
-      "pnl_pct": 57.84,
-      "dd": 0.0
+      "pnl_pct": 41.72,
+      "dd": -0.0
     },
     {
       "ym": "2023-04",
       "date": "2023-04-21",
-      "value": 1144732.65,
+      "value": 1027023.53,
       "invested": 696000.0,
-      "pnl_pct": 64.47,
+      "pnl_pct": 47.56,
       "dd": 0.0
     },
     {
       "ym": "2023-05",
       "date": "2023-05-22",
-      "value": 1186134.53,
+      "value": 1054166.71,
       "invested": 704000.0,
-      "pnl_pct": 68.49,
+      "pnl_pct": 49.74,
       "dd": 0.0
     },
     {
       "ym": "2023-06",
       "date": "2023-06-21",
-      "value": 1181316.38,
+      "value": 1042345.03,
       "invested": 712000.0,
-      "pnl_pct": 65.92,
-      "dd": -0.41
+      "pnl_pct": 46.4,
+      "dd": -1.12
     },
     {
       "ym": "2023-07",
       "date": "2023-07-21",
-      "value": 1227731.17,
+      "value": 1072320.09,
       "invested": 720000.0,
-      "pnl_pct": 70.52,
+      "pnl_pct": 48.93,
       "dd": 0.0
     },
     {
       "ym": "2023-08",
       "date": "2023-08-21",
-      "value": 1223799.9,
+      "value": 1066871.16,
       "invested": 728000.0,
-      "pnl_pct": 68.1,
-      "dd": -0.32
+      "pnl_pct": 46.55,
+      "dd": -0.51
     },
     {
       "ym": "2023-09",
       "date": "2023-09-21",
-      "value": 1253542.22,
+      "value": 1099395.44,
       "invested": 736000.0,
-      "pnl_pct": 70.32,
-      "dd": 0.0
+      "pnl_pct": 49.37,
+      "dd": -0.0
     },
     {
       "ym": "2023-10",
       "date": "2023-10-23",
-      "value": 1209286.59,
+      "value": 1063034.32,
       "invested": 744000.0,
-      "pnl_pct": 62.54,
-      "dd": -3.53
+      "pnl_pct": 42.88,
+      "dd": -3.31
     },
     {
       "ym": "2023-11",
       "date": "2023-11-21",
-      "value": 1251816.04,
+      "value": 1102020.45,
       "invested": 752000.0,
-      "pnl_pct": 66.46,
-      "dd": -0.14
+      "pnl_pct": 46.55,
+      "dd": -0.0
     },
     {
       "ym": "2023-12",
       "date": "2023-12-21",
-      "value": 1258894.76,
+      "value": 1107266.51,
       "invested": 760000.0,
-      "pnl_pct": 65.64,
+      "pnl_pct": 45.69,
       "dd": 0.0
     },
     {
       "ym": "2024-01",
       "date": "2024-01-22",
-      "value": 1271678.71,
+      "value": 1119706.12,
       "invested": 768000.0,
-      "pnl_pct": 65.58,
-      "dd": 0.0
+      "pnl_pct": 45.8,
+      "dd": -0.0
     },
     {
       "ym": "2024-02",
       "date": "2024-02-21",
-      "value": 1412387.74,
+      "value": 1249873.4,
       "invested": 776000.0,
-      "pnl_pct": 82.01,
+      "pnl_pct": 61.07,
       "dd": 0.0
     },
     {
       "ym": "2024-03",
       "date": "2024-03-21",
-      "value": 1437013.03,
+      "value": 1269402.15,
       "invested": 784000.0,
-      "pnl_pct": 83.29,
-      "dd": 0.0
+      "pnl_pct": 61.91,
+      "dd": -0.0
     },
     {
       "ym": "2024-04",
       "date": "2024-04-22",
-      "value": 1483016.37,
+      "value": 1315734.11,
       "invested": 792000.0,
-      "pnl_pct": 87.25,
+      "pnl_pct": 66.13,
       "dd": 0.0
     },
     {
       "ym": "2024-05",
       "date": "2024-05-21",
-      "value": 1569154.6,
+      "value": 1390224.26,
       "invested": 800000.0,
-      "pnl_pct": 96.14,
+      "pnl_pct": 73.78,
       "dd": 0.0
     },
     {
       "ym": "2024-06",
       "date": "2024-06-21",
-      "value": 1541004.22,
+      "value": 1354141.61,
       "invested": 808000.0,
-      "pnl_pct": 90.72,
-      "dd": -1.79
+      "pnl_pct": 67.59,
+      "dd": -2.6
     },
     {
       "ym": "2024-07",
       "date": "2024-07-22",
-      "value": 1551671.58,
+      "value": 1329780.52,
       "invested": 816000.0,
-      "pnl_pct": 90.16,
-      "dd": -1.11
+      "pnl_pct": 62.96,
+      "dd": -4.35
     },
     {
       "ym": "2024-08",
       "date": "2024-08-21",
-      "value": 1549804.93,
+      "value": 1318705.93,
       "invested": 824000.0,
-      "pnl_pct": 88.08,
-      "dd": -1.23
+      "pnl_pct": 60.04,
+      "dd": -5.14
     },
     {
       "ym": "2024-09",
       "date": "2024-09-23",
-      "value": 1532523.41,
+      "value": 1308186.7,
       "invested": 832000.0,
-      "pnl_pct": 84.2,
-      "dd": -2.33
+      "pnl_pct": 57.23,
+      "dd": -5.9
     },
     {
       "ym": "2024-10",
       "date": "2024-10-21",
-      "value": 1731483.37,
+      "value": 1476080.3,
       "invested": 840000.0,
-      "pnl_pct": 106.13,
-      "dd": 0.0
+      "pnl_pct": 75.72,
+      "dd": -0.0
     },
     {
       "ym": "2024-11",
       "date": "2024-11-21",
-      "value": 1756674.87,
+      "value": 1488840.8,
       "invested": 848000.0,
-      "pnl_pct": 107.16,
-      "dd": 0.0
+      "pnl_pct": 75.57,
+      "dd": -0.0
     },
     {
       "ym": "2024-12",
       "date": "2024-12-23",
-      "value": 1797344.57,
+      "value": 1519031.23,
       "invested": 856000.0,
-      "pnl_pct": 109.97,
+      "pnl_pct": 77.46,
       "dd": 0.0
     },
     {
       "ym": "2025-01",
       "date": "2025-01-21",
-      "value": 1784563.02,
+      "value": 1507608.49,
       "invested": 864000.0,
-      "pnl_pct": 106.55,
-      "dd": -0.71
+      "pnl_pct": 74.49,
+      "dd": -0.75
     },
     {
       "ym": "2025-02",
       "date": "2025-02-21",
-      "value": 1785191.46,
+      "value": 1511551.19,
       "invested": 872000.0,
-      "pnl_pct": 104.72,
-      "dd": -0.68
+      "pnl_pct": 73.34,
+      "dd": -0.49
     },
     {
       "ym": "2025-03",
       "date": "2025-03-21",
-      "value": 1795738.52,
+      "value": 1526354.96,
       "invested": 880000.0,
-      "pnl_pct": 104.06,
-      "dd": -0.09
+      "pnl_pct": 73.45,
+      "dd": -0.0
     },
     {
       "ym": "2025-04",
       "date": "2025-04-21",
-      "value": 1765096.43,
+      "value": 1502384.91,
       "invested": 888000.0,
-      "pnl_pct": 98.77,
-      "dd": -1.79
+      "pnl_pct": 69.19,
+      "dd": -1.57
     },
     {
       "ym": "2025-05",
       "date": "2025-05-21",
-      "value": 1894566.75,
+      "value": 1606717.71,
       "invested": 896000.0,
-      "pnl_pct": 111.45,
+      "pnl_pct": 79.32,
       "dd": 0.0
     },
     {
       "ym": "2025-06",
       "date": "2025-06-23",
-      "value": 1933851.13,
+      "value": 1642265.89,
       "invested": 904000.0,
-      "pnl_pct": 113.92,
-      "dd": 0.0
+      "pnl_pct": 81.67,
+      "dd": -0.0
     },
     {
       "ym": "2025-07",
       "date": "2025-07-21",
-      "value": 2024260.61,
+      "value": 1709926.81,
       "invested": 912000.0,
-      "pnl_pct": 121.96,
+      "pnl_pct": 87.49,
       "dd": 0.0
     },
     {
       "ym": "2025-08",
       "date": "2025-08-21",
-      "value": 2041949.99,
+      "value": 1722845.01,
       "invested": 920000.0,
-      "pnl_pct": 121.95,
+      "pnl_pct": 87.27,
       "dd": 0.0
     },
     {
       "ym": "2025-09",
       "date": "2025-09-22",
-      "value": 2011495.71,
+      "value": 1700006.24,
       "invested": 928000.0,
-      "pnl_pct": 116.76,
-      "dd": -1.49
+      "pnl_pct": 83.19,
+      "dd": -1.33
     },
     {
       "ym": "2025-10",
       "date": "2025-10-21",
-      "value": 2087460.05,
+      "value": 1757305.21,
       "invested": 936000.0,
-      "pnl_pct": 123.02,
-      "dd": 0.0
+      "pnl_pct": 87.75,
+      "dd": -0.0
     },
     {
       "ym": "2025-11",
       "date": "2025-11-21",
-      "value": 2112069.34,
+      "value": 1784612.31,
       "invested": 944000.0,
-      "pnl_pct": 123.74,
+      "pnl_pct": 89.05,
       "dd": 0.0
     },
     {
       "ym": "2025-12",
       "date": "2025-12-22",
-      "value": 2142309.13,
+      "value": 1799046.22,
       "invested": 952000.0,
-      "pnl_pct": 125.03,
+      "pnl_pct": 88.98,
       "dd": 0.0
     },
     {
       "ym": "2026-01",
       "date": "2026-01-21",
-      "value": 2180763.49,
+      "value": 1826048.82,
       "invested": 960000.0,
-      "pnl_pct": 127.16,
+      "pnl_pct": 90.21,
       "dd": 0.0
     },
     {
       "ym": "2026-02",
       "date": "2026-02-24",
-      "value": 2242520.73,
+      "value": 1877524.66,
       "invested": 968000.0,
-      "pnl_pct": 131.67,
-      "dd": 0.0
+      "pnl_pct": 93.96,
+      "dd": -0.0
     },
     {
       "ym": "2026-03",
       "date": "2026-03-23",
-      "value": 2184304.65,
+      "value": 1843402.34,
       "invested": 976000.0,
-      "pnl_pct": 123.8,
-      "dd": -2.6
+      "pnl_pct": 88.87,
+      "dd": -1.82
     },
     {
       "ym": "2026-04",
       "date": "2026-04-21",
-      "value": 2274524.02,
+      "value": 1924339.19,
       "invested": 984000.0,
-      "pnl_pct": 131.15,
-      "dd": 0.0
+      "pnl_pct": 95.56,
+      "dd": -0.0
     }
   ]
 }

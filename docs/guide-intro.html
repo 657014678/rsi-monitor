@@ -32,22 +32,22 @@
           <th>收益率</th>
         </tr>
         <tr>
-          <td class="td-bright">红利低波</td>
-          <td id="item1-invested"></td>
-          <td id="item1-value" class="td-green"></td>
-          <td id="item1-return" class="td-green"></td>
+          <td class="td-bright" data-label="标的">红利低波</td>
+          <td id="item1-invested" data-label="投入"></td>
+          <td id="item1-value" class="td-green" data-label="市值"></td>
+          <td id="item1-return" class="td-green" data-label="收益率"></td>
         </tr>
         <tr>
-          <td class="td-bright">价值100</td>
-          <td id="item2-invested"></td>
-          <td id="item2-value" class="td-green"></td>
-          <td id="item2-return" class="td-green"></td>
+          <td class="td-bright" data-label="标的">价值100</td>
+          <td id="item2-invested" data-label="投入"></td>
+          <td id="item2-value" class="td-green" data-label="市值"></td>
+          <td id="item2-return" class="td-green" data-label="收益率"></td>
         </tr>
         <tr>
-          <td class="td-bright">纳指100</td>
-          <td id="item3-invested"></td>
-          <td id="item3-value" class="td-green"></td>
-          <td id="item3-return" class="td-green"></td>
+          <td class="td-bright" data-label="标的">纳指100</td>
+          <td id="item3-invested" data-label="投入"></td>
+          <td id="item3-value" class="td-green" data-label="市值"></td>
+          <td id="item3-return" class="td-green" data-label="收益率"></td>
         </tr>
       </table>
     </div>
@@ -199,7 +199,7 @@
     </div>
     <div class="data-row">
       <span class="dr-label">红利低波数据</span>
-      <span class="dr-value">东证红利低波全收益(921446)</span>
+      <span class="dr-value">中证红利低波动(H30269)</span>
     </div>
     <div class="data-row">
       <span class="dr-label">价值100数据</span>
@@ -348,12 +348,12 @@ function renderAll() {
     var profitCls = annualProfit >= 0 ? 'td-green' : 'td-red';
     var ddCls = y.max_dd < 0 ? 'td-red' : '';
     tr.innerHTML =
-      '<td class="td-bright">' + y.year + '</td>' +
-      '<td>' + fmtMoney(y.invested) + '</td>' +
-      '<td>' + fmtMoney(y.value) + '</td>' +
-      '<td class="' + profitCls + '">' + fmtMoney(annualProfit) + '</td>' +
-      '<td class="' + retCls + '">' + fmtPct(annualRet) + '</td>' +
-      '<td class="' + ddCls + '">' + (y.max_dd < 0 ? fmtPct(y.max_dd) : '0.00%') + '</td>';
+      '<td class="td-bright" data-label="年份">' + y.year + '</td>' +
+      '<td data-label="投入">' + fmtMoney(y.invested) + '</td>' +
+      '<td data-label="市值">' + fmtMoney(y.value) + '</td>' +
+      '<td class="' + profitCls + '" data-label="当年收益">' + fmtMoney(annualProfit) + '</td>' +
+      '<td class="' + retCls + '" data-label="当年收益率">' + fmtPct(annualRet) + '</td>' +
+      '<td class="' + ddCls + '" data-label="年内最大回撤">' + (y.max_dd < 0 ? fmtPct(y.max_dd) : '0.00%') + '</td>';
     tbody.appendChild(tr);
   });
 
@@ -367,12 +367,12 @@ function renderAll() {
   trTotal.style.borderTop = '2px solid var(--accent)';
   trTotal.style.fontWeight = '700';
   trTotal.innerHTML =
-    '<td class="td-bright" style="font-size:13px;">📊 累计</td>' +
-    '<td>' + fmtMoney(totalInvested) + '</td>' +
-    '<td>' + fmtMoney(lastY.value) + '</td>' +
-    '<td class="td-green">' + fmtMoney(totalProfit) + '</td>' +
-    '<td class="td-green">' + fmtPct(totalRet) + '</td>' +
-    '<td class="td-red">' + fmtPct(maxDD) + '</td>';
+    '<td class="td-bright" style="font-size:13px;" data-label="年份">📊 累计</td>' +
+    '<td data-label="投入">' + fmtMoney(totalInvested) + '</td>' +
+    '<td data-label="市值">' + fmtMoney(lastY.value) + '</td>' +
+    '<td class="td-green" data-label="当年收益">' + fmtMoney(totalProfit) + '</td>' +
+    '<td class="td-green" data-label="当年收益率">' + fmtPct(totalRet) + '</td>' +
+    '<td class="td-red" data-label="年内最大回撤">' + fmtPct(maxDD) + '</td>';
   tbody.appendChild(trTotal);
 
   // ---- 关键发现动态数据 ----
