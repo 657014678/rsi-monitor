@@ -1,4 +1,4 @@
-name: Realtime Price Update (每30分钟)
+name: Realtime + Daily Update (每30分钟)
 
 on:
   schedule:
@@ -33,13 +33,22 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install akshare pandas
+          pip install akshare pandas python-dateutil
 
-      - name: Run realtime price update
-        id: update
+      # === 第一步：实时行情更新（ETF价格，轻量快速）===
+      - name: Step 1 - Realtime ETF price update
+        id: realtime
         run: |
           python update_realtime.py --no-push
         timeout-minutes: 3
+        continue-on-error: true
+
+      # === 第二步：完整数据更新（指数K线 + RSI/MA250/PE，仅在指数数据发布时产生变更）===
+      - name: Step 2 - Daily full data update (指数数据)
+        id: daily
+        run: |
+          python daily_update.py --no-push
+        timeout-minutes: 4
         continue-on-error: true
 
       - name: Check for changes
@@ -57,7 +66,7 @@ jobs:
         uses: EndBug/add-and-commit@v10
         with:
           add: 'docs/'
-          message: '🔄 实时行情更新'
+          message: '🔄 数据更新'
           default_author: github_actor
         if: steps.check_changes.outputs.changed == 'true'
 

@@ -148,43 +148,24 @@ def fetch_index_kline(config):
     """获取A股指数日K线 - 多源自动回退
     返回: (df, is_index_price, data_source)
     
-    数据源优先级（速度优先 → 更新快的优先）:
-    A.  腾讯财经ETF价格（优先）— 数据量≥250条则直接使用，收盘后很快有数据
-    B.  中证/国证官网（指数数据）— ETF数据不够时回退
-    C.  AKShare东方财富（备用）
-    D.  腾讯财经ETF价格（最后回退，不限制数据量）
+    数据源优先级（按可靠性排序）:
+    A.  中证/国证官网（直接指数数据）- 优先使用
+    B.  AKShare东方财富（备用）
+    C.  腾讯财经ETF价格（最后回退）
     """
     index_code = config['index_code']
     index_name = config['index_name']
     etf_code = config['etf_code']
     prefix = config.get('tencent_prefix')
 
-    MIN_ETF_DAYS = 250  # ETF数据至少需要250条才能替代指数
-
     # ================================================================
-    # 方案A: 腾讯财经ETF价格（优先）
-    #   更新速度快，收盘后很快有数据
-    #   数据量≥250条才使用（确保MA250计算准确）
-    # ================================================================
-    if prefix:
-        print(f"  [A] 尝试腾讯ETF数据: {prefix}{etf_code}")
-        df, _ = fetch_etf_tencent_klines(etf_code, prefix)
-        if df is not None and len(df) >= MIN_ETF_DAYS:
-            print(f"  ✓ A 腾讯ETF {etf_code}: {len(df)}条 ✅ 数据量大≥{MIN_ETF_DAYS}条，直接使用")
-            return df, False, f"腾讯ETF({etf_code})"
-        elif df is not None:
-            print(f"  ⚠ A 腾讯ETF {etf_code}: 仅{len(df)}条 < {MIN_ETF_DAYS}条，不足MA250，回退到指数数据")
-        else:
-            print(f"  ✗ A 腾讯ETF {etf_code}: 获取失败，回退到指数数据")
-
-    # ================================================================
-    # 方案B: 中证/国证官网 - 直接指数数据（回退）
+    # 方案A: 中证/国证官网 - 直接指数数据
     # ================================================================
 
-    # ---- B1: 中证指数官网 中证红利低波动(H30269) ----
+    # ---- A1: 中证指数官网 中证红利低波动(H30269) ----
     if index_code == 'H30269':
         data_code = config.get('data_code', index_code)
-        print(f"  [B1] 尝试中证指数官网: {index_name}({data_code})")
+        print(f"  [A1] 尝试中证指数官网: {index_name}({data_code})")
         try:
             _build_no_proxy_opener()
             today_str = datetime.now().strftime('%Y%m%d')
@@ -207,17 +188,17 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ B1 中证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                print(f"  ✓ A1 中证官网 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
                 return df, True, "中证指数官网"
             else:
-                print(f"  ✗ B1 中证官网 {index_name}: 数据为空或不足")
+                print(f"  ✗ A1 中证官网 {index_name}: 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ B1 中证官网 {index_name} 失败: {str(e)[:80]}")
+            print(f"  ✗ A1 中证官网 {index_name} 失败: {str(e)[:80]}")
 
-    # ---- B2: 国证指数官网 国证价值100全收益(480081) ----
+    # ---- A2: 国证指数官网 国证价值100全收益(480081) ----
     if index_code == '980081':
         data_code = config.get('data_code', index_code)
-        print(f"  [B2] 尝试国证指数官网: {index_name}(全收益{data_code})")
+        print(f"  [A2] 尝试国证指数官网: {index_name}(全收益{data_code})")
         try:
             _build_no_proxy_opener()
             today_str = datetime.now().strftime('%Y%m%d')
@@ -240,19 +221,19 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ B2 国证官网 {index_name}(全收益): {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                print(f"  ✓ A2 国证官网 {index_name}(全收益): {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
                 return df, True, "国证指数官网(全收益)"
             else:
-                print(f"  ✗ B2 国证官网 {index_name}(全收益): 数据为空或不足")
+                print(f"  ✗ A2 国证官网 {index_name}(全收益): 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ B2 国证官网 {index_name}(全收益) 失败: {str(e)[:80]}")
+            print(f"  ✗ A2 国证官网 {index_name}(全收益) 失败: {str(e)[:80]}")
 
     # ================================================================
-    # 方案C: AKShare东方财富（备用）
+    # 方案B: AKShare东方财富（备用）
     # ================================================================
 
-    # ---- 方案C1: AKShare index_zh_a_hist 东方财富指数 ----
-    print(f"  [C1] 尝试东方财富指数: {index_name}({index_code})")
+    # ---- B1: AKShare index_zh_a_hist 东方财富指数 ----
+    print(f"  [B1] 尝试东方财富指数: {index_name}({index_code})")
     try:
         _build_no_proxy_opener()
         df = ak.index_zh_a_hist(
@@ -278,17 +259,17 @@ def fetch_index_kline(config):
             for col in ['open', 'high', 'low', 'close', 'volume']:
                 if col in df.columns:
                     df[col] = pd.to_numeric(df[col], errors='coerce')
-            print(f"  ✓ C1 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+            print(f"  ✓ B1 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
             return df, True, "东方财富指数"
         else:
-            print(f"  ✗ C1 东方财富 {index_name}: 数据为空或不足")
+            print(f"  ✗ B1 东方财富 {index_name}: 数据为空或不足")
     except Exception as e:
-        print(f"  ✗ C1 东方财富 {index_name} 失败: {str(e)[:80]}")
+        print(f"  ✗ B1 东方财富 {index_name} 失败: {str(e)[:80]}")
 
-    # ---- 方案C2: AKShare stock_zh_index_daily_em（仅限 980081 等国证指数）----
+    # ---- B2: AKShare stock_zh_index_daily_em（仅限 980081 等国证指数）----
     if index_code == '980081':
         symbol_sz = 'sz' + index_code
-        print(f"  [C2] 尝试 stock_zh_index_daily_em: {symbol_sz}")
+        print(f"  [B2] 尝试 stock_zh_index_daily_em: {symbol_sz}")
         try:
             _build_no_proxy_opener()
             df = ak.stock_zh_index_daily_em(symbol=symbol_sz)
@@ -308,23 +289,23 @@ def fetch_index_kline(config):
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                print(f"  ✓ C2 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
+                print(f"  ✓ B2 东方财富 {index_name}: {len(df)}条, {df['date'].min().strftime('%Y-%m-%d')} → {df['date'].max().strftime('%Y-%m-%d')}")
                 return df, True, "国证指数"
             else:
-                print(f"  ✗ C2 {index_name}: 数据为空或不足")
+                print(f"  ✗ B2 {index_name}: 数据为空或不足")
         except Exception as e:
-            print(f"  ✗ C2 {index_name} 失败: {str(e)[:80]}")
+            print(f"  ✗ B2 {index_name} 失败: {str(e)[:80]}")
 
     # ================================================================
-    # 方案D: 腾讯财经ETF（最后回退，不限制数据量）
+    # 方案C: 腾讯财经API（ETF价格回退）
     # ================================================================
     if prefix:
-        print(f"  [D] → 最终回退到腾讯ETF数据: {prefix}{etf_code}")
+        print(f"  [C] → 回退到腾讯ETF数据: {prefix}{etf_code}")
         df, _ = fetch_etf_tencent_klines(etf_code, prefix)
         if df is not None and len(df) > 30:
-            return df, False, f"腾讯ETF({etf_code})回退"
+            return df, False, "腾讯ETF价格回退"
         else:
-            print(f"  ✗ D 腾讯回退也失败")
+            print(f"  ✗ C 腾讯回退也失败")
     
     return None, False, "获取失败"
 
