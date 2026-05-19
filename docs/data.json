@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-19 16:31:20",
+  "update_time": "2026-05-19 10:02:56",
   "data_source": "多数据源",
   "etfs": [
     {
@@ -143,8 +143,8 @@
           "invest_detail": "中性偏热·强势区"
         }
       ],
-      "etf_price": 1.17,
-      "etf_price_change_pct": 0.34
+      "etf_price": 1.173,
+      "etf_price_change_pct": 0.6
     },
     {
       "type": "rsi_ma",
