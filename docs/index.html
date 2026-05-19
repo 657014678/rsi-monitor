@@ -183,10 +183,39 @@ body {
   border: 1px solid rgba(52,211,153,0.2);
   transition: all 0.2s ease;
   font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
 }
 .guide-btn:hover {
   background: rgba(52,211,153,0.2);
   border-color: rgba(52,211,153,0.35);
+}
+.guide-btn.loading {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+  border-color: rgba(251,191,36,0.3);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.guide-btn.active {
+  background: var(--green-dim);
+  color: var(--green);
+  border-color: rgba(52,211,153,0.4);
+}
+.guide-btn.error {
+  background: var(--red-dim);
+  color: var(--red);
+  border-color: rgba(248,113,113,0.3);
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.header-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
   box-shadow: 0 0 16px var(--green-glow);
   transform: translateY(-1px);
 }
@@ -965,7 +994,10 @@ html { scroll-behavior: smooth; }
   </div>
   <div class="header-row">
     <div class="update-time" id="updateTime">加载中...</div>
-    <a class="guide-btn" href="guide-backtest.html">📊 策略简介</a>
+    <div class="header-btns">
+      <button class="guide-btn" id="realtimeBtn" onclick="onRealtimeClick()">🔄 实时行情</button>
+      <a class="guide-btn" href="guide-backtest.html">📊 策略简介</a>
+    </div>
   </div>
 </div>
 
@@ -1304,6 +1336,12 @@ function toggleHist(el) {
 
 /* ========== 加载数据 ========== */
 function loadData() {
+  /* 退出实时模式（自动刷新时恢复指数数据） */
+  if (REALTIME_MODE) {
+    REALTIME_MODE = false;
+    var btn = document.getElementById('realtimeBtn');
+    if (btn) { btn.textContent = '🔄 实时行情'; btn.className = 'guide-btn'; }
+  }
   var url = 'data.json?t=' + new Date().getTime();
   fetch(url)
     .then(function(r) { return r.json(); })
@@ -1371,6 +1409,146 @@ function loadData() {
 
 loadData();
 setInterval(loadData, 30 * 60 * 1000);
+
+/* ========== 实时行情（浏览器直调腾讯API）========== */
+var REALTIME_MODE = false;
+
+/* SMA计算 */
+function calcSMA(prices, period) {
+  period = Math.min(period, prices.length);
+  if (period < 2) return prices[prices.length - 1];
+  var sum = 0;
+  for (var i = prices.length - period; i < prices.length; i++) {
+    sum += prices[i];
+  }
+  return sum / period;
+}
+
+/* RSI计算（Wilder Smoothing，与Python端一致） */
+function calcRSI(closes, period) {
+  period = Math.min(period, closes.length - 1);
+  if (period < 5) return 50;
+  var avgGain = 0, avgLoss = 0;
+  var alpha = 1 / period;
+  /* 第一期SMA */
+  for (var i = 1; i <= period; i++) {
+    var d = closes[i] - closes[i - 1];
+    if (d > 0) avgGain += d; else avgLoss -= d;
+  }
+  avgGain /= period;
+  avgLoss /= period;
+  /* Wilder Smoothing */
+  for (var i = period + 1; i < closes.length; i++) {
+    var d = closes[i] - closes[i - 1];
+    avgGain = avgGain * (1 - alpha) + (d > 0 ? d : 0) * alpha;
+    avgLoss = avgLoss * (1 - alpha) + (d < 0 ? -d : 0) * alpha;
+  }
+  if (avgLoss === 0) return 100;
+  return 100 - (100 / (1 + avgGain / avgLoss));
+}
+
+/* 获取单个ETF实时K线 */
+function fetchRealtimeETF(code, prefix) {
+  var url = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param='
+          + prefix + code + ',day,,,800,qfq';
+  return fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    var s = data.data[prefix + code];
+    var field = s.qfqday || s.day || [];
+    var closes = field.map(function(k) { return parseFloat(k[2]); });
+    var dates = field.map(function(k) { return k[0]; });
+    if (closes.length < 5) throw new Error('数据不足');
+    var lc = closes[closes.length - 1];
+    var pc = closes[closes.length - 2];
+    var chg = (lc - pc) / pc * 100;
+    var maPeriod = Math.min(250, closes.length);
+    var ma = calcSMA(closes, maPeriod);
+    var rsi = calcRSI(closes, 21);
+    return { price: lc, changePct: chg, ma: ma, maPeriod: maPeriod, rsi: rsi, date: dates[dates.length - 1], count: closes.length };
+  });
+}
+
+/* 点击实时行情按钮 */
+function onRealtimeClick() {
+  var btn = document.getElementById('realtimeBtn');
+  if (REALTIME_MODE) {
+    REALTIME_MODE = false;
+    btn.textContent = '🔄 实时行情';
+    btn.className = 'guide-btn';
+    loadData();
+    return;
+  }
+  REALTIME_MODE = true;
+  btn.textContent = '⏳ 获取中…';
+  btn.className = 'guide-btn loading';
+
+  var tasks = [
+    fetchRealtimeETF('563020', 'sh').then(function(r) { return { idx: 0, data: r }; }),
+    fetchRealtimeETF('159263', 'sz').then(function(r) { return { idx: 1, data: r }; }),
+    fetchRealtimeETF('159696', 'sz').then(function(r) { return { idx: 2, data: r }; }),
+  ];
+
+  Promise.all(tasks).then(function(results) {
+    for (var i = 0; i < results.length; i++) {
+      var id = results[i].idx;
+      var r = results[i].data;
+      var isPE = (id === 2);
+
+      /* 更新行情标签 */
+      var infoLabels = ['红利低波ETF', '价值100ETF', '纳指ETF'];
+      document.getElementById('info' + id).textContent = '📡 实时 ' + infoLabels[id];
+
+      /* 价格 */
+      var dec = isPE ? 2 : 4;
+      document.getElementById('p' + id).textContent = r.price.toFixed(dec);
+      var cEl = document.getElementById('c' + id);
+      cEl.textContent = (r.changePct >= 0 ? '+' : '') + r.changePct.toFixed(2) + '%';
+      cEl.className = 'price-change ' + (r.changePct > 0 ? 'price-up' : (r.changePct < 0 ? 'price-down' : 'price-flat'));
+
+      /* ETF小字 */
+      var epEl = document.getElementById('ep' + id);
+      if (epEl) epEl.textContent = '📡 ' + r.price.toFixed(3);
+
+      /* 指标 */
+      if (isPE) {
+        /* 纳指：保留原有PE显示，只更新价格 */
+      } else {
+        document.getElementById('ma' + id).textContent = r.ma.toFixed(4);
+        document.getElementById('rsi' + id).textContent = r.rsi.toFixed(1);
+
+        /* 更新MA标签为实际周期 */
+        var maLabel = document.querySelector('#sec' + id + ' .metrics-grid .metric-box:first-child .metric-label');
+        if (maLabel) maLabel.textContent = 'MA' + r.maPeriod;
+
+        /* MA状态 */
+        var msEl = document.getElementById('maStat' + id);
+        if (msEl) {
+          var dev = (r.price / r.ma - 1) * 100;
+          var maLabel = 'MA' + r.maPeriod + '(' + r.count + '天)';
+          if (dev >= 0) {
+            msEl.innerHTML = '<span class="ma-pos up">高于' + maLabel + '</span>'
+                           + '<span class="ma-dev">偏离 +' + dev.toFixed(2) + '%</span>'
+                           + '<span class="ma-days">实际' + r.count + '天</span>';
+          } else {
+            msEl.innerHTML = '<span class="ma-pos down">低于' + maLabel + '</span>'
+                           + '<span class="ma-dev">偏离 ' + dev.toFixed(2) + '%</span>'
+                           + '<span class="ma-days">实际' + r.count + '天</span>';
+          }
+        }
+      }
+    }
+    btn.textContent = '✅ 实时';
+    btn.className = 'guide-btn active';
+  }).catch(function(err) {
+    console.error('实时获取失败:', err);
+    REALTIME_MODE = false;
+    btn.textContent = '⚠️ 获取失败';
+    btn.className = 'guide-btn error';
+    setTimeout(function() {
+      btn.textContent = '🔄 实时行情';
+      btn.className = 'guide-btn';
+    }, 3000);
+  });
+}
 </script>
 
 </body>
