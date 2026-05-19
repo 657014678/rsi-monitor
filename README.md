@@ -173,7 +173,7 @@ python daily_update.py --no-push  # 只更新本地 JSON，不推送
 
 ## 访问地址
 
-https://jack19521.github.io/rsi-monitor/
+https://free7566.github.io/rsi-monitor/
 
 ## 许可证
 
