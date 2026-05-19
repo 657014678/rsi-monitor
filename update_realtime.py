@@ -63,6 +63,9 @@ def _build_no_proxy_opener():
 
 def fetch_etf_latest_price(etf_code, prefix):
     """获取ETF最新2条K线，用于计算最新价和涨跌幅
+    返回: (latest_price, prev_price, change_pct, date_str) 或 None
+    """
+    """获取ETF最新2条K线，用于计算最新价和涨跌幅
     返回: (latest_price, prev_price, change_pct) 或 None
     """
     full_code = f"{prefix}{etf_code}"
@@ -81,13 +84,17 @@ def fetch_etf_latest_price(etf_code, prefix):
             # 不足2条时，只返回最新价
             if len(klines) == 1:
                 latest = float(klines[0][2])
+                date_str = klines[0][0]
+                return (latest, latest, 0.0, date_str)
+                latest = float(klines[0][2])
                 return (latest, latest, 0.0)
             return None
 
         latest = float(klines[-1][2])
         prev = float(klines[-2][2])
         change_pct = round((latest - prev) / prev * 100, 2)
-        return (latest, prev, change_pct)
+        date_str = klines[-1][0]  # 格式: "2026-05-19"
+        return (latest, prev, change_pct, date_str)
 
     except Exception as e:
         print(f"  ⚠ 腾讯 {full_code} 失败: {str(e)[:80]}")
@@ -95,6 +102,9 @@ def fetch_etf_latest_price(etf_code, prefix):
 
 
 def fetch_nasdaq_latest_price():
+    """获取纳指100最新2条K线 - 新浪API精简版
+    返回: (latest_price, prev_price, change_pct, date_str) 或 None
+    """
     """获取纳指100最新2条K线 - 新浪API精简版"""
     try:
         _build_no_proxy_opener()
@@ -110,7 +120,8 @@ def fetch_nasdaq_latest_price():
         latest = float(df[close_col].iloc[-1])
         prev = float(df[close_col].iloc[-2])
         change_pct = round((latest - prev) / prev * 100, 2)
-        return (latest, prev, change_pct)
+        date_str = klines[-1][0]  # 格式: "2026-05-19"
+        return (latest, prev, change_pct, date_str)
     except Exception as e:
         print(f"  ⚠ 新浪纳指失败: {str(e)[:80]}")
         return None
@@ -243,8 +254,12 @@ def main():
         # 1. ETF实时价格（腾讯API）
         etf_result = fetch_etf_latest_price(etf_code, prefix)
         if etf_result:
+            etf_latest, etf_prev, etf_change, etf_date = etf_result
             etf_latest, etf_prev, etf_change = etf_result
             new_fields = {
+                "etf_price": round(etf_latest, 4),
+                "etf_price_change_pct": etf_change,
+                "market_date": etf_date,
                 'etf_price': round(etf_latest, 4),
                 'etf_price_change_pct': etf_change,
             }
@@ -269,8 +284,12 @@ def main():
         if config['type'] == 'pe_drawdown':
             ndx_result = fetch_nasdaq_latest_price()
             if ndx_result:
+                ndx_latest, ndx_prev, ndx_change, ndx_date = ndx_result
                 ndx_latest, ndx_prev, ndx_change = ndx_result
                 index_fields = {
+                    "current_price": round(ndx_latest, 2),
+                    "price_change_pct": ndx_change,
+                    "market_date": ndx_date,
                     'current_price': round(ndx_latest, 2),
                     'price_change_pct': ndx_change,
                 }
