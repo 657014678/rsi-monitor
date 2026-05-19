@@ -1516,22 +1516,24 @@ function onRealtimeClick() {
         document.getElementById('rsi' + id).textContent = r.rsi.toFixed(1);
 
         /* 更新MA标签为实际周期 */
+        var maLabelFull = (r.count >= 250) ? 'MA250' : 'MA' + r.maPeriod;
         var maLabel = document.querySelector('#sec' + id + ' .metrics-grid .metric-box:first-child .metric-label');
-        if (maLabel) maLabel.textContent = 'MA' + r.maPeriod;
+        if (maLabel) maLabel.textContent = maLabelFull;
 
         /* MA状态 */
         var msEl = document.getElementById('maStat' + id);
         if (msEl) {
           var dev = (r.price / r.ma - 1) * 100;
-          var maLabel = 'MA' + r.maPeriod + '(' + r.count + '天)';
+          var maStatusLabel = (r.count >= 250) ? 'MA250' : 'MA' + r.maPeriod + '(' + r.count + '天)';
+          var daysInfo = (r.count >= 250) ? '' : ' · 实际' + r.count + '天';
           if (dev >= 0) {
-            msEl.innerHTML = '<span class="ma-pos up">高于' + maLabel + '</span>'
+            msEl.innerHTML = '<span class="ma-pos up">高于' + maStatusLabel + '</span>'
                            + '<span class="ma-dev">偏离 +' + dev.toFixed(2) + '%</span>'
-                           + '<span class="ma-days">实际' + r.count + '天</span>';
+                           + '<span class="ma-days">' + daysInfo + '</span>';
           } else {
-            msEl.innerHTML = '<span class="ma-pos down">低于' + maLabel + '</span>'
+            msEl.innerHTML = '<span class="ma-pos down">低于' + maStatusLabel + '</span>'
                            + '<span class="ma-dev">偏离 ' + dev.toFixed(2) + '%</span>'
-                           + '<span class="ma-days">实际' + r.count + '天</span>';
+                           + '<span class="ma-days">' + daysInfo + '</span>';
           }
         }
       }
