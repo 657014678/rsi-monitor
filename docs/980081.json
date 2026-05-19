@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-17 22:35:35",
+  "update_time": "2026-05-19 16:31:20",
   "data_source": "国证指数官网(全收益)",
   "etf": {
     "type": "rsi_ma",
@@ -10,12 +10,12 @@
     "fund_code": "159263",
     "fund_name": "国证价值100ETF",
     "weight": "40%",
-    "current_price": 8334.44,
-    "price_change_pct": -0.04,
-    "ma250": 7669.09,
+    "current_price": 8285.23,
+    "price_change_pct": -0.59,
+    "ma250": 7675.76,
     "ma250_is_reference": false,
-    "ma250_data_days": 2027,
-    "rsi21": 45.57,
+    "ma250_data_days": 2028,
+    "rsi21": 43.04,
     "zone": "强势区",
     "invest_amount": "1.5份",
     "invest_detail": "偏冷低估·强势区",
@@ -28,11 +28,11 @@
     "risk_label": "正常",
     "ma250_trend": "上升",
     "days_below_ma250": 0,
-    "days_above_ma250": 555,
-    "price_vs_ma250_pct": 8.68,
+    "days_above_ma250": 556,
+    "price_vs_ma250_pct": 7.94,
     "is_index_price": true,
     "data_source": "国证指数官网(全收益)",
-    "market_date": "2026-05-15",
+    "market_date": "2026-05-18",
     "history_advice": [
       {
         "date": "2025-05-21",
@@ -40,8 +40,8 @@
         "rsi21": 64.2,
         "ma250": 6239.9,
         "zone": "强势区",
-        "invest": "0.6份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "0.5份",
+        "invest_detail": "偏热·强势区"
       },
       {
         "date": "2025-06-21",
@@ -49,7 +49,7 @@
         "rsi21": 60.1,
         "ma250": 6319.75,
         "zone": "强势区",
-        "invest": "0.6份",
+        "invest": "0.8份",
         "invest_detail": "中性偏热·强势区",
         "rebuy": "考虑回补"
       },
@@ -60,7 +60,7 @@
         "ma250": 6428.89,
         "zone": "强势区",
         "invest": "0.3份",
-        "invest_detail": "偏热·强势区",
+        "invest_detail": "过热·强势区",
         "reduce": "考虑减仓 15%"
       },
       {
@@ -69,8 +69,8 @@
         "rsi21": 63.6,
         "ma250": 6582.33,
         "zone": "强势区",
-        "invest": "0.6份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "0.5份",
+        "invest_detail": "偏热·强势区"
       },
       {
         "date": "2025-09-21",
@@ -88,7 +88,7 @@
         "rsi21": 56.0,
         "ma250": 6820.38,
         "zone": "强势区",
-        "invest": "0.6份",
+        "invest": "0.8份",
         "invest_detail": "中性偏热·强势区"
       },
       {
@@ -106,8 +106,8 @@
         "rsi21": 54.1,
         "ma250": 7026.17,
         "zone": "强势区",
-        "invest": "1份",
-        "invest_detail": "中性合理·强势区"
+        "invest": "0.8份",
+        "invest_detail": "中性偏热·强势区"
       },
       {
         "date": "2026-01-21",
@@ -115,7 +115,7 @@
         "rsi21": 65.9,
         "ma250": 7130.76,
         "zone": "强势区",
-        "invest": "0.3份",
+        "invest": "0.5份",
         "invest_detail": "偏热·强势区",
         "reduce": "考虑减仓 15%"
       },
@@ -125,8 +125,8 @@
         "rsi21": 63.3,
         "ma250": 7257.11,
         "zone": "强势区",
-        "invest": "0.6份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "0.5份",
+        "invest_detail": "偏热·强势区"
       },
       {
         "date": "2026-03-21",
@@ -147,20 +147,14 @@
         "invest": "1份",
         "invest_detail": "中性合理·强势区"
       }
-    ]
+    ],
+    "etf_price": 1.164,
+    "etf_price_change_pct": 0.26
   },
   "chart": {
     "etf_code": "159263",
     "index_name": "国证价值100",
     "klines": [
-      {
-        "time": "2024-09-12",
-        "open": null,
-        "high": null,
-        "low": null,
-        "close": 5355.7072,
-        "volume": null
-      },
       {
         "time": "2024-09-13",
         "open": null,
@@ -3352,10 +3346,17 @@
         "low": 8307.1186,
         "close": 8334.4353,
         "volume": 5083.74
+      },
+      {
+        "time": "2026-05-18",
+        "open": 8334.0887,
+        "high": 8349.5714,
+        "low": 8253.4359,
+        "close": 8285.2272,
+        "volume": 5164.63
       }
     ],
     "ma_values": [
-      5337.83,
       5338.98,
       5340.69,
       5342.69,
@@ -3754,10 +3755,10 @@
       7648.36,
       7655.31,
       7662.11,
-      7669.09
+      7669.09,
+      7675.76
     ],
     "rsi_values": [
-      39.15,
       39.92,
       47.24,
       51.93,
@@ -4156,7 +4157,8 @@
       46.63,
       47.07,
       45.73,
-      45.57
+      45.57,
+      43.04
     ]
   }
 }

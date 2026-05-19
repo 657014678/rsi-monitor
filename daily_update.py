@@ -61,7 +61,7 @@ ETFS = [
         "fund_code": "159696",
         "fund_name": "易方达纳斯达克100ETF",
         "weight": "20%",
-        "tencent_prefix": None,  # QDII不用A股API，用乐咕PE+新浪指数
+        "tencent_prefix": "sz",
         "is_index_price": True,
     },
 ]
@@ -380,10 +380,12 @@ def get_zone(price, ma250):
 def get_invest_advice(rsi, zone):
     if rsi >= 72:
         return {"amount": "暂停", "detail": "极度过热·" + zone}
-    elif rsi >= 65:
-        return {"amount": "0.3份", "detail": "偏热·" + zone}
-    elif rsi >= 55:
-        return {"amount": "0.6份", "detail": "中性偏热·" + zone}
+    elif rsi >= 66:
+        return {"amount": "0.3份", "detail": "过热·" + zone}
+    elif rsi >= 61:
+        return {"amount": "0.5份", "detail": "偏热·" + zone}
+    elif rsi >= 53:
+        return {"amount": "0.8份", "detail": "中性偏热·" + zone}
     elif rsi >= 48:
         return {"amount": "1份", "detail": "中性合理·" + zone}
     elif rsi >= 40:
@@ -717,6 +719,19 @@ def process_rsi_ma(config):
         "history_advice": calc_rsi_ma_history(df, ma250, rsi21),
     }
 
+    # ETF实时价格（用于行情显示，不影响策略指标）
+    etf_price = None
+    etf_price_change = None
+    if config.get('tencent_prefix'):
+        etf_df, _ = fetch_etf_tencent_klines(config['etf_code'], config['tencent_prefix'])
+        if etf_df is not None and len(etf_df) >= 2:
+            etf_latest = float(etf_df['close'].iloc[-1])
+            etf_prev = float(etf_df['close'].iloc[-2])
+            etf_price = round(etf_latest, 4)
+            etf_price_change = round((etf_latest - etf_prev) / etf_prev * 100, 2)
+    result['etf_price'] = etf_price
+    result['etf_price_change_pct'] = etf_price_change
+
     # K线+指标数据（最近400条）
     tail_n = min(400, len(df))
     tail_df = df.tail(tail_n).reset_index(drop=True)
@@ -844,6 +859,19 @@ def process_nasdaq(config):
         "pe_history": pe_history,
         "price_history": idx_history,
     }
+
+    # ETF实时价格（用于行情显示，不影响策略指标）
+    etf_price = None
+    etf_price_change = None
+    if config.get('tencent_prefix'):
+        etf_df, _ = fetch_etf_tencent_klines(config['etf_code'], config['tencent_prefix'])
+        if etf_df is not None and len(etf_df) >= 2:
+            etf_latest = float(etf_df['close'].iloc[-1])
+            etf_prev = float(etf_df['close'].iloc[-2])
+            etf_price = round(etf_latest, 4)
+            etf_price_change = round((etf_latest - etf_prev) / etf_prev * 100, 2)
+    result['etf_price'] = etf_price
+    result['etf_price_change_pct'] = etf_price_change
 
     return result, chart_data
 

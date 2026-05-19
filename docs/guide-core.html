@@ -56,7 +56,7 @@
     <div style="display:flex; gap:4px; margin:2px 0 6px; font-size:11px;">
       <div style="flex:2; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);vertical-align:middle;margin-right:3px;"></span>红利低波 <span style="color:var(--text-dim);">012708</span></div>
       <div style="flex:2; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);vertical-align:middle;margin-right:3px;"></span>价值100 <span style="color:var(--text-dim);">025497</span></div>
-      <div style="flex:1; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--purple);vertical-align:middle;margin-right:3px;"></span>纳指100 <span style="color:var(--text-dim);">159941</span></div>
+      <div style="flex:1; text-align:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--purple);vertical-align:middle;margin-right:3px;"></span>纳指100 <span style="color:var(--text-dim);">159696</span></div>
     </div>
     <p style="font-size:12px;color:var(--text);">A股双价值打底，美股科技增强，低相关性分散风险。</p>
   </div>
@@ -67,6 +67,17 @@
       <span class="highlight">低位多买，高位少买，强势区减仓，弱势区死扛</span>
     </p>
     <div class="key-note" style="border-left-color:var(--green);">用数学纪律代替情绪决策，用时间换空间。不预测市场，只应对市场。</div>
+  </div>
+
+  <!-- 执行规范 -->
+  <div class="card" style="border-color:rgba(96,165,250,0.2);background:rgba(96,165,250,0.03);">
+    <h3 class="accent" style="border-left:3px solid var(--accent);padding-left:10px;">⚙️ 执行规范</h3>
+    <div style="font-size:13px;">
+      <p><strong>操作顺序（每月21日）：</strong>① 先处理减仓/回补（若有）；② 再执行定投。减仓/回补获得的现金可用于当月的定投操作，确保资金效率。</p>
+      <p style="margin-top:6px;"><strong>减仓资金管理：</strong>减仓卖出获得的现金转入货币基金或短债基金暂存，作为后续定投/回补的备用资金，避免在活期账户闲置。</p>
+      <p style="margin-top:6px;"><strong>冷却期互锁规则：</strong>各标的独立追踪冷却期。冷却期只限制<strong>同类型操作</strong>——减仓冷却期（30天）内不能再减仓，但不影响定投和回补；回补同理，回补后重新计算的30天仅限制下次回补，不影响减仓。纳指冷却期60天，规则相同。</p>
+      <p style="margin-top:6px;"><strong>年底再平衡（12月21日）：</strong>每年12月21日检查三标的实际配置比例。若偏离目标权重超过5个百分点，通过卖出超配标的+买入低配标的方式恢复至40/40/20。再平衡操作不受冷却期约束（标记为"再平衡"而非"减仓"），再平衡后重置各标的冷却期计时。</p>
+    </div>
   </div>
 </div>
 
@@ -105,6 +116,9 @@
         <li>红利/价值100的成分股都是盈利稳定的好公司，下跌是暂时的</li>
         <li>弱势区只做一件事：<span class="highlight-green">按表定投，收集便宜筹码</span></li>
       </ul>
+      <div style="margin-top:10px;padding:10px 12px;background:rgba(52,211,153,0.06);border-radius:6px;font-size:12px;">
+        <strong>📌 长期策略视角：</strong>弱势区是<span class="highlight-green">积累筹码的黄金窗口</span>。价格低于MA250意味着市场情绪悲观，但好公司不会一直便宜。历史回测表明，在弱势区坚持定投可有效拉低平均持仓成本，当市场重回强势区时，低位筹码的收益率远高于追高买入。弱势区平均持续数月至一年，熬过去就是丰收季。<span class="highlight">不预测最低点，只做持续买入。</span>
+      </div>
     </div>
   </div>
 
@@ -168,6 +182,20 @@
       </table>
     </div>
     <p style="margin-top:8px; font-size:12px;">回补后重新计算30天冷却期。</p>
+    <div style="margin-top:10px;padding:10px 12px;background:rgba(248,113,113,0.06);border-radius:6px;border-left:3px solid var(--yellow);font-size:12px;">
+      <strong>⚠️ 快速下跌盲区：</strong>当RSI从高位（如72+）<span class="highlight">快速跌至50以下</span>时，虽然满足"全部回补"条件，但市场可能仍处于急跌通道中，一次性回补全部减仓份额存在继续被套的风险。建议确认：① RSI在50以下至少停留5个交易日企稳；② 价格止跌回升（如连续2日收阳）后再执行回补。若仍处于急跌状态，可考虑<span class="highlight">分批回补</span>：先回补1/3，确认站稳后再接剩余。
+    </div>
+  </div>
+
+  <!-- 执行说明 -->
+  <div class="card" style="border-color:rgba(251,191,36,0.2);background:rgba(251,191,36,0.03);">
+    <h3 class="yellow">⚠️ 执行说明</h3>
+    <div style="font-size:13px;">
+      <p><strong>减仓基数：</strong>减仓比例（15%/30%）以<strong>当前持仓市值</strong>为基数。例如持仓10万元，RSI≥72减仓30%，即卖出3万元对应份额。减仓份额从<strong>动态仓（30%部分）</strong>中扣除，核心仓（70%）不动。若动态仓不足，最多减到动态仓清空。</p>
+      <p style="margin-top:6px;"><strong>回补基数：</strong>以<strong>最近一次减仓的卖出市值</strong>为基数。例如上次减仓卖出3000元对应份额，回补2/3即买入2000元。回补后的份额归入动态仓。</p>
+      <p style="margin-top:6px;"><strong>冷却期管理：</strong>减仓后务必记录日期。A股冷却30天，纳指冷却60天。建议在手机备忘录或日历标注下次可操作日期。</p>
+      <p style="margin-top:6px;"><strong>梯度边界处理（准暂停区间）：</strong>当RSI落在梯度表的分界线附近时（如65/71/52），以<strong>达到即触发</strong>为原则——RSI≤65触发减仓线即认为达到65档，无需纠结"差0.5"的问题。特别注意<strong>RSI 71-74区间</strong>是准暂停区域：71-71.9仍然执行0.3份定投，但需高度警觉市场过热；一旦RSI触及≥72即进入暂停定投+减仓30%的区间。若RSI在此区间徘徊两个月，<span class="highlight">建议手动审视是否过度集中</span>。</p>
+    </div>
   </div>
 </div>
 
@@ -176,7 +204,7 @@
 
 <div class="section" id="us">
   <div class="section-title purple"><span class="st-badge">03</span>🇺🇸 美股策略：PE分位 + 回撤</div>
-  <div class="section-desc">适用：纳指100（159941）· 估值+回调双维度判断</div>
+  <div class="section-desc">适用：纳指100（159696）· 估值+回调双维度判断</div>
 
   <div class="card">
     <h3 class="purple">为什么纳指100不用RSI+MA250？</h3>
@@ -195,6 +223,9 @@
         <tr><td><strong>PE分位</strong></td><td>当前PE(TTM)在近7年中的排名百分位</td><td>乐咕乐股</td></tr>
         <tr><td><strong>高点回撤</strong></td><td>(当前价-阶段最高价)/阶段最高价</td><td>新浪财经</td></tr>
       </table>
+    </div>
+    <div style="margin-top:10px;padding:10px 12px;background:rgba(167,139,250,0.06);border-radius:6px;border-left:3px solid var(--purple);font-size:12px;">
+      <strong>📌 PE数据局限性（必读）：</strong>纳指PE分位基于乐咕乐股约7年历史数据（约1650条）。这意味着：① 仅覆盖一轮完整牛熊周期，<span class="highlight">极端估值区间的参考意义有限</span>（例如2020年疫情底可能不在数据覆盖范围内）；② 宏观环境（利率/通胀/产业周期）变化会使历史分位"失真"——2020-2021年的零利率环境下的高PE≠泡沫；③ PE分位锚定过去而非未来，<span class="highlight">高PE不一定是卖出信号</span>，低PE也不一定是买入信号。建议将PE分位作为<span class="highlight-green">参考而非决策唯一依据</span>，与回撤数据交叉验证。
     </div>
   </div>
 
@@ -277,6 +308,17 @@
         <tr><td>40–50%</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
         <tr><td>&lt;40%</td><td>接回<span class="td-green">全部剩余</span></td></tr>
       </table>
+    </div>
+  </div>
+
+  <!-- 执行说明 -->
+  <div class="card" style="border-color:rgba(167,139,250,0.2);background:rgba(167,139,250,0.03);">
+    <h3 class="purple">⚠️ 执行说明</h3>
+    <div style="font-size:13px;">
+      <p><strong>深度回调加码规则：</strong>当回撤 &gt; 15% 时，在 PE 分位基础定投份数上<strong>额外 +0.5 份</strong>。例如：PE合理区(1份)+深度回调 → <strong>1.5份</strong>；PE低估区(1.8份)+深度回调 → <strong>2.3份</strong>。极度低估区(2.5份封顶)，不加深度加码，但回撤&gt;15%时永不减仓。</p>
+      <p style="margin-top:6px;"><strong>减仓基数：</strong>与A股规则相同——以当前持仓市值为基数，从动态仓（30%部分）扣除。</p>
+      <p style="margin-top:6px;"><strong>回补基数：</strong>以最近一次纳指减仓的卖出市值为基数。接回2/3即买入减仓市值的2/3对应的份额。</p>
+      <p style="margin-top:6px;"><strong>冷却期管理：</strong>纳指冷却期60天，比A股长。减仓后务必在日历标注下次可操作日期。</p>
     </div>
   </div>
 </div>

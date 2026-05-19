@@ -544,10 +544,12 @@ def get_invest_advice(rsi, zone):
     """月度定投建议（基于RSI和市场分区）"""
     if rsi >= 72:
         return {"amount": "暂停", "detail": "极度过热·" + zone}
-    elif rsi >= 65:
-        return {"amount": "0.3份", "detail": "偏热·" + zone}
-    elif rsi >= 55:
-        return {"amount": "0.6份", "detail": "中性偏热·" + zone}
+    elif rsi >= 66:
+        return {"amount": "0.3份", "detail": "过热·" + zone}
+    elif rsi >= 61:
+        return {"amount": "0.5份", "detail": "偏热·" + zone}
+    elif rsi >= 53:
+        return {"amount": "0.8份", "detail": "中性偏热·" + zone}
     elif rsi >= 48:
         return {"amount": "1份", "detail": "中性合理·" + zone}
     elif rsi >= 40:

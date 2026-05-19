@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-17 22:35:35",
+  "update_time": "2026-05-19 16:31:20",
   "data_source": "中证指数官网",
   "etf": {
     "type": "rsi_ma",
@@ -10,26 +10,26 @@
     "fund_code": "563020",
     "fund_name": "中证红利低波动ETF",
     "weight": "40%",
-    "current_price": 11115.82,
-    "price_change_pct": -0.68,
-    "ma250": 11417.87,
+    "current_price": 11049.04,
+    "price_change_pct": -0.6,
+    "ma250": 11418.11,
     "ma250_is_reference": false,
-    "ma250_data_days": 1934,
-    "rsi21": 40.19,
+    "ma250_data_days": 1935,
+    "rsi21": 37.73,
     "zone": "弱势区",
-    "invest_amount": "1.2份",
-    "invest_detail": "偏冷低估·弱势区",
+    "invest_amount": "1.5份",
+    "invest_detail": "极度低估·弱势区",
     "reduce_advice": null,
     "rebuy_advice": null,
     "risk_signal": "yellow",
     "risk_label": "跌破MA250",
     "ma250_trend": "上升",
-    "days_below_ma250": 9,
+    "days_below_ma250": 10,
     "days_above_ma250": 0,
-    "price_vs_ma250_pct": -2.65,
+    "price_vs_ma250_pct": -3.23,
     "is_index_price": true,
     "data_source": "中证指数官网",
-    "market_date": "2026-05-15",
+    "market_date": "2026-05-18",
     "history_advice": [
       {
         "date": "2025-05-21",
@@ -37,8 +37,8 @@
         "rsi21": 61.2,
         "ma250": 10746.66,
         "zone": "强势区",
-        "invest": "0.6份",
-        "invest_detail": "中性偏热·强势区",
+        "invest": "0.5份",
+        "invest_detail": "偏热·强势区",
         "rebuy": "考虑回补"
       },
       {
@@ -47,8 +47,8 @@
         "rsi21": 62.1,
         "ma250": 10773.75,
         "zone": "强势区",
-        "invest": "0.6份",
-        "invest_detail": "中性偏热·强势区",
+        "invest": "0.5份",
+        "invest_detail": "偏热·强势区",
         "rebuy": "考虑回补"
       },
       {
@@ -57,7 +57,7 @@
         "rsi21": 55.9,
         "ma250": 10851.18,
         "zone": "强势区",
-        "invest": "0.6份",
+        "invest": "0.8份",
         "invest_detail": "中性偏热·强势区"
       },
       {
@@ -66,7 +66,7 @@
         "rsi21": 55.4,
         "ma250": 10973.82,
         "zone": "强势区",
-        "invest": "0.6份",
+        "invest": "0.8份",
         "invest_detail": "中性偏热·强势区"
       },
       {
@@ -84,8 +84,8 @@
         "rsi21": 54.3,
         "ma250": 11160.78,
         "zone": "强势区",
-        "invest": "1份",
-        "invest_detail": "中性合理·强势区"
+        "invest": "0.8份",
+        "invest_detail": "中性偏热·强势区"
       },
       {
         "date": "2025-11-21",
@@ -138,23 +138,17 @@
         "rsi21": 54.5,
         "ma250": 11402.73,
         "zone": "强势区",
-        "invest": "1份",
-        "invest_detail": "中性合理·强势区"
+        "invest": "0.8份",
+        "invest_detail": "中性偏热·强势区"
       }
-    ]
+    ],
+    "etf_price": 1.17,
+    "etf_price_change_pct": 0.34
   },
   "chart": {
     "etf_code": "563020",
     "index_name": "中证红利低波动",
     "klines": [
-      {
-        "time": "2024-09-12",
-        "open": 9385.29,
-        "high": 9482.2,
-        "low": 9356.26,
-        "close": 9436.21,
-        "volume": 2797.32
-      },
       {
         "time": "2024-09-13",
         "open": 9441.69,
@@ -3346,10 +3340,17 @@
         "low": 11082.04,
         "close": 11115.82,
         "volume": 3412.07
+      },
+      {
+        "time": "2026-05-18",
+        "open": 11095.69,
+        "high": 11104.72,
+        "low": 11010.06,
+        "close": 11049.04,
+        "volume": 3026.25
       }
     ],
     "ma_values": [
-      10195.61,
       10193.5,
       10192.35,
       10191.32,
@@ -3748,10 +3749,10 @@
       11417.27,
       11417.26,
       11417.29,
-      11417.87
+      11417.87,
+      11418.11
     ],
     "rsi_values": [
-      27.54,
       26.92,
       33.07,
       33.52,
@@ -4150,7 +4151,8 @@
       44.21,
       44.24,
       43.24,
-      40.19
+      40.19,
+      37.73
     ]
   }
 }

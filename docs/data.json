@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-17 22:35:35",
+  "update_time": "2026-05-19 16:31:20",
   "data_source": "多数据源",
   "etfs": [
     {
@@ -11,26 +11,26 @@
       "fund_code": "563020",
       "fund_name": "中证红利低波动ETF",
       "weight": "40%",
-      "current_price": 11115.82,
-      "price_change_pct": -0.68,
-      "ma250": 11417.87,
+      "current_price": 11049.04,
+      "price_change_pct": -0.6,
+      "ma250": 11418.11,
       "ma250_is_reference": false,
-      "ma250_data_days": 1934,
-      "rsi21": 40.19,
+      "ma250_data_days": 1935,
+      "rsi21": 37.73,
       "zone": "弱势区",
-      "invest_amount": "1.2份",
-      "invest_detail": "偏冷低估·弱势区",
+      "invest_amount": "1.5份",
+      "invest_detail": "极度低估·弱势区",
       "reduce_advice": null,
       "rebuy_advice": null,
       "risk_signal": "yellow",
       "risk_label": "跌破MA250",
       "ma250_trend": "上升",
-      "days_below_ma250": 9,
+      "days_below_ma250": 10,
       "days_above_ma250": 0,
-      "price_vs_ma250_pct": -2.65,
+      "price_vs_ma250_pct": -3.23,
       "is_index_price": true,
       "data_source": "中证指数官网",
-      "market_date": "2026-05-15",
+      "market_date": "2026-05-18",
       "history_advice": [
         {
           "date": "2025-05-21",
@@ -38,8 +38,8 @@
           "rsi21": 61.2,
           "ma250": 10746.66,
           "zone": "强势区",
-          "invest": "0.6份",
-          "invest_detail": "中性偏热·强势区",
+          "invest": "0.5份",
+          "invest_detail": "偏热·强势区",
           "rebuy": "考虑回补"
         },
         {
@@ -48,8 +48,8 @@
           "rsi21": 62.1,
           "ma250": 10773.75,
           "zone": "强势区",
-          "invest": "0.6份",
-          "invest_detail": "中性偏热·强势区",
+          "invest": "0.5份",
+          "invest_detail": "偏热·强势区",
           "rebuy": "考虑回补"
         },
         {
@@ -58,7 +58,7 @@
           "rsi21": 55.9,
           "ma250": 10851.18,
           "zone": "强势区",
-          "invest": "0.6份",
+          "invest": "0.8份",
           "invest_detail": "中性偏热·强势区"
         },
         {
@@ -67,7 +67,7 @@
           "rsi21": 55.4,
           "ma250": 10973.82,
           "zone": "强势区",
-          "invest": "0.6份",
+          "invest": "0.8份",
           "invest_detail": "中性偏热·强势区"
         },
         {
@@ -85,8 +85,8 @@
           "rsi21": 54.3,
           "ma250": 11160.78,
           "zone": "强势区",
-          "invest": "1份",
-          "invest_detail": "中性合理·强势区"
+          "invest": "0.8份",
+          "invest_detail": "中性偏热·强势区"
         },
         {
           "date": "2025-11-21",
@@ -139,10 +139,12 @@
           "rsi21": 54.5,
           "ma250": 11402.73,
           "zone": "强势区",
-          "invest": "1份",
-          "invest_detail": "中性合理·强势区"
+          "invest": "0.8份",
+          "invest_detail": "中性偏热·强势区"
         }
-      ]
+      ],
+      "etf_price": 1.17,
+      "etf_price_change_pct": 0.34
     },
     {
       "type": "rsi_ma",
@@ -153,12 +155,12 @@
       "fund_code": "159263",
       "fund_name": "国证价值100ETF",
       "weight": "40%",
-      "current_price": 8334.44,
-      "price_change_pct": -0.04,
-      "ma250": 7669.09,
+      "current_price": 8285.23,
+      "price_change_pct": -0.59,
+      "ma250": 7675.76,
       "ma250_is_reference": false,
-      "ma250_data_days": 2027,
-      "rsi21": 45.57,
+      "ma250_data_days": 2028,
+      "rsi21": 43.04,
       "zone": "强势区",
       "invest_amount": "1.5份",
       "invest_detail": "偏冷低估·强势区",
@@ -171,11 +173,11 @@
       "risk_label": "正常",
       "ma250_trend": "上升",
       "days_below_ma250": 0,
-      "days_above_ma250": 555,
-      "price_vs_ma250_pct": 8.68,
+      "days_above_ma250": 556,
+      "price_vs_ma250_pct": 7.94,
       "is_index_price": true,
       "data_source": "国证指数官网(全收益)",
-      "market_date": "2026-05-15",
+      "market_date": "2026-05-18",
       "history_advice": [
         {
           "date": "2025-05-21",
@@ -183,8 +185,8 @@
           "rsi21": 64.2,
           "ma250": 6239.9,
           "zone": "强势区",
-          "invest": "0.6份",
-          "invest_detail": "中性偏热·强势区"
+          "invest": "0.5份",
+          "invest_detail": "偏热·强势区"
         },
         {
           "date": "2025-06-21",
@@ -192,7 +194,7 @@
           "rsi21": 60.1,
           "ma250": 6319.75,
           "zone": "强势区",
-          "invest": "0.6份",
+          "invest": "0.8份",
           "invest_detail": "中性偏热·强势区",
           "rebuy": "考虑回补"
         },
@@ -203,7 +205,7 @@
           "ma250": 6428.89,
           "zone": "强势区",
           "invest": "0.3份",
-          "invest_detail": "偏热·强势区",
+          "invest_detail": "过热·强势区",
           "reduce": "考虑减仓 15%"
         },
         {
@@ -212,8 +214,8 @@
           "rsi21": 63.6,
           "ma250": 6582.33,
           "zone": "强势区",
-          "invest": "0.6份",
-          "invest_detail": "中性偏热·强势区"
+          "invest": "0.5份",
+          "invest_detail": "偏热·强势区"
         },
         {
           "date": "2025-09-21",
@@ -231,7 +233,7 @@
           "rsi21": 56.0,
           "ma250": 6820.38,
           "zone": "强势区",
-          "invest": "0.6份",
+          "invest": "0.8份",
           "invest_detail": "中性偏热·强势区"
         },
         {
@@ -249,8 +251,8 @@
           "rsi21": 54.1,
           "ma250": 7026.17,
           "zone": "强势区",
-          "invest": "1份",
-          "invest_detail": "中性合理·强势区"
+          "invest": "0.8份",
+          "invest_detail": "中性偏热·强势区"
         },
         {
           "date": "2026-01-21",
@@ -258,7 +260,7 @@
           "rsi21": 65.9,
           "ma250": 7130.76,
           "zone": "强势区",
-          "invest": "0.3份",
+          "invest": "0.5份",
           "invest_detail": "偏热·强势区",
           "reduce": "考虑减仓 15%"
         },
@@ -268,8 +270,8 @@
           "rsi21": 63.3,
           "ma250": 7257.11,
           "zone": "强势区",
-          "invest": "0.6份",
-          "invest_detail": "中性偏热·强势区"
+          "invest": "0.5份",
+          "invest_detail": "偏热·强势区"
         },
         {
           "date": "2026-03-21",
@@ -290,7 +292,9 @@
           "invest": "1份",
           "invest_detail": "中性合理·强势区"
         }
-      ]
+      ],
+      "etf_price": 1.164,
+      "etf_price_change_pct": 0.26
     },
     {
       "type": "pe_drawdown",
@@ -301,14 +305,14 @@
       "fund_code": "159696",
       "fund_name": "易方达纳斯达克100ETF",
       "weight": "20%",
-      "current_price": 29125.2,
-      "price_change_pct": -1.54,
-      "pe_ttm": 93.15,
-      "pe_percentile": 91.5,
+      "current_price": 28994.37,
+      "price_change_pct": -0.45,
+      "pe_ttm": 94.38,
+      "pe_percentile": 93.9,
       "pe_years": 6.6,
-      "pe_data_days": 1651,
+      "pe_data_days": 1652,
       "pe_zone": "极度高估",
-      "drawdown": -1.54,
+      "drawdown": -1.98,
       "drawdown_zone": "正常波动",
       "high_price": 29580.3,
       "zone": "极度高估·正常波动",
@@ -324,7 +328,7 @@
       "risk_label": "极度高估",
       "data_source": "乐咕PE+新浪指数",
       "is_index_price": true,
-      "market_date": "2026-05-15",
+      "market_date": "2026-05-18",
       "history_advice": [
         {
           "date": "2025-05-21",
@@ -463,7 +467,9 @@
           "invest_detail": "高估·0.5份",
           "reduce": "考虑减仓 15%"
         }
-      ]
+      ],
+      "etf_price": 1.891,
+      "etf_price_change_pct": -0.16
     }
   ]
 }

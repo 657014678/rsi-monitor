@@ -980,7 +980,7 @@ html { scroll-behavior: smooth; }
     <span class="fund-code" id="f0">--</span>
   </div>
   <div class="card" id="priceCard0">
-    <div class="card-label" id="info0">指数行情 · --</div>
+    <div class="card-label" id="info0">ETF行情 · --</div>
     <div class="price-row">
       <span class="price-main" id="p0">--</span>
       <span class="price-change price-flat" id="c0">--</span>
@@ -1012,7 +1012,7 @@ html { scroll-behavior: smooth; }
     <span class="fund-code" id="f1">--</span>
   </div>
   <div class="card" id="priceCard1">
-    <div class="card-label" id="info1">指数行情 · --</div>
+    <div class="card-label" id="info1">ETF行情 · --</div>
     <div class="price-row">
       <span class="price-main" id="p1">--</span>
       <span class="price-change price-flat" id="c1">--</span>
@@ -1044,7 +1044,7 @@ html { scroll-behavior: smooth; }
     <span class="fund-code" id="f2">--</span>
   </div>
   <div class="card" id="priceCard2">
-    <div class="card-label" id="info2">指数行情 · --</div>
+    <div class="card-label" id="info2">ETF行情 · --</div>
     <div class="price-row">
       <span class="price-main" id="p2">--</span>
       <span class="price-change price-flat" id="c2">--</span>
@@ -1128,19 +1128,22 @@ function updateCard(etf, idx) {
     return;
   }
 
-  /* 行情信息 — 精简 */
-  document.getElementById('info' + id).textContent = isPE ? '纳指100' : (etf.index_name || '--');
+  /* 行情信息 — ETF优先 */
+  var hasEtfPrice = (etf.etf_price != null);
+  var infoLabel = hasEtfPrice ? 'ETF行情' : (isPE ? '纳指100' : (etf.index_name || '--'));
+  document.getElementById('info' + id).textContent = infoLabel;
 
-  /* 价格 — 纯数字，无货币符号 */
-  var dec = isIndexPrice ? 2 : 4;
+  /* 价格 — 优先显示ETF价格 */
+  var priceToShow = hasEtfPrice ? etf.etf_price : etf.current_price;
+  var dec = hasEtfPrice ? 4 : (isIndexPrice ? 2 : 4);
   var priceEl = document.getElementById('p' + id);
-  if (etf.current_price != null) {
-    priceEl.textContent = etf.current_price.toFixed(dec);
+  if (priceToShow != null) {
+    priceEl.textContent = priceToShow.toFixed(dec);
   } else {
     priceEl.textContent = '--';
   }
   var cel = document.getElementById('c' + id);
-  var pct = etf.price_change_pct;
+  var pct = hasEtfPrice ? etf.etf_price_change_pct : etf.price_change_pct;
   cel.textContent = (pct != null) ? ((pct >= 0 ? '+' : '') + pct.toFixed(2) + '%') : '--';
   cel.className = 'price-change ' + ((pct == null) ? 'price-flat' : (pct > 0 ? 'price-up' : (pct < 0 ? 'price-down' : 'price-flat')));
 
