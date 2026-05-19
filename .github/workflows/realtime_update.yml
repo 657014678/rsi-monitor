@@ -3,16 +3,22 @@ name: Realtime Price Update (每30分钟)
 on:
   schedule:
     # 每30分钟运行一次（UTC时间，北京+8）
-    # 例：UTC 01:00 = 北京 09:00（开盘），UTC 07:00 = 北京 15:00（收盘）
+    # 例：UTC 01:30 = 北京 09:30（开盘），UTC 07:00 = 北京 15:00（收盘）
     - cron: '*/30 * * * *'
   workflow_dispatch:
-    # 也支持手动触发
+    # 支持手动触发
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  update-prices:
+  update-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -54,3 +60,11 @@ jobs:
           message: '🔄 实时行情更新'
           default_author: github_actor
         if: steps.check_changes.outputs.changed == 'true'
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
