@@ -5,7 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>核心策略 · 价值投资控制台</title>
 <link rel="stylesheet" href="style-guide.css">
-</head>
+<style>
+/* 修复手机端表格显示问题 - 强制水平滚动 */
+@media (max-width: 520px) {
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-wrap table,
+  .table-wrap thead,
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap th,
+  .table-wrap td {
+    display: table;
+  }
+  .table-wrap thead tr {
+    position: static;
+  }
+  .table-wrap table tr {
+    border-bottom: none;
+    padding: 0;
+  }
+  .table-wrap table tr:last-child {
+    border-bottom: none;
+  }
+  .table-wrap td {
+    display: table-cell;
+    padding: 7px 10px;
+    text-align: center;
+  }
+  .table-wrap td::before {
+    display: none;
+  }
+}
+</style></head>
 <body>
 <a class="back-link" href="index.html">← 返回控制台</a>
 <div class="page-header">
