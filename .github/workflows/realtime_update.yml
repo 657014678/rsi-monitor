@@ -1,0 +1,56 @@
+name: Realtime Price Update (每30分钟)
+
+on:
+  schedule:
+    # 每30分钟运行一次（UTC时间，北京+8）
+    # 例：UTC 01:00 = 北京 09:00（开盘），UTC 07:00 = 北京 15:00（收盘）
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    # 也支持手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install akshare pandas
+
+      - name: Run realtime price update
+        id: update
+        run: |
+          python update_realtime.py --no-push
+        timeout-minutes: 3
+        continue-on-error: true
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git status --porcelain docs/ | grep -q .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in docs/"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes - skipping commit"
+          fi
+
+      - name: Commit and push
+        uses: EndBug/add-and-commit@v10
+        with:
+          add: 'docs/'
+          message: '🔄 实时行情更新 - {{ date }}'
+          default_author: github_actor
+        if: steps.check_changes.outputs.changed == 'true'

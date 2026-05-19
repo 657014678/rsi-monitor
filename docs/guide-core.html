@@ -64,7 +64,7 @@
   <div class="card" style="background:linear-gradient(135deg, rgba(52,211,153,0.06), rgba(96,165,250,0.04)); border-color:rgba(52,211,153,0.15);">
     <h3 class="green">🎯 核心逻辑（一句话）</h3>
     <p style="font-size:15px; font-weight:600; color:var(--text-bright); text-align:center; padding:8px 0;">
-      <span class="highlight">低位多买，高位少买，强势区减仓，弱势区死扛</span>
+      <span class="highlight">低位多买，高位少买，强势区减仓，弱势区只买不卖</span>
     </p>
     <div class="key-note" style="border-left-color:var(--green);">用数学纪律代替情绪决策，用时间换空间。不预测市场，只应对市场。</div>
   </div>
@@ -75,7 +75,7 @@
     <div style="font-size:13px;">
       <p><strong>操作顺序（每月21日）：</strong>① 先处理减仓/回补（若有）；② 再执行定投。减仓/回补获得的现金可用于当月的定投操作，确保资金效率。</p>
       <p style="margin-top:6px;"><strong>减仓资金管理：</strong>减仓卖出获得的现金转入货币基金或短债基金暂存，作为后续定投/回补的备用资金，避免在活期账户闲置。</p>
-      <p style="margin-top:6px;"><strong>冷却期互锁规则：</strong>各标的独立追踪冷却期。冷却期只限制<strong>同类型操作</strong>——减仓冷却期（30天）内不能再减仓，但不影响定投和回补；回补同理，回补后重新计算的30天仅限制下次回补，不影响减仓。纳指冷却期60天，规则相同。</p>
+      <p style="margin-top:6px;"><strong>冷却期规则（跨月即冷却）：</strong>每月21日只操作一次，<span class="highlight">减仓后下个月21日自动冷却完毕</span>。无需跟踪具体天数，只要不是本月减仓又本月回补就是合规的。各标的独立追踪，冷却期只限制<strong>同类型操作</strong>——不影响定投。</p>
       <p style="margin-top:6px;"><strong>年底再平衡（12月21日）：</strong>每年12月21日检查三标的实际配置比例。若偏离目标权重超过5个百分点，通过卖出超配标的+买入低配标的方式恢复至40/40/20。再平衡操作不受冷却期约束（标记为"再平衡"而非"减仓"），再平衡后重置各标的冷却期计时。</p>
     </div>
   </div>
@@ -129,24 +129,20 @@
       <div style="flex:1; background:rgba(52,211,153,0.35); color:var(--green);">2.0</div>
       <div style="flex:1; background:rgba(52,211,153,0.22); color:var(--green);">1.5</div>
       <div style="flex:1; background:rgba(52,211,153,0.10); color:var(--text);">1.0</div>
-      <div style="flex:1; background:rgba(251,191,36,0.10); color:var(--yellow);">0.8</div>
       <div style="flex:1; background:rgba(251,191,36,0.20); color:var(--yellow);">0.5</div>
-      <div style="flex:1; background:rgba(248,113,113,0.12); color:var(--red);">0.3</div>
       <div style="flex:1; background:rgba(248,113,113,0.35); color:var(--red);">暂停</div>
     </div>
     <div class="table-wrap">
       <table>
-        <tr><th>RSI21</th><th>强势区</th><th>弱势区</th></tr>
-        <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong></td><td class="td-green"><strong>1.5份</strong></td></tr>
-        <tr><td>40–47</td><td class="td-green"><strong>1.5份</strong></td><td class="td-green"><strong>1.2份</strong></td></tr>
-        <tr><td>48–52</td><td>1.0份</td><td>1.0份</td></tr>
-        <tr><td>53–60</td><td>0.8份</td><td>0.8份</td></tr>
-        <tr><td>61–65</td><td>0.5份</td><td>0.5份</td></tr>
-        <tr><td>66–71</td><td>0.3份</td><td>0.3份</td></tr>
-        <tr><td>≥72</td><td class="td-red">暂停</td><td class="td-red">暂停</td></tr>
+        <tr><th>RSI21</th><th>定投份数<br><span style="font-weight:400;font-size:10px;color:var(--text-dim);">不看强弱区，只看RSI</span></th></tr>
+        <tr><td>&lt;40</td><td class="td-green"><strong>2.0份</strong> <span style="font-size:10px;color:var(--text-dim);">极度低估</span></td></tr>
+        <tr><td>40–49</td><td class="td-green"><strong>1.5份</strong> <span style="font-size:10px;color:var(--text-dim);">低估</span></td></tr>
+        <tr><td>50–59</td><td>1.0份 <span style="font-size:10px;color:var(--text-dim);">合理</span></td></tr>
+        <tr><td>60–69</td><td class="td-yellow">0.5份 <span style="font-size:10px;color:var(--text-dim);">偏热</span></td></tr>
+        <tr><td>≥70</td><td class="td-red">暂停 <span style="font-size:10px;color:var(--text-dim);">过热</span></td></tr>
       </table>
     </div>
-    <p style="margin-top:6px; font-size:11px; color:var(--text-dim);">1份 = 基准定投额（你设定的每月基础金额）。强势区+低位 = 双倍加码。</p>
+    <p style="margin-top:6px; font-size:11px; color:var(--text-dim);">1份 = 基准定投额（你设定的每月基础金额）。定投不看MA250，MA250只决定能否减仓/回补。弱势区RSI低时也能买2.0份，低位多囤筹码。</p>
   </div>
 
   <div class="card">
@@ -155,7 +151,7 @@
     <ol>
       <li>处于<span class="highlight-green">强势区</span>（价格 ≥ MA250）</li>
       <li>RSI21 ≥ <span class="highlight-red">65</span>（市场偏热）</li>
-      <li>不在<span class="highlight">30天冷却期</span>内</li>
+      <li>上次减仓已过<span class="highlight">上次操作日</span>（跨月即可）</li>
     </ol>
     <div class="table-wrap" style="margin-top:10px;">
       <table>
@@ -164,7 +160,7 @@
         <tr><td>≥72</td><td>减仓 <span class="td-red">30%</span>（动态仓部分）</td></tr>
       </table>
     </div>
-    <p style="margin-top:8px; font-size:12px;">减仓对象：<span class="highlight">仅动态仓（30%部分）</span>，核心仓（70%）永不卖出。</p>
+    <p style="margin-top:8px; font-size:12px;">减仓对象：<span class="highlight">仅动态仓（30%部分）</span>，核心仓（70%）永不卖出。减仓后下个操作日才能再次减仓或回补。</p>
   </div>
 
   <div class="card">
@@ -172,19 +168,16 @@
     <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足才可以回补）：</div>
     <ol>
       <li>处于<span class="highlight-green">强势区</span></li>
-      <li>之前有减仓操作 + 减仓日期在<span class="highlight">30天冷却期外</span></li>
+      <li>之前有减仓操作 + 减仓在<span class="highlight">上次操作日之前</span>（已跨月）</li>
     </ol>
     <div class="table-wrap" style="margin-top:10px;">
       <table>
         <tr><th>RSI21</th><th>回补比例</th></tr>
-        <tr><td>59–63</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
+        <tr><td>50–64</td><td>接回已减仓的 <span class="td-green">2/3</span></td></tr>
         <tr><td>&lt;50</td><td>接回<span class="td-green">全部剩余</span></td></tr>
       </table>
     </div>
-    <p style="margin-top:8px; font-size:12px;">回补后重新计算30天冷却期。</p>
-    <div style="margin-top:10px;padding:10px 12px;background:rgba(248,113,113,0.06);border-radius:6px;border-left:3px solid var(--yellow);font-size:12px;">
-      <strong>⚠️ 快速下跌盲区：</strong>当RSI从高位（如72+）<span class="highlight">快速跌至50以下</span>时，虽然满足"全部回补"条件，但市场可能仍处于急跌通道中，一次性回补全部减仓份额存在继续被套的风险。建议确认：① RSI在50以下至少停留5个交易日企稳；② 价格止跌回升（如连续2日收阳）后再执行回补。若仍处于急跌状态，可考虑<span class="highlight">分批回补</span>：先回补1/3，确认站稳后再接剩余。
-    </div>
+    <p style="margin-top:8px; font-size:12px;">回补后下个操作日才能再次减仓或回补。</p>
   </div>
 
   <!-- 执行说明 -->
@@ -193,8 +186,8 @@
     <div style="font-size:13px;">
       <p><strong>减仓基数：</strong>减仓比例（15%/30%）以<strong>当前持仓市值</strong>为基数。例如持仓10万元，RSI≥72减仓30%，即卖出3万元对应份额。减仓份额从<strong>动态仓（30%部分）</strong>中扣除，核心仓（70%）不动。若动态仓不足，最多减到动态仓清空。</p>
       <p style="margin-top:6px;"><strong>回补基数：</strong>以<strong>最近一次减仓的卖出市值</strong>为基数。例如上次减仓卖出3000元对应份额，回补2/3即买入2000元。回补后的份额归入动态仓。</p>
-      <p style="margin-top:6px;"><strong>冷却期管理：</strong>减仓后务必记录日期。A股冷却30天，纳指冷却60天。建议在手机备忘录或日历标注下次可操作日期。</p>
-      <p style="margin-top:6px;"><strong>梯度边界处理（准暂停区间）：</strong>当RSI落在梯度表的分界线附近时（如65/71/52），以<strong>达到即触发</strong>为原则——RSI≤65触发减仓线即认为达到65档，无需纠结"差0.5"的问题。特别注意<strong>RSI 71-74区间</strong>是准暂停区域：71-71.9仍然执行0.3份定投，但需高度警觉市场过热；一旦RSI触及≥72即进入暂停定投+减仓30%的区间。若RSI在此区间徘徊两个月，<span class="highlight">建议手动审视是否过度集中</span>。</p>
+      <p style="margin-top:6px;"><strong>冷却期管理（跨月即冷却）：</strong>每月21日只操作一次，减仓后下个月21日自然就过了冷却期。无需跟踪具体日期——<span class="highlight">只要不是本月减仓又本月回补，就是合规的</span>。纳指同样跨月即冷却。</p>
+      <p style="margin-top:6px;"><strong>梯度边界说明：</strong>梯度表以<strong>达到即触发</strong>为原则——RSI 65触发减仓线即执行，无需纠结"差0.5"的问题。新梯度只有5档，边界清晰，不易混淆。</p>
     </div>
   </div>
 </div>
@@ -282,7 +275,7 @@
     <ol>
       <li>PE分位 ≥ <span class="highlight-red">70%</span></li>
       <li>回撤 &lt; <span class="highlight-green">8%</span>（正常波动，非深度回调）</li>
-      <li>不在<span class="highlight">60天冷却期</span>内</li>
+      <li>已<span class="highlight">跨月</span>（非同一操作月）</li>
     </ol>
     <div class="table-wrap" style="margin-top:10px;">
       <table>
@@ -291,16 +284,15 @@
         <tr><td>≥85%</td><td>减仓 <span class="td-red">30%</span></td></tr>
       </table>
     </div>
-    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">纳指冷却期60天（比A股长），因为美股波动大，避免频繁操作。</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">减仓后跨月即冷却，下个操作日才能再次减仓或回补。无需跟踪具体天数。</p>
   </div>
 
   <div class="card">
     <h3 class="purple">纳指回补规则</h3>
     <div class="highlight" style="margin-bottom:8px;">触发条件（全部满足）：</div>
     <ol>
-      <li>PE分位 &lt; <span class="highlight-green">70%</span>（退出高估区）</li>
-      <li>回撤 &lt; <span class="highlight-green">15%</span>（不在深度回调中）</li>
-      <li>之前有减仓 + 减仓日期在<span class="highlight">60天冷却期外</span></li>
+      <li>PE分位 &lt; <span class="highlight-green">70%</span>（退出高估区，<span style="color:var(--text-dim);font-size:12px;">深度回调时PE通常已大幅下降，可正常回补</span>）</li>
+      <li>之前有减仓 + 减仓在<span class="highlight">上次操作日之前</span>（跨月即可）</li>
     </ol>
     <div class="table-wrap" style="margin-top:10px;">
       <table>
@@ -318,7 +310,7 @@
       <p><strong>深度回调加码规则：</strong>当回撤 &gt; 15% 时，在 PE 分位基础定投份数上<strong>额外 +0.5 份</strong>。例如：PE合理区(1份)+深度回调 → <strong>1.5份</strong>；PE低估区(1.8份)+深度回调 → <strong>2.3份</strong>。极度低估区(2.5份封顶)，不加深度加码，但回撤&gt;15%时永不减仓。</p>
       <p style="margin-top:6px;"><strong>减仓基数：</strong>与A股规则相同——以当前持仓市值为基数，从动态仓（30%部分）扣除。</p>
       <p style="margin-top:6px;"><strong>回补基数：</strong>以最近一次纳指减仓的卖出市值为基数。接回2/3即买入减仓市值的2/3对应的份额。</p>
-      <p style="margin-top:6px;"><strong>冷却期管理：</strong>纳指冷却期60天，比A股长。减仓后务必在日历标注下次可操作日期。</p>
+      <p style="margin-top:6px;"><strong>冷却期管理：</strong>与A股一致——<span class="highlight">跨月即冷却</span>。减仓后下个操作日才能再次减仓或回补，无需跟踪具体天数。</p>
     </div>
   </div>
 </div>
@@ -337,8 +329,8 @@
       <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">弱势区 → 只定投，不减仓，不回补</span></div>
       <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">强势区 → 三个方向：</span></div>
       <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">RSI21 → 按表定投几份</span></div>
-      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">RSI≥65 + 冷却外 → 减仓15-30%</span></div>
-      <div class="dt-branch"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">之前减过 + RSI回落 + 冷却过 → 回补</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--yellow);"></span><span class="dt-text">RSI≥65 + 已跨月 → 减仓15-30%</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">之前减过 + RSI回落 + 已跨月 → 回补</span></div>
     </div>
   </div>
 
@@ -352,7 +344,7 @@
       <div class="dt-branch dt-highlight"><span class="dt-dot" style="background:var(--green);"></span><span class="dt-text">&lt;50% → 加码定投</span></div>
       <div class="dt-root" style="margin-top:8px;"><span class="dt-icon">📉</span><span class="dt-text">第二步：看 回撤幅度 → 是否深度回调</span></div>
       <div class="dt-branch dt-warn"><span class="dt-dot" style="background:var(--red);"></span><span class="dt-text">回撤&gt;15% → 永不减仓！可加码</span></div>
-      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">减仓后 → PE分位回落 + 冷却期过 → 回补</span></div>
+      <div class="dt-branch"><span class="dt-dot" style="background:var(--accent);"></span><span class="dt-text">减仓后 → PE分位回落 + 已跨月 → 回补</span></div>
     </div>
   </div>
 </div>

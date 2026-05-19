@@ -1,91 +1,120 @@
-# setup_task.ps1 - Windows Task Scheduler 自动导入脚本
-# 功能：创建每日定时任务，收盘后自动运行 daily_update.py
-# 用法：右键 → 使用 PowerShell 运行（需管理员权限）
+# setup_task.ps1 - Windows Task Scheduler 自动安装脚本
+# 用法：右键 → 以管理员身份运行 PowerShell → 执行本脚本
 #
-# 设置说明：
-#   - 每日执行时间：15:30（收盘后）
-#   - 运行用户：当前登录用户（git push 需要你的 git 配置）
-#   - 需要用户登录才能运行（window 必须保持登录）
-#   - 如果任务失败，每 10 分钟重试一次，最多重试 3 次
+# 创建两个定时任务：
+#   1. RSI Monitor Daily Update   每日 15:30   daily_update.py（完整指标计算）
+#   2. RSI Monitor Realtime Update 每 30 分钟  update_realtime.py（轻量行情更新）
+#
+# 注意事项：
+#   - 需要管理员权限
+#   - 使用当前登录用户运行（git push 需要你的 git 配置）
+#   - 需要保持系统登录状态
 
-$TaskName = "RSI Monitor Daily Update"
-$ScriptPath = Join-Path $PSScriptRoot "daily_update.py"
-$PythonPath = "python"  # 如果系统有多个 Python，可改为全路径如 "C:\Users\wei\AppData\Local\Programs\Python\Python313\python.exe"
+# ============ 配置 ============
+$Tasks = @(
+    @{
+        Name = "RSI Monitor Daily Update"
+        Script = "daily_update.py"
+        Desc = "每日完整更新（RSI/MA/PE 指标计算）"
+        Schedule = @{Type="daily"; Time="15:30"}
+    },
+    @{
+        Name = "RSI Monitor Realtime Update"
+        Script = "update_realtime.py"
+        Desc = "实时行情更新（每30分钟）"
+        Schedule = @{Type="realtime"}
+    }
+)
 
-# ----- 检查文件是否存在 -----
-if (-not (Test-Path $ScriptPath)) {
-    Write-Host "错误：找不到 daily_update.py" -ForegroundColor Red
-    Write-Host "预期路径：$ScriptPath"
-    Write-Host "请把 setup_task.ps1 放到项目根目录再运行。"
-    Read-Host "按 Enter 退出"
-    exit 1
-}
+$PythonPath = "python"  # 如果系统有多个 Python，可改为全路径
 
-# ----- 检查管理员权限 -----
+# ============ 前置检查 ============
+$PSScriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Get-Location }
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "  RSI Monitor 定时任务安装" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+
+# 检查管理员权限
 $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 if (-not $IsAdmin) {
-    Write-Host "需要管理员权限才能创建定时任务。" -ForegroundColor Yellow
-    Write-Host "请右键 → 以管理员身份运行 PowerShell，然后再执行本脚本。"
+    Write-Host "需要管理员权限！请右键 → 以管理员身份运行 PowerShell" -ForegroundColor Red
     Read-Host "按 Enter 退出"
     exit 1
 }
 
-# ----- 检查 Python 是否可用 -----
+# 检查 Python
 try {
     $PyVer = & $PythonPath --version 2>&1
-    Write-Host "Python 版本：$PyVer" -ForegroundColor Green
+    Write-Host "Python: $PyVer" -ForegroundColor Green
 } catch {
-    Write-Host "警告：检测不到 python 命令，脚本可能无法正常运行。" -ForegroundColor Yellow
-    Write-Host "建议安装 Python 并确保已加入 PATH 环境变量。"
+    Write-Host "警告：检测不到 python 命令" -ForegroundColor Yellow
 }
 
-# ----- 删除已有的同名任务（如果存在） -----
-$Existing = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
-if ($Existing) {
-    Write-Host "发现已有同名任务，先删除..." -ForegroundColor Yellow
-    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+# ============ 创建任务函数 ============
+function Create-DailyTask {
+    param($TaskName, $ScriptPath, $Time)
+
+    Write-Host "`n--- $TaskName ---"
+    Write-Host "  脚本: $ScriptPath"
+    Write-Host "  时间: 每日 $Time"
+
+    if (-not (Test-Path $ScriptPath)) {
+        Write-Host "  ⚠ 找不到脚本文件，跳过" -ForegroundColor Yellow
+        return
+    }
+
+    # 删除旧任务
+    schtasks /delete /tn "$TaskName" /f 2>$null
+
+    # 创建
+    schtasks /create /tn "$TaskName" /tr "python `"$ScriptPath`"" /sc daily /st $Time /f /it | Out-Null
+    Write-Host "  ✅ 创建成功" -ForegroundColor Green
 }
 
-# ----- 创建触发器：每日 15:30 -----
-$Trigger = New-ScheduledTaskTrigger -Daily -At "15:30"
+function Create-RealtimeTask {
+    param($TaskName, $ScriptPath)
 
-# ----- 创建操作：执行 python daily_update.py -----
-$Action = New-ScheduledTaskAction -Execute $PythonPath -Argument "`"$ScriptPath`"" -WorkingDirectory $PSScriptRoot
+    Write-Host "`n--- $TaskName ---"
+    Write-Host "  脚本: $ScriptPath"
+    Write-Host "  频率: 每 30 分钟（06:00~次日06:00）"
 
-# ----- 设置（失败重试） -----
-$Settings = New-ScheduledTaskSettingsSet `
-    -AllowStartIfOnBatteries:$true `
-    -DontStopIfGoingOnBatteries:$true `
-    -StartWhenAvailable:$true `
-    -MultipleInstances IgnoreNew `
-    -RestartCount 3 `
-    -RestartInterval (New-TimeSpan -Minutes 10)
+    if (-not (Test-Path $ScriptPath)) {
+        Write-Host "  ⚠ 找不到脚本文件，跳过" -ForegroundColor Yellow
+        return
+    }
 
-# ----- 注册任务：以当前登录用户身份运行 -----
-# 注意：用当前用户是为了 git push 能正常使用你已有的 git 配置
-$CurrentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-$Principal = New-ScheduledTaskPrincipal -UserId $CurrentUser -LogonType Interactive -RunLevel Limited
+    # 删除旧任务
+    schtasks /delete /tn "$TaskName" /f 2>$null
 
-try {
-    Register-ScheduledTask -TaskName $TaskName -Trigger $Trigger -Action $Action -Settings $Settings -Principal $Principal -Force
-    Write-Host "任务创建成功！" -ForegroundColor Green
-    Write-Host "任务名称：$TaskName" -ForegroundColor Cyan
-    Write-Host "执行时间：每日 15:30" -ForegroundColor Cyan
-    Write-Host "执行脚本：$ScriptPath" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "如需验证，打开「任务计划程序」→ 任务计划程序库 → 找到 [RSI Monitor Daily Update]" -ForegroundColor Yellow
-    Write-Host "如需手动测试，可右键任务 → 运行" -ForegroundColor Yellow
-} catch {
-    Write-Host "任务创建失败：$($_.Exception.Message)" -ForegroundColor Red
-    Write-Host ""
-    Write-Host "备用方案（手动创建）：" -ForegroundColor Yellow
-    Write-Host "  1. 打开「任务计划程序」" -ForegroundColor Yellow
-    Write-Host "  2. 右侧 → 创建基本任务" -ForegroundColor Yellow
-    Write-Host "  3. 名称：RSI Monitor Daily Update" -ForegroundColor Yellow
-    Write-Host "  4. 触发器：每日，15:30" -ForegroundColor Yellow
-    Write-Host "  5. 操作：启动程序 → python" -ForegroundColor Yellow
-    Write-Host "  6. 参数：`"$ScriptPath`"" -ForegroundColor Yellow
-    Write-Host "  7. 起始于：$PSScriptRoot" -ForegroundColor Yellow
+    # 创建：每天06:00开始，每30分钟重复，持续24小时
+    schtasks /create /tn "$TaskName" /tr "python `"$ScriptPath`"" /sc daily /st 06:00 /ri 30 /du 24:00 /f /it | Out-Null
+    Write-Host "  ✅ 创建成功" -ForegroundColor Green
 }
+
+# ============ 执行创建 ============
+foreach ($t in $Tasks) {
+    $ScriptPath = Join-Path $PSScriptRoot $t.Script
+    if ($t.Schedule.Type -eq "daily") {
+        Create-DailyTask -TaskName $t.Name -ScriptPath $ScriptPath -Time $t.Schedule.Time
+    } elseif ($t.Schedule.Type -eq "realtime") {
+        Create-RealtimeTask -TaskName $t.Name -ScriptPath $ScriptPath
+    }
+}
+
+# ============ 完成 ============
+Write-Host "`n========================================" -ForegroundColor Cyan
+Write-Host "  ✅ 全部任务安装完成！" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "📋 任务列表："
+foreach ($t in $Tasks) {
+    $task = Get-ScheduledTask -TaskName $t.Name -ErrorAction SilentlyContinue
+    $state = if ($task -and $task.State -eq "Ready") { "✅" } else { "⏸" }
+    Write-Host "  $state $($t.Name)  —  $($t.Desc)"
+}
+Write-Host ""
+Write-Host "🔍 如需验证，打开「任务计划程序」→ 任务计划程序库" -ForegroundColor Yellow
+Write-Host "🔍 如需手动测试，右键任务 → 运行" -ForegroundColor Yellow
+Write-Host ""
 
 Read-Host "按 Enter 退出"
