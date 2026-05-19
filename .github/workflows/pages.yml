@@ -3,9 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["Realtime Price Update (每30分钟)"]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
