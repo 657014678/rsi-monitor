@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 09:27:14",
+  "update_time": "2026-05-20 12:08:20",
   "data_source": "乐咕PE+新浪指数",
   "etf": {
     "type": "pe_drawdown",
@@ -12,10 +12,10 @@
     "weight": "20%",
     "current_price": 28818.84,
     "price_change_pct": -0.61,
-    "pe_ttm": 96.47,
-    "pe_percentile": 95.6,
+    "pe_ttm": 99.19,
+    "pe_percentile": 97.6,
     "pe_years": 6.6,
-    "pe_data_days": 1653,
+    "pe_data_days": 1654,
     "pe_zone": "极度高估",
     "drawdown": -2.57,
     "drawdown_zone": "正常波动",
@@ -33,7 +33,7 @@
     "risk_label": "极度高估",
     "data_source": "乐咕PE+新浪指数",
     "is_index_price": true,
-    "market_date": "2026-05-19",
+    "market_date": "2026-05-20",
     "history_advice": [
       {
         "date": "2025-05-21",
@@ -6791,6 +6791,10 @@
       {
         "time": "2026-05-19",
         "pe_ttm": 96.47
+      },
+      {
+        "time": "2026-05-20",
+        "pe_ttm": 99.19
       }
     ],
     "price_history": [

@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 09:27:14",
+  "update_time": "2026-05-20 12:08:20",
   "data_source": "多数据源",
   "etfs": [
     {
@@ -11,12 +11,12 @@
       "fund_code": "563020",
       "fund_name": "中证红利低波动ETF",
       "weight": "40%",
-      "current_price": 11121.79,
-      "price_change_pct": 0.66,
-      "ma250": 11418.25,
+      "current_price": 11083.39,
+      "price_change_pct": -0.35,
+      "ma250": 11418.0,
       "ma250_is_reference": false,
-      "ma250_data_days": 1936,
-      "rsi21": 41.81,
+      "ma250_data_days": 1937,
+      "rsi21": 40.35,
       "zone": "弱势区",
       "invest_amount": "1.5份",
       "invest_detail": "低估·不看强弱区",
@@ -25,12 +25,12 @@
       "risk_signal": "yellow",
       "risk_label": "跌破MA250",
       "ma250_trend": "上升",
-      "days_below_ma250": 11,
+      "days_below_ma250": 12,
       "days_above_ma250": 0,
-      "price_vs_ma250_pct": -2.6,
+      "price_vs_ma250_pct": -2.93,
       "is_index_price": true,
       "data_source": "中证指数官网",
-      "market_date": "2026-05-19",
+      "market_date": "2026-05-20",
       "history_advice": [
         {
           "date": "2025-05-21",
@@ -148,8 +148,8 @@
           "rebuy": "考虑回补"
         }
       ],
-      "etf_price": 1.17,
-      "etf_price_change_pct": -0.26
+      "etf_price": 1.169,
+      "etf_price_change_pct": -0.34
     },
     {
       "type": "rsi_ma",
@@ -160,12 +160,12 @@
       "fund_code": "159263",
       "fund_name": "国证价值100ETF",
       "weight": "40%",
-      "current_price": 8293.69,
-      "price_change_pct": 0.1,
-      "ma250": 7682.3,
+      "current_price": 8252.25,
+      "price_change_pct": -0.5,
+      "ma250": 7688.61,
       "ma250_is_reference": false,
-      "ma250_data_days": 2029,
-      "rsi21": 43.61,
+      "ma250_data_days": 2030,
+      "rsi21": 41.49,
       "zone": "强势区",
       "invest_amount": "1.5份",
       "invest_detail": "低估·不看强弱区",
@@ -178,11 +178,11 @@
       "risk_label": "正常",
       "ma250_trend": "上升",
       "days_below_ma250": 0,
-      "days_above_ma250": 557,
-      "price_vs_ma250_pct": 7.96,
+      "days_above_ma250": 558,
+      "price_vs_ma250_pct": 7.33,
       "is_index_price": true,
       "data_source": "国证指数官网(全收益)",
-      "market_date": "2026-05-19",
+      "market_date": "2026-05-20",
       "history_advice": [
         {
           "date": "2025-05-21",
@@ -318,10 +318,10 @@
       "weight": "20%",
       "current_price": 28818.84,
       "price_change_pct": -0.61,
-      "pe_ttm": 96.47,
-      "pe_percentile": 95.6,
+      "pe_ttm": 99.19,
+      "pe_percentile": 97.6,
       "pe_years": 6.6,
-      "pe_data_days": 1653,
+      "pe_data_days": 1654,
       "pe_zone": "极度高估",
       "drawdown": -2.57,
       "drawdown_zone": "正常波动",
@@ -339,7 +339,7 @@
       "risk_label": "极度高估",
       "data_source": "乐咕PE+新浪指数",
       "is_index_price": true,
-      "market_date": "2026-05-19",
+      "market_date": "2026-05-20",
       "history_advice": [
         {
           "date": "2025-05-21",

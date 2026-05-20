@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 09:27:14",
+  "update_time": "2026-05-20 12:08:20",
   "data_source": "国证指数官网(全收益)",
   "etf": {
     "type": "rsi_ma",
@@ -10,12 +10,12 @@
     "fund_code": "159263",
     "fund_name": "国证价值100ETF",
     "weight": "40%",
-    "current_price": 8293.69,
-    "price_change_pct": 0.1,
-    "ma250": 7682.3,
+    "current_price": 8252.25,
+    "price_change_pct": -0.5,
+    "ma250": 7688.61,
     "ma250_is_reference": false,
-    "ma250_data_days": 2029,
-    "rsi21": 43.61,
+    "ma250_data_days": 2030,
+    "rsi21": 41.49,
     "zone": "强势区",
     "invest_amount": "1.5份",
     "invest_detail": "低估·不看强弱区",
@@ -28,11 +28,11 @@
     "risk_label": "正常",
     "ma250_trend": "上升",
     "days_below_ma250": 0,
-    "days_above_ma250": 557,
-    "price_vs_ma250_pct": 7.96,
+    "days_above_ma250": 558,
+    "price_vs_ma250_pct": 7.33,
     "is_index_price": true,
     "data_source": "国证指数官网(全收益)",
-    "market_date": "2026-05-19",
+    "market_date": "2026-05-20",
     "history_advice": [
       {
         "date": "2025-05-21",
@@ -161,14 +161,6 @@
     "etf_code": "159263",
     "index_name": "国证价值100",
     "klines": [
-      {
-        "time": "2024-09-18",
-        "open": null,
-        "high": null,
-        "low": null,
-        "close": 5468.8643,
-        "volume": null
-      },
       {
         "time": "2024-09-19",
         "open": null,
@@ -3360,10 +3352,17 @@
         "low": 8255.4014,
         "close": 8293.6916,
         "volume": 5251.48
+      },
+      {
+        "time": "2026-05-20",
+        "open": 8271.291,
+        "high": 8276.2176,
+        "low": 8227.3488,
+        "close": 8252.2508,
+        "volume": 4415.96
       }
     ],
     "ma_values": [
-      5340.69,
       5342.69,
       5344.79,
       5347.21,
@@ -3762,10 +3761,10 @@
       7662.11,
       7669.09,
       7675.76,
-      7682.3
+      7682.3,
+      7688.61
     ],
     "rsi_values": [
-      47.24,
       51.93,
       52.21,
       54.67,
@@ -4164,7 +4163,8 @@
       45.73,
       45.57,
       43.04,
-      43.61
+      43.61,
+      41.49
     ]
   }
 }
