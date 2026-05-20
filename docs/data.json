@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 08:41:30",
+  "update_time": "2026-05-20 01:30:29",
   "data_source": "多数据源",
   "etfs": [
     {
@@ -148,8 +148,8 @@
           "rebuy": "考虑回补"
         }
       ],
-      "etf_price": 1.173,
-      "etf_price_change_pct": 0.6
+      "etf_price": 1.17,
+      "etf_price_change_pct": -0.26
     },
     {
       "type": "rsi_ma",
@@ -304,8 +304,8 @@
           "rebuy": "考虑回补"
         }
       ],
-      "etf_price": 1.164,
-      "etf_price_change_pct": 0.26
+      "etf_price": 1.158,
+      "etf_price_change_pct": -0.52
     },
     {
       "type": "pe_drawdown",
@@ -479,8 +479,8 @@
           "reduce": "考虑减仓 15%"
         }
       ],
-      "etf_price": 1.891,
-      "etf_price_change_pct": -0.16
+      "etf_price": 1.884,
+      "etf_price_change_pct": -0.37
     }
   ]
 }

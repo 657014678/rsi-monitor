@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 08:41:30",
+  "update_time": "2026-05-20 01:30:29",
   "data_source": "乐咕PE+新浪指数",
   "etf": {
     "type": "pe_drawdown",
@@ -173,8 +173,8 @@
         "reduce": "考虑减仓 15%"
       }
     ],
-    "etf_price": 1.891,
-    "etf_price_change_pct": -0.16
+    "etf_price": 1.884,
+    "etf_price_change_pct": -0.37
   },
   "chart": {
     "etf_code": "159696",

@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 08:41:30",
+  "update_time": "2026-05-20 01:30:29",
   "data_source": "中证指数官网",
   "etf": {
     "type": "rsi_ma",
@@ -147,8 +147,8 @@
         "rebuy": "考虑回补"
       }
     ],
-    "etf_price": 1.173,
-    "etf_price_change_pct": 0.6
+    "etf_price": 1.17,
+    "etf_price_change_pct": -0.26
   },
   "chart": {
     "etf_code": "563020",
