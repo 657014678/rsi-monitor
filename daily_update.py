@@ -380,26 +380,17 @@ def get_zone(price, ma250):
 
 
 def get_invest_advice(rsi, zone):
-    if rsi >= 72:
-        return {"amount": "暂停", "detail": "极度过热·" + zone}
-    elif rsi >= 66:
-        return {"amount": "0.3份", "detail": "过热·" + zone}
-    elif rsi >= 61:
-        return {"amount": "0.5份", "detail": "偏热·" + zone}
-    elif rsi >= 53:
-        return {"amount": "0.8份", "detail": "中性偏热·" + zone}
-    elif rsi >= 48:
-        return {"amount": "1份", "detail": "中性合理·" + zone}
+    """V7 5级单列梯度：不看强弱区，只看RSI"""
+    if rsi >= 70:
+        return {"amount": "暂停", "detail": "过热·不看强弱区"}
+    elif rsi >= 60:
+        return {"amount": "0.5份", "detail": "偏热·不看强弱区"}
+    elif rsi >= 50:
+        return {"amount": "1份", "detail": "中性合理·不看强弱区"}
     elif rsi >= 40:
-        if zone == "强势区":
-            return {"amount": "1.5份", "detail": "偏冷低估·强势区"}
-        else:
-            return {"amount": "1.2份", "detail": "偏冷低估·弱势区"}
+        return {"amount": "1.5份", "detail": "低估·不看强弱区"}
     else:
-        if zone == "强势区":
-            return {"amount": "2份", "detail": "极度低估·强势区"}
-        else:
-            return {"amount": "1.5份", "detail": "极度低估·弱势区"}
+        return {"amount": "2.0份", "detail": "极度低估·不看强弱区"}
 
 
 def get_reduce_advice(rsi, zone):
@@ -415,10 +406,10 @@ def get_reduce_advice(rsi, zone):
 def get_rebuy_advice(rsi, zone):
     if zone != "强势区":
         return None
-    if 59 <= rsi <= 63:
-        return {"action": "考虑回补", "detail": "RSI 59-63·强势区·接回已减仓2/3（触发30天冷却）"}
+    if 50 <= rsi <= 64:
+        return {"action": "考虑回补", "detail": "RSI 50-64·强势区·接回已减仓2/3（触发冷却）"}
     elif rsi < 50:
-        return {"action": "考虑回补", "detail": "RSI<50·强势区·接回全部剩余（触发30天冷却）"}
+        return {"action": "考虑回补", "detail": "RSI<50·强势区·接回全部剩余（触发冷却）"}
     return None
 
 
@@ -478,7 +469,7 @@ def get_nasdaq_invest_advice(pe_percentile, drawdown):
 def get_nasdaq_reduce_advice(pe_percentile, drawdown):
     if pe_percentile < 70:
         return None
-    if drawdown > 15:
+    if drawdown >= 8:  # 回撤≥8%时永不减仓（含中级回调、深度回调）
         return None
     if pe_percentile >= 85:
         return {"action": "考虑减仓", "pct": "30%", "detail": "PE≥85%·正常波动·卖出30%（需确认不在冷却期）"}
@@ -490,12 +481,11 @@ def get_nasdaq_reduce_advice(pe_percentile, drawdown):
 def get_nasdaq_rebuy_advice(pe_percentile, drawdown):
     if pe_percentile >= 70:
         return None
-    if drawdown > 15:
-        return None
+    # V7：移除回撤限制，深度回调时PE已跌可正常回补
     if 40 <= pe_percentile <= 50:
-        return {"action": "考虑回补", "detail": "PE 40-50%·接回已减仓2/3（触发60天冷却）"}
+        return {"action": "考虑回补", "detail": "PE 40-50%·接回已减仓2/3（触发冷却）"}
     elif pe_percentile < 40:
-        return {"action": "考虑回补", "detail": "PE<40%·接回全部剩余减仓（触发60天冷却）"}
+        return {"action": "考虑回补", "detail": "PE<40%·接回全部剩余减仓（触发冷却）"}
     return None
 
 

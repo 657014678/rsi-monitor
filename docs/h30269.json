@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-19 23:01:00",
+  "update_time": "2026-05-20 08:41:30",
   "data_source": "中证指数官网",
   "etf": {
     "type": "rsi_ma",
@@ -17,8 +17,8 @@
     "ma250_data_days": 1936,
     "rsi21": 41.81,
     "zone": "弱势区",
-    "invest_amount": "1.2份",
-    "invest_detail": "偏冷低估·弱势区",
+    "invest_amount": "1.5份",
+    "invest_detail": "低估·不看强弱区",
     "reduce_advice": null,
     "rebuy_advice": null,
     "risk_signal": "yellow",
@@ -38,7 +38,7 @@
         "ma250": 10746.66,
         "zone": "强势区",
         "invest": "0.5份",
-        "invest_detail": "偏热·强势区",
+        "invest_detail": "偏热·不看强弱区",
         "rebuy": "考虑回补"
       },
       {
@@ -48,7 +48,7 @@
         "ma250": 10773.75,
         "zone": "强势区",
         "invest": "0.5份",
-        "invest_detail": "偏热·强势区",
+        "invest_detail": "偏热·不看强弱区",
         "rebuy": "考虑回补"
       },
       {
@@ -57,8 +57,9 @@
         "rsi21": 55.9,
         "ma250": 10851.18,
         "zone": "强势区",
-        "invest": "0.8份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "1份",
+        "invest_detail": "中性合理·不看强弱区",
+        "rebuy": "考虑回补"
       },
       {
         "date": "2025-08-21",
@@ -66,8 +67,9 @@
         "rsi21": 55.4,
         "ma250": 10973.82,
         "zone": "强势区",
-        "invest": "0.8份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "1份",
+        "invest_detail": "中性合理·不看强弱区",
+        "rebuy": "考虑回补"
       },
       {
         "date": "2025-09-21",
@@ -75,8 +77,8 @@
         "rsi21": 35.3,
         "ma250": 11095.2,
         "zone": "弱势区",
-        "invest": "1.5份",
-        "invest_detail": "极度低估·弱势区"
+        "invest": "2.0份",
+        "invest_detail": "极度低估·不看强弱区"
       },
       {
         "date": "2025-10-21",
@@ -84,8 +86,9 @@
         "rsi21": 54.3,
         "ma250": 11160.78,
         "zone": "强势区",
-        "invest": "0.8份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "1份",
+        "invest_detail": "中性合理·不看强弱区",
+        "rebuy": "考虑回补"
       },
       {
         "date": "2025-11-21",
@@ -94,7 +97,8 @@
         "ma250": 11237.17,
         "zone": "强势区",
         "invest": "1份",
-        "invest_detail": "中性合理·强势区"
+        "invest_detail": "中性合理·不看强弱区",
+        "rebuy": "考虑回补"
       },
       {
         "date": "2025-12-21",
@@ -102,8 +106,8 @@
         "rsi21": 40.1,
         "ma250": 11283.24,
         "zone": "弱势区",
-        "invest": "1.2份",
-        "invest_detail": "偏冷低估·弱势区"
+        "invest": "1.5份",
+        "invest_detail": "低估·不看强弱区"
       },
       {
         "date": "2026-01-21",
@@ -111,8 +115,8 @@
         "rsi21": 38.8,
         "ma250": 11291.94,
         "zone": "弱势区",
-        "invest": "1.5份",
-        "invest_detail": "极度低估·弱势区"
+        "invest": "2.0份",
+        "invest_detail": "极度低估·不看强弱区"
       },
       {
         "date": "2026-02-21",
@@ -121,7 +125,7 @@
         "ma250": 11323.82,
         "zone": "弱势区",
         "invest": "1份",
-        "invest_detail": "中性合理·弱势区"
+        "invest_detail": "中性合理·不看强弱区"
       },
       {
         "date": "2026-03-21",
@@ -129,8 +133,8 @@
         "rsi21": 40.7,
         "ma250": 11369.61,
         "zone": "弱势区",
-        "invest": "1.2份",
-        "invest_detail": "偏冷低估·弱势区"
+        "invest": "1.5份",
+        "invest_detail": "低估·不看强弱区"
       },
       {
         "date": "2026-04-21",
@@ -138,8 +142,9 @@
         "rsi21": 54.5,
         "ma250": 11402.73,
         "zone": "强势区",
-        "invest": "0.8份",
-        "invest_detail": "中性偏热·强势区"
+        "invest": "1份",
+        "invest_detail": "中性合理·不看强弱区",
+        "rebuy": "考虑回补"
       }
     ],
     "etf_price": 1.173,
