@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 23:48:56",
+  "update_time": "2026-05-21 02:59:50",
   "data_source": "乐咕PE+新浪指数",
   "etf": {
     "type": "pe_drawdown",
@@ -10,14 +10,14 @@
     "fund_code": "159696",
     "fund_name": "易方达纳斯达克100ETF",
     "weight": "20%",
-    "current_price": 28818.84,
-    "price_change_pct": -0.61,
+    "current_price": 29297.7,
+    "price_change_pct": 1.66,
     "pe_ttm": 99.19,
     "pe_percentile": 97.6,
     "pe_years": 6.6,
     "pe_data_days": 1654,
     "pe_zone": "极度高估",
-    "drawdown": -2.57,
+    "drawdown": -0.96,
     "drawdown_zone": "正常波动",
     "high_price": 29580.3,
     "zone": "极度高估·正常波动",
@@ -173,8 +173,8 @@
         "reduce": "考虑减仓 15%"
       }
     ],
-    "etf_price": 1.898,
-    "etf_price_change_pct": 0.37
+    "etf_price": 1.919,
+    "etf_price_change_pct": 1.11
   },
   "chart": {
     "etf_code": "159696",
@@ -6799,10 +6799,6 @@
     ],
     "price_history": [
       {
-        "time": "2024-10-14",
-        "close": 20439.04
-      },
-      {
         "time": "2024-10-15",
         "close": 20159.83
       },
@@ -8397,6 +8393,10 @@
       {
         "time": "2026-05-19",
         "close": 28818.84
+      },
+      {
+        "time": "2026-05-20",
+        "close": 29297.7
       }
     ]
   }

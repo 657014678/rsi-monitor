@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-05-20 23:48:56",
+  "update_time": "2026-05-21 02:59:50",
   "data_source": "国证指数官网(全收益)",
   "etf": {
     "type": "rsi_ma",
@@ -155,7 +155,7 @@
       }
     ],
     "etf_price": 1.156,
-    "etf_price_change_pct": -0.69
+    "etf_price_change_pct": 0.0
   },
   "chart": {
     "etf_code": "159263",
